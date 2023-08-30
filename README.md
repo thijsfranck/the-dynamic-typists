@@ -28,10 +28,16 @@ pip install poetry==1.6.1
 git clone https://github.com/thijsfranck/the-dynamic-typists
 ```
 
-3. Finally, navigate to the root of the repository and run the following command. Poetry will create a virtual environment and install all the necessary dependencies in it.
+3. Navigate to the root of the repository and run the following command. Poetry will create a virtual environment and install all the necessary dependencies in it.
 
 ```bash
 poetry install
+```
+
+4. Finally, install the pre-commit hook for your local repository by running the following command:
+
+```bash
+poetry run pre-commit install
 ```
 
 4. You're all set! You can now develop, build, and test the project in your local development environment.
