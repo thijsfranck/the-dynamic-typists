@@ -19,7 +19,7 @@ jobs:
 
     env:
       # The Python version your project uses. Feel free to change this if required.
-      PYTHON_VERSION: "3.10"
+      PYTHON_VERSION: "3.11"
 
     steps:
       # Checks out the repository in the current folder.
@@ -32,5 +32,18 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
+      - name: Install dependencies
+        run: pip install poetry==1.4.2; poetry config virtualenvs.create false; poetry install
+
+      - name: Set up pyright
+        run: echo "PYRIGHT_VERSION=$(python -c 'import pyright; print(pyright.__pyright_version__)')" >> $GITHUB_ENV
+
       - name: Run pre-commit hooks
         uses: pre-commit/action@v3.0.0
+
+      - name: Run pyright
+        uses: jakebailey/pyright-action@v1.2.0
+        with:
+          version: ${{ env.PYRIGHT_VERSION }}
+          python-version: ${{ env.PYTHON_VERSION }}
+          warnings: true
