@@ -2,6 +2,8 @@
 
 This is the code repository of The Dynamic Typists team for the Python Discord Code Jam 2023!
 
+![Dynamic Typing Ensues](https://media.giphy.com/media/Hcw7rjsIsHcmk/giphy.gif)
+
 ## Installation
 
 Below are instructions on various ways to install this project.
