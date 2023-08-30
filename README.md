@@ -75,3 +75,50 @@ This project also includes a Visual Studio Code development container to simplif
 6. Once connected, you'll see "Dev Container: The Dynamic Typists" in the bottom-left corner of the VS Code window, indicating that you are now working inside the container.
 
 7. You're all set! You can now develop, build, and test the project using the provided development environment.
+
+## How to contribute
+
+To ensure a smooth collaboration, we have outlined some guidelines to follow when making contributions. Your adherence to these guidelines helps us maintain the quality and clarity of the project.
+
+### Getting Started
+
+See the [installation](#installation) section on how to get started with this repository.
+
+### Branching
+
+Always create a new branch for your changes. This makes it easier to handle multiple contributions simultaneously.
+
+1. Pull the latest changes from the main branch:
+
+```bash
+git pull main
+```
+
+2. Create a new branch. Name it descriptively:
+
+```bash
+git checkout -b BRANCH_NAME
+```
+
+3. Push the branch to the repository:
+
+```bash
+git push -u origin BRANCH_NAME
+```
+
+### Pull Requests
+
+1. **Creating a Pull Request**: Once you've pushed your branch, navigate to the GitHub repository page and click on the "Pull request" button. Make sure the "base" repository is the main branch and the "compare" branch is the one you've just pushed.
+
+2. **Describe Your Changes**: In the pull request description, explain the changes you've made, any related issues, and provide any additional information or screenshots that might be necessary.
+
+3. **Required Approvals**: Before merging, your pull request must be reviewed and approved by at least one other team member.
+
+4. **Checks**: Ensure that all checks (like CI tests) are passing. If they're not, understand why and make the necessary changes.
+
+### Commit Guidelines
+
+- Use the present tense ("Add feature" not "Added feature")
+- Use the imperative mood ("Move cursor to..." not "Moves cursor to...")
+- Limit the first line to 72 characters or fewer.
+- Describe what you did in the commit, why you did it, and how, in the commit details.
