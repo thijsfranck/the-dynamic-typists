@@ -14,11 +14,11 @@
 			"installTools": false
 		}
 	},
-	
+
 	"containerEnv": {
 		"POETRY_VIRTUALENVS_CREATE": "false"
 	},
-	
+
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 
