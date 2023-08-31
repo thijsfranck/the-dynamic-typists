@@ -20,8 +20,6 @@ To get started developing on this project using your local machine, please follo
 python -m pip install poetry==1.6.1
 ```
 
-> **Note**: If you're on a system where `pip3` is the designated command for Python 3, you might need to use `pip3` instead of `pip`.
-
 2. Next, navigate to the folder where you want the repository to be stored and run the following command to clone the git repository:
 
 ```bash
