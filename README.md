@@ -251,7 +251,7 @@ The function's expected behavior is clearer. You know that both `a` and `b` shou
 
 #### Running Tests
 
-To run the tests, navigate to the root of your project and use the following command:
+To run the tests, use the following command from the root of the project:
 
 ```bash
 python -m unittest discover -p "test__*.py"
