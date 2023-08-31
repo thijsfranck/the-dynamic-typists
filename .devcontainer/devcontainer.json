@@ -29,8 +29,8 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"EditorConfig.EditorConfig",
-				"ms-python.python"
+				"charliermarsh.ruff",
+				"ms-python.python",
 			],
 			"settings": {
 				"python.testing.unittestEnabled": true

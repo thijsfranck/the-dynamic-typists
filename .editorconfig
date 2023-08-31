@@ -1,4 +1,0 @@
-root = true
-
-[*.py]
-multi_line_output=5
