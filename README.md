@@ -131,7 +131,7 @@ git push -u origin BRANCH_NAME
 
 ### Code Documentation
 
-Good code documentation aids understanding and speeds up the development process. It also helps our final score 😁. For consistency and clarity, we've chosen to use numpy-style docstrings. When documenting your code, please adhere to this style. You can find a complete set of examples in this [style guide](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html).
+Good code documentation aids understanding and speeds up the development process. It also helps boost our final score 😁. For consistency and clarity, we've chosen to use numpy-style docstrings. When documenting your code, please adhere to this style. You can find a complete set of examples in this [style guide](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html).
 
 #### Basic Guidelines
 
@@ -198,3 +198,90 @@ class Example:
 ```
 
 Prioritize documenting public methods and attributes (those not starting with an underscore). However, private methods with complex logic should also be documented for clarity.
+
+### Unit Testing
+
+Unit tests are key to our success, since they allow us to catch bugs early, run sections of code in isolation, and accelerate our development pace. We use the `unittest` framework for writing and running our tests.
+
+#### Basic Guidelines
+
+Test modules should be located in the same directory as the module they cover. Test modules should be named `test__*.py` (e.g.,` test__math_ops.py`). Individual test methods within those modules should be prefixed with `test__` (e.g., `test__my_function`). See the example below:
+
+```
+project_root/
+├── utils/
+│   ├── __init__.py
+│   ├── math_ops.py
+│   └── test__math_ops.py
+├── main.py
+└── ...
+```
+
+As a general rule, unit tests should cover the following aspects of your code:
+
+- Input validation
+- Validation of output (or outcome) given a particular input
+- Error handling
+
+#### Unit Testing and Type Hints
+
+You can reduce the need for unit tests by indicating the expected types of input arguments and return values as type hints. While they don't replace unit tests, type hints can reduce the number of tests you might need to write, particularly those related to input validation.
+
+For instance, consider the following function without type hints:
+
+```python
+def add(a, b):
+    return a + b
+```
+
+Without type hints, you might write multiple tests to ensure that the function behaves correctly with different types of input, like strings, integers, or floats. But with type hints:
+
+```python
+def add(a: int, b: int) -> int:
+    return a + b
+```
+
+The function's expected behavior is clearer. You know that both `a` and `b` should be integers, and the return value will also be an integer. With these type hints in place, there's less need to write unit tests checking for behaviors with non-integer inputs since the static type checker can catch those mistakes for you.
+
+#### Writing Tests
+
+1. **Import Dependencies**: Start by importing `unittest` and the module, class or function you're testing.
+2. **Create Test Cases**: For each set of related tests, create a class that inherits from `unittest.TestCase`.
+3. **SetUp and TearDown**: Use `setUp` and `tearDown` methods to define instructions that will be executed before and after each test method, respectively.
+
+#### Running Tests
+
+To run the tests, navigate to the root of your project and use the following command:
+
+```bash
+python -m unittest discover -p "test__*.py"
+```
+
+This command will discover and run all the tests that match the pattern `test__*.py`.
+
+#### Example
+
+Suppose we have a function add in a module named `math_ops.py` located in the `utils` directory. Here's how the test might look:
+
+```python
+import unittest
+from .math_ops import add
+
+class Test__Addition(unittest.TestCase):
+
+    def setUp(self):
+        # Code that will run before each test method
+        self.num1 = 3
+        self.num2 = 2
+
+    def test__addition(self):
+        # Check if 3 + 2 equals 5
+        self.assertEqual(add(self.num1, self.num2), 5)
+
+    def tearDown(self):
+        # Code that will run after each test method
+        pass
+
+if __name__ == '__main__':
+    unittest.main()
+```
