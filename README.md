@@ -17,7 +17,7 @@ To get started developing on this project using your local machine, please follo
 1. This project uses [Poetry](https://python-poetry.org/) as a dependency manager. Run the following command to install Poetry:
 
 ```bash
-pip install poetry==1.6.1
+python -m pip install poetry==1.6.1
 ```
 
 > **Note**: If you're on a system where `pip3` is the designated command for Python 3, you might need to use `pip3` instead of `pip`.
@@ -44,7 +44,7 @@ poetry run pre-commit install
 
 ### Using the Dev Container
 
-This project also includes a Visual Studio Code development container to simplify the setup process and provide a consistent development environment. You can use the dev container with either Visual Studio Code locally or with GitHub Codespaces.
+This project also includes a [Visual Studio Code development container](https://containers.dev/) to simplify the setup process and provide a consistent development environment. You can use the dev container with either Visual Studio Code locally or with GitHub Codespaces.
 
 #### Using the Dev Container with Visual Studio Code
 
