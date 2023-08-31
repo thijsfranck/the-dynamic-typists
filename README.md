@@ -6,7 +6,10 @@ This is the code repository of The Dynamic Typists team for the Python Discord C
 
 ## Installation
 
-Below are instructions on various ways to install this project.
+Below are instructions on various ways to install this project. You can choose to either:
+
+1. [Set up a local development environment](#local-installation), or
+2. [Use the provided development container](#using-the-dev-container) (requires Docker)
 
 ### Local installation
 
