@@ -128,3 +128,73 @@ git push -u origin BRANCH_NAME
 - Use the imperative mood ("Move cursor to..." not "Moves cursor to...")
 - Limit the first line to 72 characters or fewer.
 - Describe what you did in the commit, why you did it, and how, in the commit details.
+
+### Code Documentation
+
+Good code documentation aids understanding and speeds up the development process. It also helps our final score 😁. For consistency and clarity, we've chosen to use numpy-style docstrings. When documenting your code, please adhere to this style. You can find a complete set of examples in this [style guide](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html).
+
+#### Basic Guidelines
+
+Always document the following elements of your code:  
+
+1. **Classes**: including their **attributes and public methods**
+2. **Module-level functions and constants**
+
+For classes, functions, and methods, docstrings should start on the line directly below the signature, at the first indent level. For attributes and constants, docstrings should start on the first line after their declaration. Use triple double quotes (`"""`) to enclose your docstrings.
+
+Python type annotations in the function or method signatures are encouraged for clarity. When using type annotations in the signature, it's not necessary to repeat the type in the docstring.
+
+Your docstrings should include these sections in the following order (if applicable):
+
+1. One-line summary
+2. Detailed functional description (can span multiple lines, separated by a blank line from the one-line summary)
+3. Parameters
+4. Returns
+5. Raises
+6. Examples
+
+For reference, here's a complete example of a function docstring in numpy-style:
+
+```python
+def example_function(param1: int, param2: str):
+    """One-line summary of the function.
+
+    Detailed functional description of what the function does. Can span
+    multiple lines.
+
+    Parameters
+    ----------
+    param1 : int
+        Description of the first parameter.
+    param2 : str
+        Description of the second parameter.
+
+    Returns
+    -------
+    bool
+        Description of the return value.
+
+    Raises
+    ------
+    ValueError
+        Description of the error.
+
+    Examples
+    --------
+    >>> example_function(1, "test")
+    True
+    """
+    return True
+```
+
+For classes and attributes:
+
+```python
+class Example:
+    """Class-level docstring describing the class."""
+
+    attribute: int
+    """Description of the class attribute."""
+```
+
+Prioritize documenting public methods and attributes (those not starting with an underscore). However, private methods with complex logic should also be documented for clarity.
