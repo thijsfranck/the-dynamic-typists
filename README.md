@@ -1,173 +1,288 @@
-# Python Discord Code Jam Repository Template
+# The Dynamic Typists
 
-## A Primer
-Hello code jam participants! We've put together this repository template for you to use in [our code jams](https://pythondiscord.com/events/) or even other Python events!
+This is the code repository of The Dynamic Typists team for the Python Discord Code Jam 2023!
 
-This document will contain the following information:
-1. [What does this template contain?](#what-does-this-template-contain)
-2. [How do I use it?](#how-do-i-use-it)
-3. [How do I adapt it to my project?](#how-do-i-adapt-it-to-my-project)
+![Dynamic Typing Ensues](https://media.giphy.com/media/Hcw7rjsIsHcmk/giphy.gif)
 
-You can also look at [our style guide](https://pythondiscord.com/events/code-jams/code-style-guide/) to get more information about what we consider a maintainable code style.
+## Installation
 
-## What does this template contain?
+Below are instructions on various ways to install this project. You can choose to either:
 
-Here is a quick rundown of what each file in this repository contains:
-- `LICENSE`: [The MIT License](https://opensource.org/licenses/MIT), an OSS approved license which grants rights to everyone to use and modify your projects and limits your liability. We highly recommend you to read the license.
-- `.gitignore`: A list of files that will be ignored by Git. Most of them are auto-generated or contain data that you wouldn't want to share publicly.
-- `dev-requirements.txt`: Every PyPI packages used for the project's development, to ensure a common and maintainable code style. [More on that below](#using-the-default-pip-setup).
-- `tox.ini`: The configurations of two of our style tools: [`flake8`](https://pypi.org/project/flake8/) and [`isort`](https://pypi.org/project/isort/).
-- `.pre-commit-config.yaml`: The configuration of the [`pre-commit`](https://pypi.org/project/pre-commit/) tool.
-- `.github/workflows/lint.yaml`: A [GitHub Actions](https://github.com/features/actions) workflow, a set of actions run by GitHub on their server after each push, to ensure the style requirements are met.
+1. [Set up a local development environment](#local-installation), or
+2. [Use the provided development container](#using-the-dev-container) (requires Docker)
 
-Each of these files have comments for you to understand easily, and modify to fit your needs.
+### Local installation
 
-### flake8: general style rules
+To get started developing on this project using your local machine, please follow the steps below.
 
-Our first and probably most important tool is flake8. It will run a set of plugins on your codebase and warn you about any non-conforming lines.
-Here is a sample output:
-```
-~> flake8
-./app.py:1:6: N802 function name 'helloWorld' should be lowercase
-./app.py:1:16: E201 whitespace after '('
-./app.py:2:1: D400 First line should end with a period
-./app.py:2:1: D403 First word of the first line should be properly capitalized
-./app.py:3:19: E225 missing whitespace around operator
+> **Note**: Ensure you have Python version 3.11 installed. If not, you can download it from [here](https://www.python.org/downloads/).
+
+1. This project uses [Poetry](https://python-poetry.org/) as a dependency manager. Run the following command to install Poetry:
+
+```bash
+python -m pip install poetry==1.6.1
 ```
 
-Each line corresponds to an error. The first part is the file path, then the line number, and the column index.
-Then comes the error code, a unique identifier of the error, and then a human-readable message.
+2. Next, navigate to the folder where you want the repository to be stored and run the following command to clone the git repository:
 
-If, for any reason, you do not wish to comply with this specific error on a specific line, you can add `# noqa: CODE` at the end of the line.
-For example:
+```bash
+git clone https://github.com/thijsfranck/the-dynamic-typists
+```
+
+3. Navigate to the root of the repository and run the following command. Poetry will create a virtual environment and install all the necessary dependencies in it.
+
+```bash
+poetry install
+```
+
+4. Finally, install the pre-commit hook for your local repository by running the following command:
+
+```bash
+poetry run pre-commit install
+```
+
+5. You're all set! You can now develop, build, and test the project in your local development environment.
+
+### Using the Dev Container
+
+This project also includes a [Visual Studio Code development container](https://containers.dev/) to simplify the setup process and provide a consistent development environment. You can use the dev container with either Visual Studio Code locally or with GitHub Codespaces.
+
+#### Using the Dev Container with Visual Studio Code
+
+> **Note**: The following instructions assume that you have already installed [Docker](https://www.docker.com/) and [Visual Studio Code](https://code.visualstudio.com/).
+
+1. Install the [Remote Development extension pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) in Visual Studio Code.
+
+2. Make sure the Docker agent is running, and open Visual Studio Code.
+
+3. Press `F1` to open the command palette, and then type "Dev-Containers: Clone Repository in Container Volume" and select it from the list. Alternatively, you can click on the green icon in the bottom-left corner of the VS Code window and select "Dev-Containers: Clone Repository in Container Volume" from the popup menu.
+
+4. Next, the command palette will ask you for the repository URL. Copy the URL of the GitHub repository, paste it into the command palette and confirm by pressing `Enter`.
+
+5. VS Code will automatically build the container and connect to it. This might take some time for the first run as it downloads the required Docker images and installs extensions.
+
+6. Once connected, you'll see "Dev Container: The Dynamic Typists" in the bottom-left corner of the VS Code window, indicating that you are now working inside the container.
+
+7. You're all set! You can now develop, build, and test the project using the provided development environment.
+
+#### Using the Dev Container with GitHub Codespaces
+
+> **Note**: GitHub Codespaces is a paid service. At the time of writing, it offers 60 hours of development time for free every month. Use with care.
+
+1. Ensure that you have access to [GitHub Codespaces](https://github.com/features/codespaces).
+
+2. Navigate to the GitHub repository for the project.
+
+3. Click the "Code" button and then select "Open with Codespaces" from the dropdown menu.
+
+4. Click on the "+ New codespace" button to create a new Codespace for the project.
+
+5. GitHub Codespaces will automatically build the container and connect to it. This might take some time for the first run as it downloads the required Docker images and installs extensions.
+
+6. Once connected, you'll see "Dev Container: The Dynamic Typists" in the bottom-left corner of the VS Code window, indicating that you are now working inside the container.
+
+7. You're all set! You can now develop, build, and test the project using the provided development environment.
+
+## How to contribute
+
+To ensure a smooth collaboration, we have outlined some guidelines to follow when making contributions. Your adherence to these guidelines helps us maintain the quality and clarity of the project.
+
+### Getting Started
+
+See the [installation](#installation) section on how to get started with this repository.
+
+### Branching
+
+Always create a new branch for your changes. This makes it easier to handle multiple contributions simultaneously.
+
+1. Pull the latest changes from the main branch:
+
+```bash
+git pull main
+```
+
+2. Create a new branch. Name it descriptively:
+
+```bash
+git checkout -b BRANCH_NAME
+```
+
+3. Push the branch to the repository:
+
+```bash
+git push -u origin BRANCH_NAME
+```
+
+### Pull Requests
+
+1. **Creating a Pull Request**: Once you've pushed your branch, navigate to the GitHub repository page and click on the "Pull request" button. Make sure the "base" repository is the main branch and the "compare" branch is the one you've just pushed.
+
+2. **Describe Your Changes**: In the pull request description, explain the changes you've made, any related issues, and provide any additional information or screenshots that might be necessary.
+
+3. **Required Approvals**: Before merging, your pull request must be reviewed and approved by at least one other team member.
+
+4. **Checks**: Ensure that all checks (like CI tests) are passing. If they're not, understand why and make the necessary changes.
+
+### Commit Guidelines
+
+- Use the present tense ("Add feature" not "Added feature")
+- Use the imperative mood ("Move cursor to..." not "Moves cursor to...")
+- Limit the first line to 72 characters or fewer.
+- Describe what you did in the commit, why you did it, and how, in the commit details.
+
+### Code Documentation
+
+Good code documentation aids understanding and speeds up the development process. It also helps boost our final score 😁. For consistency and clarity, we've chosen to use numpy-style docstrings. When documenting your code, please adhere to this style. You can find a complete set of examples in this [style guide](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html).
+
+#### Basic Guidelines
+
+Always document the following elements of your code:  
+
+1. **Classes**: including their **attributes and public methods**
+2. **Module-level functions and constants**
+
+For classes, functions, and methods, docstrings should start on the line directly below the signature, at the first indent level. For attributes and constants, docstrings should start on the first line after their declaration. Use triple double quotes (`"""`) to enclose your docstrings.
+
+Python type annotations in the function or method signatures are encouraged for clarity. When using type annotations in the signature, it's not necessary to repeat the type in the docstring.
+
+Your docstrings should include these sections in the following order (if applicable):
+
+1. One-line summary
+2. Detailed functional description (can span multiple lines, separated by a blank line from the one-line summary)
+3. Parameters
+4. Returns
+5. Raises
+6. Examples
+
+For reference, here's a complete example of a function docstring in numpy-style:
+
 ```python
-def helloWorld():  # noqa: N802
-    ...
-```
-will pass linting. Although we do not recommend ignoring errors unless you have a good reason to do so.
+def example_function(param1: int, param2: str):
+    """One-line summary of the function.
 
-It is run by calling `flake8` in the project root.
+    Detailed functional description of what the function does. Can span
+    multiple lines.
 
-#### Plugin List:
+    Parameters
+    ----------
+    param1 : int
+        Description of the first parameter.
+    param2 : str
+        Description of the second parameter.
 
-- `flake8-docstring`: Checks that you properly documented your code.
+    Returns
+    -------
+    bool
+        Description of the return value.
 
-### ISort: automatic import sorting
+    Raises
+    ------
+    ValueError
+        Description of the error.
 
-This second tool will sort your imports according to the [PEP8](https://www.python.org/dev/peps/pep-0008/#imports). That's it! One less thing for you to do!
-
-It is run by calling `isort .` in the project root. Notice the dot at the end, it tells ISort to use the current directory.
-
-### Pre-commit: run linting before committing
-
-This third tool doesn't check your code, but rather makes sure that you actually *do* check it.
-
-It makes use of a feature called [Git hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks) which allow you to run a piece of code before running `git commit`.
-The good thing about it is that it will cancel your commit if the lint doesn't pass. You won't have to wait for Github Actions to report and have a second fix commit.
-
-It is *installed* by running `pre-commit install` and can be run manually by calling only `pre-commit`.
-
-[Lint before you push!](https://soundcloud.com/lemonsaurusrex/lint-before-you-push)
-
-#### Hooks List:
-
-- `check-toml`: Lints and corrects your TOML files.
-- `check-yaml`: Lints and corrects your YAML files.
-- `end-of-file-fixer`: Makes sure you always have an empty line at the end of your file.
-- `trailing-whitespaces`: Removes whitespaces at the end of each line.
-- `python-check-blanket-noqa`: Forbids you from using noqas on large pieces of code.
-- `isort`: Runs ISort.
-- `flake8`: Runs flake8.
-
-## How do I use it?
-
-### Creating your Team Repository
-
-One person in the team, preferably the leader, will have to create the repository and add other members as collaborators.
-
-1. In the top right corner of your screen, where **Clone** usually is, you have a **Use this template** button to click.
-
-![](https://docs.github.com/assets/images/help/repository/use-this-template-button.png)
-
-2. Give the repository a name and a description.
-
-![](https://docs.github.com/assets/images/help/repository/create-repository-name.png)
-
-3. Click **Create repository from template**.
-
-4. Click **Settings** in your newly created repository.
-
-![](https://docs.github.com/assets/images/help/repository/repo-actions-settings.png)
-
-5. In the "Access" section of the sidebar, click **Collaborators**.
-
-![Screenshot from 2023-08-28 14-09-55](https://github.com/python-discord/code-jam-template/assets/63936253/c150110e-d1b5-4e4d-93e0-0a2cf1de352b)
-
-6. Click **Add people**.
-
-7. Insert the names of each of your teammates, and invite them. Once they have accepted the invitation in their email, they will have write access to the repository.
-
-You are now ready to go! Now sit down, relax, and wait for the kickstart!
-Don't forget to swap "Python Discord" in the `LICENSE` file for the name of each of your team members or the name of your team after the start of the jam.
-
-### Using the Default Pip Setup
-
-Our default setup includes a bare requirement file to be used with a [virtual environment](https://docs.python.org/3/library/venv.html).
-
-We recommend this if you never have used any other dependency manager, although if you have, feel free to switch to it. More on that below.
-
-#### Creating the environment
-Create a virtual environment in the folder `.venv`.
-```shell
-$ python -m venv .venv
+    Examples
+    --------
+    >>> example_function(1, "test")
+    True
+    """
+    return True
 ```
 
-#### Enter the environment
-It will change based on your operating system and shell.
-```shell
-# Linux, Bash
-$ source .venv/bin/activate
-# Linux, Fish
-$ source .venv/bin/activate.fish
-# Linux, Csh
-$ source .venv/bin/activate.csh
-# Linux, PowerShell Core
-$ .venv/bin/Activate.ps1
-# Windows, cmd.exe
-> .venv\Scripts\activate.bat
-# Windows, PowerShell
-> .venv\Scripts\Activate.ps1
+For classes and attributes:
+
+```python
+class Example:
+    """Class-level docstring describing the class."""
+
+    attribute: int
+    """Description of the class attribute."""
 ```
 
-#### Installing the Dependencies
-Once the environment is created and activated, use this command to install the development dependencies.
-```shell
-$ pip install -r dev-requirements.txt
+Prioritize documenting public methods and attributes (those not starting with an underscore). However, private methods with complex logic should also be documented for clarity.
+
+### Unit Testing
+
+Unit tests are key to our success, since they allow us to catch bugs early, run sections of code in isolation, and accelerate our development pace. We use the `unittest` framework for writing and running our tests.
+
+#### Basic Guidelines
+
+Test modules should be located in the same directory as the module they cover. Test modules should be named `test__*.py` (e.g.,` test__math_ops.py`). Individual test methods within those modules should be prefixed with `test__` (e.g., `test__my_function`). See the example below:
+
+```
+project_root/
+├── utils/
+│   ├── __init__.py
+│   ├── math_ops.py
+│   └── test__math_ops.py
+├── main.py
+└── ...
 ```
 
-#### Exiting the environment
-Interestingly enough, it is the same for every platform
-```shell
-$ deactivate
+As a general rule, unit tests should cover the following aspects of your code:
+
+- Input validation
+- Validation of output (or outcome) given a particular input
+- Error handling
+
+#### Unit Testing and Type Hints
+
+You can reduce the need for unit tests by indicating the expected types of input arguments and return values as type hints. While they don't replace unit tests, type hints can reduce the number of tests you might need to write, particularly those related to input validation.
+
+For instance, consider the following function without type hints:
+
+```python
+def add(a, b):
+    return a + b
 ```
 
-Once the environment is activated, all the commands listed previously should work. We highly recommend that you run `pre-commit install` as soon as possible.
+Without type hints, you might write multiple tests to ensure that the function behaves correctly with different types of input, like strings, integers, or floats. But with type hints:
 
-## How do I adapt it to my project?
+```python
+def add(a: int, b: int) -> int:
+    return a + b
+```
 
-If you wish to use Pipenv or Poetry, you will have to move the dependencies in `dev-requirements.txt` to the development dependencies of your tool.
+The function's expected behavior is clearer. You know that both `a` and `b` should be integers, and the return value will also be an integer. With these type hints in place, there's less need to write unit tests checking for behaviors with non-integer inputs since the static type checker can catch those mistakes for you.
 
-We've included a porting of `dev-requirements.txt` to both [poetry](./samples/pyproject.toml) and [pipenv](./samples/Pipfile) in the [samples folder](./samples).
-If you use the poetry setup, make sure to change the project name, description, and authors at the top of the file.
+#### Writing Tests
 
-When installing new dependencies, don't forget to [pin them](https://pip.pypa.io/en/stable/user_guide/#pinned-version-numbers) by adding a version tag at the end.
-For example, if I wish to install `Click`, a quick look at [PyPI](https://pypi.org/project/click/) tells me that 8.0.1 is the latest version.
-I will then add `click ~= 8.0`, without the last number, to my dependency manager.
+1. **Import Dependencies**: Start by importing `unittest` and the module, class or function you're testing.
+2. **Create Test Cases**: For each set of related tests, create a class that inherits from `unittest.TestCase`.
+3. **SetUp and TearDown**: Use `setUp` and `tearDown` methods to define instructions that will be executed before and after each test method, respectively.
 
-A code jam project is left unmaintained after the end of the event. If the dependencies aren't pinned, the project will break after the first major change in an API.
+#### Running Tests
 
-## Final words
+To run the tests, use the following command from the root of the project:
 
-Don't forget to replace this README with an actual description of your project! Images are also welcome!
+```bash
+python -m unittest discover -p "test__*.py"
+```
 
-We hope this template will be helpful. Good luck in the jam!
+This command will discover and run all the tests that match the pattern `test__*.py`.
+
+#### Example
+
+Suppose we have a function add in a module named `math_ops.py` located in the `utils` directory. Here's how the test might look:
+
+```python
+import unittest
+from .math_ops import add
+
+class Test__Addition(unittest.TestCase):
+
+    def setUp(self):
+        # Code that will run before each test method
+        self.num1 = 3
+        self.num2 = 2
+
+    def test__addition(self):
+        # Check if 3 + 2 equals 5
+        self.assertEqual(add(self.num1, self.num2), 5)
+
+    def tearDown(self):
+        # Code that will run after each test method
+        pass
+
+if __name__ == '__main__':
+    unittest.main()
+```

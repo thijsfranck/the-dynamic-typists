@@ -1,0 +1,49 @@
+[tool.poetry]
+# Left empty for now.
+name = "Name"
+version = "0.1.0"
+description = ""
+authors = []
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "~3.11"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "~2.17.0"
+black = "~23.7.0"
+ruff = "0.0.286"
+# Pyright has regressions and fixes every version.
+pyright = "1.1.324"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.pyright]
+typeCheckingMode = "strict"
+pythonVersion = "3.11"
+reportUnnecessaryTypeIgnoreComment = true
+
+[tool.ruff]
+select = ["ALL"]
+ignore = [
+    # Star imports
+    "F403",
+    "F405",
+    # Pyright error codes are obnoxiously long. Ignore lint telling you to use them.
+    "PGH003",
+]
+line-length = 100
+
+[tool.ruff.per-file-ignores]
+# Ignore unused imports in init, caused by star imports.
+# More convenient to provide `__all__` in files instead of duplicating in package __init__.
+"__init__.py" = ["F401"]
+
+[tool.ruff.pydocstyle]
+convention = "numpy"
