@@ -102,6 +102,8 @@ body {
 
     background-color: var(--focus);
     color: var(--secondary);
+
+    transition: opacity 0.2s ease-in-out;
 }
 
 #confirm-button:hover {
