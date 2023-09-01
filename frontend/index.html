@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Dynamic Typists</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+  <main id="captcha">
+    <div id="prompt">
+      <h1 id="heading">Restore the original painting</h1>
+      <div id="image-body">
+        <img id="image" src="./assets/image.png">
+      </div>
+    </div>
+    <div id="footer">
+      <div id="controls">
+        <button id="refresh-button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path
+              d="M13.5 2c-5.621 0-10.211 4.443-10.475 10h-3.025l5 6.625 5-6.625h-2.975c.257-3.351 3.06-6 6.475-6 3.584 0 6.5 2.916 6.5 6.5s-2.916 6.5-6.5 6.5c-1.863 0-3.542-.793-4.728-2.053l-2.427 3.216c1.877 1.754 4.389 2.837 7.155 2.837 5.79 0 10.5-4.71 10.5-10.5s-4.71-10.5-10.5-10.5z"
+              fill="currentColor" />
+          </svg>
+        </button>
+      </div>
+      <button id="confirm-button">CONFIRM</button>
+    </div>
+  </main>
+
+  <script>
+
+    // Page elements
+    const image = document.getElementById('image');
+    const refreshButton = document.getElementById('refresh-button');
+
+    /* GLOBAL STATE */
+    const imageCenter = { x: 0, y: 0 }; // The current coordinates to the center of the image
+    let isMouseDown = false; // Tracks if the mouse button is pressed
+    let currentRotation = 0; // Tracks the current rotation of the image
+
+    /**
+      Rotates the image to the given `angle` and updates the global state
+      @param {number} angle - The angle to which the image should be rotated in degrees (0 - 360)
+    */
+    function applyRotation(angle) {
+      currentRotation = angle % 360;
+      image.style.transform = `rotate(${currentRotation}deg)`;
+    }
+
+    // Mouse down event to start rotation
+    image.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+
+      const imageBoundingRect = image.getBoundingClientRect();
+      imageCenter.x = imageBoundingRect.left + imageBoundingRect.width / 2;
+      imageCenter.y = imageBoundingRect.top + imageBoundingRect.height / 2;
+
+      isMouseDown = true;
+    });
+
+    // Mouse move event to rotate the image
+    document.addEventListener('mousemove', (e) => {
+      if (isMouseDown) {
+        // Calculate the current angle of the pointer relative to the center of the image
+        const dx = e.pageX - imageCenter.x;
+        const dy = e.pageY - imageCenter.y;
+
+        let angle = Math.atan2(dx, -dy) * (180 / Math.PI);
+
+        // Ensure the image rotates 360 degrees to avoid the image flipping
+        // when moving beyond 180 degrees
+        if (angle < 0) {
+          angle = angle + 360;
+        }
+
+        applyRotation(angle);
+      }
+    });
+
+    // Mouse up event to stop rotation
+    document.addEventListener('mouseup', () => {
+      isMouseDown = false;
+    });
+
+    // Reset the rotation to 0 when the refresh button is clicked
+    refreshButton.addEventListener('click', () => {
+      applyRotation(0);
+    })
+  </script>
+
+</body>
+
+</html>
