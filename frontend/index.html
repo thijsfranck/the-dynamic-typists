@@ -40,7 +40,7 @@
 
     /* GLOBAL STATE */
     const imageCenter = { x: 0, y: 0 }; // The current coordinates to the center of the image
-    const degreesOfFreedom = 36; // The degrees of freedom to the image rotation
+    const rotationSteps = 36; // The number of positions to which the image can snap during rotation, evenly divided around the circle
 
     let isMouseDown = false; // Tracks if the mouse button is pressed
     let currentRotation = 0; // Tracks the current rotation of the image
@@ -80,11 +80,11 @@
           angle = angle + 360;
         }
 
-        // Calculate the number of rotation steps
-        const steps = 360 / degreesOfFreedom;
+        // Calculate the degrees per rotation step
+        const degreesPerStep = 360 / rotationSteps;
 
         // Snapping the angle to the nearest step
-        angle = Math.round(angle / steps) * steps;
+        angle = Math.round(angle / degreesPerStep) * degreesPerStep;
 
         applyRotation(angle);
       }
