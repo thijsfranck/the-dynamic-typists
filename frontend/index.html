@@ -40,6 +40,8 @@
 
     /* GLOBAL STATE */
     const imageCenter = { x: 0, y: 0 }; // The current coordinates to the center of the image
+    const degreesOfFreedom = 36; // The degrees of freedom to the image rotation
+
     let isMouseDown = false; // Tracks if the mouse button is pressed
     let currentRotation = 0; // Tracks the current rotation of the image
 
@@ -77,6 +79,12 @@
         if (angle < 0) {
           angle = angle + 360;
         }
+
+        // Calculate the number of degrees per step
+        const steps = 360 / degreesOfFreedom;
+
+        // Snapping the angle to the nearest step
+        angle = Math.round(angle / steps) * steps;
 
         applyRotation(angle);
       }
