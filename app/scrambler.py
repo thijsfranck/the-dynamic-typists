@@ -1,7 +1,6 @@
-"""Scrambler module."""
-from picture import Picture
 from random import shuffle
 
+from picture import Picture
 from tile import Tile
 
 
