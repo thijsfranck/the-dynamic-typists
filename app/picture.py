@@ -13,9 +13,9 @@ class Picture:
 
     def __init__(self) -> None:
         self.image: Image.Image | None = None
-        self.is_solved = False
-        self.tiles: dict[int:Tile] = {}  # init so that autocomplete works
-        self.tile_order = []
+        self.is_solved: bool = False
+        self.tiles: dict[int, Tile] = {}
+        self.tile_order: list[int] = []
 
     def load(self, img_path: str) -> None:
         """Load an image from a file path.
