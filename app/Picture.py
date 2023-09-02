@@ -14,6 +14,7 @@ class Picture:
         self.is_solved = False
         self.tiles: dict[int:Tile] = {}  # init so that autocomplete works
         self.tile_order = []
+        self.scramble_type = None
 
     def load(self, img_path: str) -> None:
         """Loads an image from a file path.
@@ -22,10 +23,18 @@ class Picture:
         """
         self.image = Image.open(img_path)
 
-    def save(self, img_path: str) -> None:
+    def save(self, img_path: str, scramble_type: str) -> None:
         new_image = Image.new(mode=self.image.mode, size=self.image.size)
-        for original_pos, new_pos in enumerate(self.tile_order):
-            new_image.paste(self.tiles[new_pos].image, self.tiles[original_pos].position)
+
+        if scramble_type == "rows":
+            for original_pos, new_pos in enumerate(self.tile_order):
+                new_image.paste(self.tiles[new_pos].image, self.tiles[original_pos].position)
+
+        if scramble_type == "tiles":
+            for original_pos, new_pos in enumerate(self.tile_order):
+                self.tiles[new_pos].image = self.tiles[new_pos].image.rotate(self.tiles[new_pos].rotation)
+                new_image.paste(self.tiles[new_pos].image, self.tiles[original_pos].position)
+
         new_image.save(img_path)
 
     def is_image_fixed(self) -> None:
