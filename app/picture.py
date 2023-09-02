@@ -11,18 +11,11 @@ if TYPE_CHECKING:
 class Picture:
     """Picture class."""
 
-    def __init__(self) -> None:
-        self.image: Image.Image | None = None
+    def __init__(self, img_path: str) -> None:
+        self.image: Image.Image = Image.open(img_path)
         self.is_solved: bool = False
         self.tiles: dict[int, Tile] = {}
         self.tile_order: list[int] = []
-
-    def load(self, img_path: str) -> None:
-        """Load an image from a file path.
-
-        :param img_path: Absolute path to the image file
-        """
-        self.image = Image.open(img_path)
 
     def save(self, img_path: str) -> None:
         """Save current tile arrangement as file."""
