@@ -419,6 +419,7 @@ class ImageGridController {
         images.forEach((image, index) => {
             const gridItemElement = document.createElement('div');
             gridItemElement.classList.add('grid-item');
+
             gridItemElement.innerText = index;
 
             const imgElement = document.createElement('img');
