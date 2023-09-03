@@ -57,6 +57,7 @@
       "circles": (root) => new RotatingImagesController(root)
     };
 
+    const imageBody = document.getElementById('image-body');
     let activeController = null;
 
     function setController(controllerName) {
@@ -72,7 +73,6 @@
 
     const confirmButton = document.getElementById('confirm-button');
     const controllerSelect = document.getElementById('controller-select');
-    const imageBody = document.getElementById('image-body');
     const refreshButton = document.getElementById('refresh-button');
 
     controllerSelect.addEventListener('change', (event) => setController(event.target.value));

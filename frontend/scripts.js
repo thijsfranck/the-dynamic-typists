@@ -4,7 +4,7 @@
 class RotationController {
 
     /**
-     * Creates a new `RotationController` for the given `element`.
+     * Create a new `RotationController` for the given `element`.
      * @param {HTMLElement} element The element rotated by this instance
      * @param {Object} options The options for this instance
      * @param {number} [options.rotationSteps=360] The number of positions to which the element can snap during rotation, evenly divided around the circle.
@@ -64,7 +64,7 @@ class RotationController {
     }
 
     /**
-     * Enables the rotating state and the current element center on left-click
+     * Enable the rotating state and the current element center on left-click
      * @private
      * @param {MouseEvent} e The mouse down event
      */
@@ -84,7 +84,7 @@ class RotationController {
     }
 
     /**
-    * Calculates the rotation angle when the user moves their mouse while rotating the image
+    * Calculate the rotation angle when the user moves their mouse while rotating the image
     * @private
     * @param {MouseEvent} e The mouse move event
     */
@@ -234,7 +234,7 @@ class RotatingImagesController {
 class DragDropGridController {
 
     /**
-     * Initializes a new instance of the `DragDropGridController` class.
+     * Initialize a new instance of the `DragDropGridController` class.
      * @param {HTMLElement} root The root HTML element for the grid.
      * @param {Object} [options] The options for the controller.
      * @param {number} [options.columns=1] The number of columns in the grid.
@@ -261,7 +261,7 @@ class DragDropGridController {
     }
 
     /**
-     * Renders the grid with the provided images.
+     * Render the grid with the provided images.
      * @param {string[]} images - The images to be rendered.
      */
     render(images) {
@@ -291,7 +291,7 @@ class DragDropGridController {
     }
 
     /**
-     * Removes all the grid items and resets the root styles.
+     * Remove all the grid items and reset the root styles.
      */
     destroy() {
         this.root.classList.remove('grid-container');
@@ -303,7 +303,7 @@ class DragDropGridController {
     }
 
     /**
-     * Resets the grid to its initial state.
+     * Reset the grid to its initial state.
      */
     reset() {
         this.destroy();
@@ -311,7 +311,7 @@ class DragDropGridController {
     }
 
     /**
-     * Gets the current order of images in the grid as their indices.
+     * The current order of images in the grid as their indices.
      * @returns {number[]} The order of images as an array of indices.
      */
     get solution() {
@@ -319,7 +319,7 @@ class DragDropGridController {
     }
 
     /**
-     * Handles the drag start event.
+     * Handle the drag start event.
      * @param {DragEvent} event - The drag event.
      * @private
      */
@@ -332,7 +332,7 @@ class DragDropGridController {
     }
 
     /**
-     * Handles the drag over event to allow the drop.
+     * Handle the drag over event to allow the drop.
      * @param {DragEvent} event - The drag event.
      * @private
      */
@@ -341,7 +341,7 @@ class DragDropGridController {
     }
 
     /**
-     * Handles the drop event to reorder the grid items.
+     * Handle the drop event to reorder the grid items.
      * @param {DragEvent} event - The drop event.
      * @private
      */
@@ -433,7 +433,7 @@ class ImageGridController {
     }
 
     /**
-     * Remove all the grid items, destroys all rotation controllers and resets the root styles.
+     * Remove all the grid items, destroy all rotation controllers and reset the root styles.
      */
     destroy() {
         this.root.classList.remove('grid-container');
