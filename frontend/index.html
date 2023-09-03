@@ -29,56 +29,57 @@
       </div>
       <button id="confirm-button">CONFIRM</button>
     </div>
+    <div id="dev-controls">
+      <select id="controller-select">
+        <option value="grid" default>Rotating Grid Controller</option>
+        <option value="rows">Drag and Drop Controller</option>
+        <option value="circles">Rotating Circles Controller</option>
+      </select>
+    </div>
   </main>
 
   <!-- Include the scripts.js file -->
   <script src="./scripts.js"></script>
 
   <script>
+    async function fetchImages() {
+      return [
+        'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII',
+        'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII',
+        'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII',
+        'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII'
+      ];
+    }
 
-    const activeControllers = [];
+    const controllers = {
+      "grid": (root) => new ImageGridController(root),
+      "rows": (root) => new DragDropGridController(root),
+      "circles": (root) => new RotatingImagesController(root)
+    };
+
+    let activeController = null;
+
+    function setController(controllerName) {
+      if (activeController) {
+        activeController.destroy();
+      }
+
+      const controllerFactory = controllers[controllerName];
+      activeController = controllerFactory(imageBody);
+
+      fetchImages().then(images => activeController.render(images)).catch(console.error);
+    }
+
+    const confirmButton = document.getElementById('confirm-button');
+    const controllerSelect = document.getElementById('controller-select');
     const imageBody = document.getElementById('image-body');
     const refreshButton = document.getElementById('refresh-button');
 
-    refreshButton.addEventListener('click', () => activeControllers.forEach(controller => controller.reset()))
+    controllerSelect.addEventListener('change', (event) => setController(event.target.value));
+    confirmButton.addEventListener('click', () => console.log(activeController.solution));
+    refreshButton.addEventListener('click', () => activeController.reset())
 
-    /**
-      Retrieves a list of images from the API. Each image is represented as a base-64 encoded string
-    */
-    async function fetchImages() {
-      return ['iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII'];
-    }
-
-    /**
-      Displays the images on the page
-    */
-    function displayImages(urls) {
-      for (url of urls) {
-        const imgElement = document.createElement('img');
-        imgElement.src = "data:image/png;base64," + url;
-        imgElement.classList.add('rotatable-image');
-
-        activeControllers.push(new RotationController(imgElement, { rotationSteps: 360 }));
-        imageBody.appendChild(imgElement);
-      }
-    }
-
-    /**
-      Removes all images currently displayed on the page
-    */
-    function destroyImages() {
-      // Destroy each active controller
-      while (activeControllers.length) {
-        activeControllers.pop().destroy();
-      }
-
-      // Remove all child elements from the imageBody
-      while (imageBody.firstChild) {
-        imageBody.removeChild(imageBody.firstChild);
-      }
-    }
-
-    fetchImages().then(displayImages)
+    setController(controllerSelect.value);
   </script>
 
 </body>
