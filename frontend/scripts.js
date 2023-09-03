@@ -276,6 +276,8 @@ class DragDropGridController {
             gridItemElement.setAttribute('draggable', 'true');
             gridItemElement.setAttribute('data-index', index)
 
+            gridItemElement.innerText = index;
+
             const imgElement = document.createElement('img');
             imgElement.src = "data:image/png;base64," + image;
             gridItemElement.appendChild(imgElement)
@@ -325,7 +327,7 @@ class DragDropGridController {
         // Finds the current index of the target element without needing to create a new array
         const sourceIndex = Array.prototype.indexOf.call(this.root.children, event.target);
         event.dataTransfer.setData('sourceIndex', sourceIndex);
-        event.dataTransfer.setDragImage(event.target.firstChild, 0, 0);
+        event.dataTransfer.setDragImage(event.target.getElementsByTagName('img')[0], 0, 0);
         event.dataTransfer.dropEffect = "move";
     }
 
@@ -414,9 +416,10 @@ class ImageGridController {
         this.root.classList.add('grid-container');
         this.root.style.setProperty('--columns', this.columns);
 
-        images.forEach(image => {
+        images.forEach((image, index) => {
             const gridItemElement = document.createElement('div');
             gridItemElement.classList.add('grid-item');
+            gridItemElement.innerText = index;
 
             const imgElement = document.createElement('img');
             imgElement.src = "data:image/png;base64," + image;
