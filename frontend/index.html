@@ -51,7 +51,7 @@
       ];
     }
 
-    const controllers = {
+    const controllerFactories = {
       "grid": (root) => new ImageGridController(root),
       "rows": (root) => new DragDropGridController(root),
       "circles": (root) => new RotatingImagesController(root)
@@ -64,7 +64,7 @@
         activeController.destroy();
       }
 
-      const controllerFactory = controllers[controllerName];
+      const controllerFactory = controllerFactories[controllerName];
       activeController = controllerFactory(imageBody);
 
       fetchImages().then(images => activeController.render(images)).catch(console.error);
