@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from Picture import Picture
-from Scrambler import Scrambler
+from picture import Picture
+from scrambler import Scrambler
 
 if __name__ == "__main__":
     pic = Picture()

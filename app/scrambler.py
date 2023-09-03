@@ -1,9 +1,7 @@
-# pylint: disable-all
-
 from random import choice, shuffle
 
-from Picture import Picture
-from Tile import Tile
+from picture import Picture
+from tile import Tile
 
 
 class Scrambler:
