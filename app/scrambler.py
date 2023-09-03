@@ -5,9 +5,11 @@ from tile import Tile
 
 
 class Scrambler:
+    """Scramble a picture in different ways."""
+
     @classmethod
     def scramble_rows(cls, picture: Picture) -> None:
-        """Splits an Image up into rows an rearranges them."""
+        """Split an Image up into rows an rearranges them."""
         num_tiles = 8
         image_size = picture.image.size
         tile_size = (image_size[0], int(image_size[1] / num_tiles))
@@ -21,9 +23,14 @@ class Scrambler:
 
     @classmethod
     def scramble_grid(cls, picture: Picture) -> None:
-        """Splits an Image up into tiles an rearranges them and rotates each tile randomly."""
+        """Split an Image up into tiles an rearranges them and rotates each tile randomly."""
         num_of_tiles = 4
-        co_ordinates = [(0, 0, 512, 512), (512, 0, 1024, 512), (0, 512, 512, 1024), (512, 512, 1024, 1024)]
+        co_ordinates = [
+            (0, 0, 512, 512),
+            (512, 0, 1024, 512),
+            (0, 512, 512, 1024),
+            (512, 512, 1024, 1024),
+        ]
 
         # Tile swap logic
         tile_order = [0, 1, 2, 3]
@@ -58,5 +65,5 @@ class Scrambler:
             )
 
     def scramble_circle(self, picture: Picture) -> Picture:
-        """Splits an Image up into rows an rearranges them."""
+        """Split an Image up into rows an rearranges them."""
         raise NotImplementedError

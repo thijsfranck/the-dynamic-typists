@@ -8,7 +8,7 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "~3.11"
-pillow = "^10.0.0"
+pillow = "~10.0.0"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "~2.17.0"
@@ -22,7 +22,8 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.black]
-line-length = 119
+# 119 makes lines way too long to read.
+line-length = 100
 target-version = ["py311"]
 
 [tool.pyright]
@@ -33,26 +34,25 @@ reportUnnecessaryTypeIgnoreComment = true
 [tool.ruff]
 select = ["ALL"]
 ignore = [
-    "ANN002", "ANN003", "ANN101", "ANN102", "ANN201", "ANN204", "ANN206", "ANN401",
-    "B904",
-    "C401", "C408",
-    "D100", "D101", "D102", "D104", "D105", "D107", "D203", "D212", "D214", "D215", "D301",
-    "D400", "D401", "D402", "D404", "D405", "D406", "D407", "D408", "D409", "D410", "D411", "D412", "D413", "D414", "D416", "D417",
-    "E731",
-    "N999",
-    "Q000",
-    "RET504",
-    "RUF005",
+    # Self and cls do not require annotations.
+    "ANN101", "ANN102",
+    # Pyright error codes are obnoxiously long. Ignore lint telling you to use them.
+    "PGH003",
+    # Documenting every file is a bit redundant for us.
+    "D100",
+    # No point in documenting magic methods.
+    "D105",
+    # Makes more sense to use `Parameters` in the main class instead of in the `__init__` .
+    "D107",
+    # We do not need cryptographically secure random functions.
     "S311",
-    "SIM102", "SIM108", "SIM110",
-    "UP015",
 ]
-line-length = 119
+line-length = 100
 
 [tool.ruff.per-file-ignores]
 # Ignore unused imports in init, caused by star imports.
 # More convenient to provide `__all__` in files instead of duplicating in package __init__.
-"__init__.py" = ["F401"]
+"__init__.py" = ["F401", "F403", "F405"]
 
 [tool.ruff.pydocstyle]
 convention = "numpy"
