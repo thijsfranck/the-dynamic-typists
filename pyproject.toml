@@ -46,8 +46,7 @@ ignore = [
     "D107",
     # We do not need cryptographically secure random functions.
     "S311",
-    # Adding D205 as it is interferring with black rules
-    "D205",
+
 ]
 line-length = 100
 

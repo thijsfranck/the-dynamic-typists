@@ -10,12 +10,9 @@ if TYPE_CHECKING:
 
 
 class Picture:
-    """Picture class has methods for saving PIL image formed from tiles
-    :param img_path: Used to provide image path to open image.
+    """Picture class has methods for saving PIL image formed from tiles.
 
-    Contains:
-    save(): Saves the image formed from tiles to a given path
-    is_image_fixed(): Not Implemented
+    :param img_path: Used to provide image path to open image.
     """
 
     def __init__(self, img_path: str) -> None:
