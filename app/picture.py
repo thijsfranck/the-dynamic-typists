@@ -1,3 +1,4 @@
+"""Picture class contains template for picture based on Image from Pillow."""
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -9,7 +10,13 @@ if TYPE_CHECKING:
 
 
 class Picture:
-    """Picture class."""
+    """Picture class has methods for saving PIL image formed from tiles
+    :param img_path: Used to provide image path to open image.
+
+    Contains:
+    save(): Saves the image formed from tiles to a given path
+    is_image_fixed(): Not Implemented
+    """
 
     def __init__(self, img_path: str) -> None:
         self.image: Image.Image = Image.open(img_path)
@@ -18,20 +25,12 @@ class Picture:
         self.tile_order: list[int] = []
         self.scramble_type = None
 
-    def save(self, img_path: str, scramble_type: str) -> None:
+    def save(self, img_path: str) -> None:
         """Save current tile arrangement as file."""
         new_image = Image.new(mode=self.image.mode, size=self.image.size)
 
-        if scramble_type == "rows":
-            for original_pos, new_pos in enumerate(self.tile_order):
-                new_image.paste(self.tiles[new_pos].image, self.tiles[original_pos].position)
-
-        if scramble_type == "tiles":
-            for original_pos, new_pos in enumerate(self.tile_order):
-                self.tiles[new_pos].image = self.tiles[new_pos].image.rotate(
-                    self.tiles[new_pos].rotation,
-                )
-                new_image.paste(self.tiles[new_pos].image, self.tiles[original_pos].position)
+        for original_pos, new_pos in enumerate(self.tile_order):
+            new_image.paste(self.tiles[new_pos].image, self.tiles[original_pos].position)
 
         new_image.save(img_path)
 

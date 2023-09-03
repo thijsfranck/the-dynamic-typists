@@ -1,3 +1,4 @@
+"""Tile class used for creating smaller parts of Picture."""
 from __future__ import annotations
 
 from dataclasses import dataclass
