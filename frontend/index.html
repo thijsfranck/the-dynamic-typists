@@ -13,9 +13,8 @@
 <body>
   <main id="captcha">
     <div id="prompt">
-      <h1 id="heading">Restore the original painting</h1>
+      <h1 id="heading">Restore the original image</h1>
       <div id="image-body">
-        <img id="image" src="./assets/image.png">
       </div>
     </div>
     <div id="footer">
@@ -32,73 +31,54 @@
     </div>
   </main>
 
+  <!-- Include the scripts.js file -->
+  <script src="./scripts.js"></script>
+
   <script>
 
-    // Page elements
-    const image = document.getElementById('image');
+    const activeControllers = [];
+    const imageBody = document.getElementById('image-body');
     const refreshButton = document.getElementById('refresh-button');
 
-    /* GLOBAL STATE */
-    const imageCenter = { x: 0, y: 0 }; // The current coordinates to the center of the image
-    const rotationSteps = 36; // The number of positions to which the image can snap during rotation, evenly divided around the circle
-
-    let isMouseDown = false; // Tracks if the mouse button is pressed
-    let currentRotation = 0; // Tracks the current rotation of the image
+    refreshButton.addEventListener('click', () => activeControllers.forEach(controller => controller.reset()))
 
     /**
-      Rotates the image to the given `angle` and updates the global state
-      @param {number} angle - The angle to which the image should be rotated in degrees (0 - 360)
+      Retrieves a list of images from the API. Each image is represented as a base-64 encoded string
     */
-    function applyRotation(angle) {
-      currentRotation = angle % 360;
-      image.style.transform = `rotate(${currentRotation}deg)`;
+    async function fetchImages() {
+      return ['iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII'];
     }
 
-    // Mouse down event to start rotation
-    image.addEventListener('mousedown', (e) => {
-      e.preventDefault();
+    /**
+      Displays the images on the page
+    */
+    function displayImages(urls) {
+      for (url of urls) {
+        const imgElement = document.createElement('img');
+        imgElement.src = "data:image/png;base64," + url;
+        imgElement.classList.add('rotatable-image');
 
-      const imageBoundingRect = image.getBoundingClientRect();
-      imageCenter.x = imageBoundingRect.left + imageBoundingRect.width / 2;
-      imageCenter.y = imageBoundingRect.top + imageBoundingRect.height / 2;
-
-      isMouseDown = true;
-    });
-
-    // Mouse move event to rotate the image
-    document.addEventListener('mousemove', (e) => {
-      if (isMouseDown) {
-        // Calculate the current angle of the pointer relative to the center of the image
-        const dx = e.pageX - imageCenter.x;
-        const dy = e.pageY - imageCenter.y;
-
-        let angle = Math.atan2(dx, -dy) * (180 / Math.PI);
-
-        // Ensure the image rotates 360 degrees to avoid the image flipping
-        // when moving beyond 180 degrees
-        if (angle < 0) {
-          angle = angle + 360;
-        }
-
-        // Calculate the degrees per rotation step
-        const degreesPerStep = 360 / rotationSteps;
-
-        // Snapping the angle to the nearest step
-        angle = Math.round(angle / degreesPerStep) * degreesPerStep;
-
-        applyRotation(angle);
+        activeControllers.push(new RotationController(imgElement, { rotationSteps: 360 }));
+        imageBody.appendChild(imgElement);
       }
-    });
+    }
 
-    // Mouse up event to stop rotation
-    document.addEventListener('mouseup', () => {
-      isMouseDown = false;
-    });
+    /**
+      Removes all images currently displayed on the page
+    */
+    function destroyImages() {
+      // Destroy each active controller
+      while (activeControllers.length) {
+        activeControllers.pop().destroy();
+      }
 
-    // Reset the rotation to 0 when the refresh button is clicked
-    refreshButton.addEventListener('click', () => {
-      applyRotation(0);
-    })
+      // Remove all child elements from the imageBody
+      while (imageBody.firstChild) {
+        imageBody.removeChild(imageBody.firstChild);
+      }
+    }
+
+    fetchImages().then(displayImages)
   </script>
 
 </body>
