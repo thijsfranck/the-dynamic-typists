@@ -46,6 +46,7 @@ ignore = [
     "D107",
     # We do not need cryptographically secure random functions.
     "S311",
+
 ]
 line-length = 100
 
