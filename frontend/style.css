@@ -58,6 +58,18 @@ body {
 #image-body .grid-item {
     border: 2px solid var(--accent);
     position: relative;
+    transition: border 0.2s;
+    animation: fadeIn 0.2s;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 #image-body .grid-item:hover {
@@ -69,12 +81,8 @@ body {
     border: 2px solid var(--focus);
 }
 
-#image-body .grid-item.drop-target {
-    border: 2px dashed var(--primary);
-}
-
 #image-body .grid-item.drop-target.over {
-    border: 2px solid var(--primary);
+    border: 2px dashed var(--primary);
 }
 
 #image-body.rotating-images {
@@ -93,7 +101,7 @@ body {
 
 .rotatable-image {
     cursor: grab;
-    transition: border 0.3s, box-shadow 0.3s;
+    transition: border 0.2s, box-shadow 0.2s;
 }
 
 .rotatable-image.active {
