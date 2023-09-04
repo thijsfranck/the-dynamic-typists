@@ -466,8 +466,10 @@ class DragDropGridController {
     _onDragLeave(event) {
         // Remove the .over class from the current target
         const target = event.target.closest('.grid-item');
-        if (target) {
-            target.classList.remove('over');
+
+        // Prevent class from being removed when moving over nested elements
+        if (target && !target.contains(event.relatedTarget)) {
+            event.target.classList.remove('over');
         }
     }
 
