@@ -24,16 +24,65 @@ class RotationController {
         this.rotationSteps = rotationSteps;
 
         /**
-         * The current center of the image
-         * @private
-         */
-        this._center = { x: 0, y: 0 };
-
-        /**
          * The number of degrees by which the element is currently rotated
          * @private
          */
         this._currentRotation = 0;
+    }
+
+    /** Remove applied transformation from target element */
+    destroy() {
+        this.element.style.removeProperty('transform');
+    }
+
+    /** Rotate the element to 0 degrees */
+    reset() {
+        this.rotate(0);
+    }
+
+    /**
+      Rotate the element by the given `degrees`.
+      @param {number} degrees - The number of degrees by which the image should be rotated (0 - 360)
+    */
+    rotate(degrees) {
+        this._currentRotation = degrees % 360;
+        this.element.style.transform = `rotate(${this._currentRotation}deg)`;
+    }
+
+    /** Rotate the element one step in the clockwise direction */
+    stepClockwise() {
+        this.rotate(this.currentRotation + 360 / this.rotationSteps);
+    }
+
+    /** Rotate the element one step in the counter-clockwise direction */
+    stepCounterClockwise() {
+        this.rotate(this.currentRotation - 360 / this.rotationSteps);
+    }
+
+    /**
+     * The number of degrees by which the element is currently rotated
+     * @returns {number} The current rotation angle in degrees (0-360)
+     */
+    get currentRotation() {
+        return this._currentRotation;
+    }
+}
+
+class DragRotationController extends RotationController {
+    /**
+     * Create a new `DragRotationController` for the given `element`.
+     * @param {HTMLElement} element The element rotated by this instance
+     * @param {Object} options The options for this instance
+     * @param {number} [options.rotationSteps=360] The number of positions to which the element can snap during rotation, evenly divided around the circle.
+     */
+    constructor(element, { rotationSteps = 360 } = {}) {
+        super(element, { rotationSteps });
+
+        /**
+         * The current center of the element
+         * @private
+         */
+        this._center = { x: 0, y: 0 };
 
         /**
          * Whether or not the user is currently rotating the element
@@ -61,6 +110,14 @@ class RotationController {
          */
         this._boundOnMouseUp = this._onMouseUp.bind(this);
         document.addEventListener('mouseup', this._boundOnMouseUp);
+    }
+
+    /** Unbind all event listeners */
+    destroy() {
+        super.destroy();
+        this.element.removeEventListener('mousedown', this._boundOnMouseDown);
+        document.removeEventListener('mousemove', this._boundOnMouseMove);
+        document.removeEventListener('mouseup', this._boundOnMouseUp);
     }
 
     /**
@@ -114,9 +171,8 @@ class RotationController {
     }
 
     /**
-     * Disables the rotating state when the left mouse button is released
+     * Disable the rotating state when the left mouse button is released
      * @private
-     * @param {MouseEvent} e The mouse up event
      */
     _onMouseUp() {
         this._isRotating = false;
@@ -125,36 +181,41 @@ class RotationController {
         document.removeEventListener('mousemove', this._boundOnMouseMove);
         document.removeEventListener('mouseup', this._boundOnMouseUp);
     }
+}
 
-    /** Unbinds all event listeners */
-    destroy() {
-        this.element.removeEventListener('mousedown', this._boundOnMouseDown);
-        document.removeEventListener('mousemove', this._boundOnMouseMove);
-        document.removeEventListener('mouseup', this._boundOnMouseUp);
-    }
-
-    /** Rotates the element to 0 degrees */
-    reset() {
-        this.rotate(0);
-    }
-
+class ClickRotationController extends RotationController {
     /**
-      Rotates the image by the given `degrees`.
-      @param {number} degrees - The number of degrees by which the image should be rotated (0 - 360)
-    */
-    rotate(degrees) {
-        this._currentRotation = degrees % 360;
-        this.element.style.transform = `rotate(${this._currentRotation}deg)`;
-    }
-
-
-    /**
-     * The number of degrees by which the element is currently rotated
-     * @returns {number} The current rotation angle in degrees (0-360)
+     * Create a new `ClickRotationController` for the given `element`.
+     * @param {HTMLElement} element The element rotated by this instance
+     * @param {Object} options The options for this instance
+     * @param {number} [options.rotationSteps=360] The number of positions to which the element can snap during rotation, evenly divided around the circle.
      */
-    get currentRotation() {
-        return this._currentRotation;
+    constructor(element, { rotationSteps = 360 } = {}) {
+        super(element, { rotationSteps });
+
+        /**
+         *  Left-click event to rotate the element
+         *  @private
+         */
+        this._boundOnLeftClick = this._onLeftClick.bind(this);
+        this.element.addEventListener('click', this._boundOnLeftClick);
     }
+
+    /** Unbind all event listeners */
+    destroy() {
+        super.destroy();
+        this.element.removeEventListener('click', this._boundOnLeftClick);
+    }
+
+    /**
+     * Handles the left-click event
+     * @param {MouseEvent} e
+     */
+    _onLeftClick(e) {
+        e.preventDefault();
+        this.stepClockwise();
+    }
+
 }
 
 /**
@@ -191,7 +252,7 @@ class RotatingImagesController {
             imgElement.src = "data:image/png;base64," + image;
             imgElement.classList.add('rotatable-image');
 
-            this._controllers.push(new RotationController(imgElement, { rotationSteps: 360 }));
+            this._controllers.push(new DragRotationController(imgElement, { rotationSteps: 360 }));
             this.root.appendChild(imgElement);
         }
     }
@@ -372,9 +433,9 @@ class DragDropGridController {
 }
 
 /**
- * Render images as a grid and allow them to be rotated in place
+ * Render images as a drag and drop grid, and allow them to be rotated in place
  */
-class ImageGridController {
+class ImageGridController extends DragDropGridController {
 
     /**
      * Create a new `ImageGridController` instance
@@ -385,15 +446,7 @@ class ImageGridController {
      */
     constructor(root, { columns = 2, rotationSteps = 4 } = {}) {
 
-        /**
-         * @type {HTMLElement}
-         */
-        this.root = root;
-
-        /**
-         * @type {number}
-         */
-        this.columns = columns;
+        super(root, { columns });
 
         /**
          * Number of rotation steps for each image.
@@ -409,42 +462,28 @@ class ImageGridController {
     }
 
     /**
-     * Render the grid with the provided images.
+     * Render the grid with the provided images and attach rotation controllers to each element.
      * @param {string[]} images - The images to be rendered.
      */
     render(images) {
-        this.root.classList.add('grid-container');
-        this.root.style.setProperty('--columns', this.columns);
+        super.render(images);
 
-        images.forEach((image, index) => {
-            const gridItemElement = document.createElement('div');
-            gridItemElement.classList.add('grid-item');
+        const children = Array.from(this.root.children);
 
-            gridItemElement.innerText = index;
-
-            const imgElement = document.createElement('img');
-            imgElement.src = "data:image/png;base64," + image;
-            gridItemElement.appendChild(imgElement);
-
-            this._controllers.push(new RotationController(gridItemElement, { rotationSteps: this.rotationSteps }));
-
-            this.root.appendChild(gridItemElement);
-        });
+        for (const child of children) {
+            const controller = new ClickRotationController(child, { rotationSteps: this.rotationSteps });
+            this._controllers.push(controller);
+        }
     }
 
     /**
      * Remove all the grid items, destroy all rotation controllers and reset the root styles.
      */
     destroy() {
-        this.root.classList.remove('grid-container');
-        this.root.style.removeProperty('--columns');
+        super.destroy();
 
         while (this._controllers.length) {
             this._controllers.pop().destroy();
-        }
-
-        while (this.root.firstChild) {
-            this.root.removeChild(this.root.firstChild);
         }
     }
 
@@ -452,14 +491,20 @@ class ImageGridController {
      * Reset the grid to its initial state.
      */
     reset() {
+        super.reset();
         this._controllers.forEach(controller => controller.reset());
     }
 
     /**
-     * The current solution as a list of the number of degrees by which each element is rotated
-     * @returns {number[]} Array of rotation degrees for each image.
+     * The current solution as a list of tuples that contain:
+     * - The current position of the element on the grid, and
+     * - The number of degrees by which each element is rotated
+     * @returns {[number, number][]} Array of tuples describing the position and rotation of each element
      */
     get solution() {
-        return this._controllers.map(controller => controller.currentRotation);
+        return this._controllers.map(controller => {
+            const position = Array.prototype.indexOf.call(this.root.children, controller.element);
+            return [position, controller.currentRotation];
+        });
     }
 }
