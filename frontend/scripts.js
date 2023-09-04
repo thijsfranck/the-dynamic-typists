@@ -469,7 +469,7 @@ class DragDropGridController {
 
         // Prevent class from being removed when moving over nested elements
         if (target && !target.contains(event.relatedTarget)) {
-            event.target.classList.remove('over');
+            target.classList.remove('over');
         }
     }
 
