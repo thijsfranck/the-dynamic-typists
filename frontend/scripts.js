@@ -416,17 +416,19 @@ class DragDropGridController {
      */
     _onDragStart(event) {
         // Finds the current index of the target element without needing to create a new array
-        const sourceIndex = Array.prototype.indexOf.call(this.root.children, event.target);
+        const source = event.target.closest('.grid-item');
+        const sourceIndex = Array.prototype.indexOf.call(this.root.children, source);
+
         event.dataTransfer.setData('sourceIndex', sourceIndex);
-        event.dataTransfer.setDragImage(event.target.getElementsByTagName('img')[0], 0, 0);
+        event.dataTransfer.setDragImage(source.getElementsByTagName('img')[0], 0, 0);
         event.dataTransfer.dropEffect = "move";
 
         // Highlight the current dragged element
-        event.target.classList.add('dragged');
+        source.classList.add('dragged');
 
         // Highlight potential drop targets
         Array.from(this.root.children).forEach(child => {
-            if (child !== event.target) {
+            if (child !== source) {
                 child.classList.add('drop-target');
             }
         });
