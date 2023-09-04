@@ -57,7 +57,11 @@ body {
 
 #image-body .grid-item {
     border: 2px solid var(--accent);
-    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     transition: border 0.2s;
     animation: fadeIn 0.2s;
 }
