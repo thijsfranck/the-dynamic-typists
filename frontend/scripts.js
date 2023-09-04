@@ -1,5 +1,5 @@
 /**
- * Allow the user to rotate the given element by left-clicking the element and dragging the mouse in a circle around the element center until the left mouse button is released.
+ * Provide basic functions to rotate an element
  */
 class RotationController {
 
@@ -68,6 +68,9 @@ class RotationController {
     }
 }
 
+/**
+ * Allow the user to rotate the given element by left-clicking the element and dragging the mouse in a circle around the element center until the left mouse button is released.
+ */
 class DragRotationController extends RotationController {
     /**
      * Create a new `DragRotationController` for the given `element`.
