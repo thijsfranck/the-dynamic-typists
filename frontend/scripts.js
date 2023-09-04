@@ -344,7 +344,10 @@ class DragDropGridController {
             gridItemElement.appendChild(imgElement)
 
             gridItemElement.addEventListener('dragstart', this._onDragStart.bind(this));
+            gridItemElement.addEventListener('dragenter', this._onDragEnter.bind(this));
             gridItemElement.addEventListener('dragover', this._onDragOver.bind(this));
+            gridItemElement.addEventListener('dragleave', this._onDragLeave.bind(this));
+            gridItemElement.addEventListener('dragend', this._onDragEnd.bind(this))
             gridItemElement.addEventListener('drop', this._onDrop.bind(this));
 
             this.root.appendChild(gridItemElement);
@@ -381,7 +384,7 @@ class DragDropGridController {
 
     /**
      * Handle the drag start event.
-     * @param {DragEvent} event - The drag event.
+     * @param {DragEvent} event The drag event.
      * @private
      */
     _onDragStart(event) {
@@ -390,11 +393,36 @@ class DragDropGridController {
         event.dataTransfer.setData('sourceIndex', sourceIndex);
         event.dataTransfer.setDragImage(event.target.getElementsByTagName('img')[0], 0, 0);
         event.dataTransfer.dropEffect = "move";
+
+        // Highlight the current dragged element
+        event.target.classList.add('dragged');
+
+        // Highlight potential drop targets
+        Array.from(this.root.children).forEach(child => {
+            if (child !== event.target) {
+                child.classList.add('drop-target');
+            }
+        });
     }
 
     /**
-     * Handle the drag over event to allow the drop.
-     * @param {DragEvent} event - The drag event.
+     * Handle the drag enter event to highlight the drop target.
+     * @param {DragEvent} event The drag event.
+     * @private
+     */
+    _onDragEnter(event) {
+        event.preventDefault();
+
+        // Add the .over class to the current target
+        const target = event.target.closest('.grid-item');
+        if (target && !target.classList.contains('dragged')) {
+            target.classList.add('over');
+        }
+    }
+
+    /**
+     * Handle the drag over event to allow the drop event.
+     * @param {DragEvent} event The drag event.
      * @private
      */
     _onDragOver(event) {
@@ -402,8 +430,32 @@ class DragDropGridController {
     }
 
     /**
+     * Handle the drag leave event to stop highlighting the drop target
+     * @param {DragEvent} event The drag event
+     */
+    _onDragLeave(event) {
+        // Remove the .over class from the current target
+        const target = event.target.closest('.grid-item');
+        if (target) {
+            target.classList.remove('over');
+        }
+    }
+
+    /**
+     * Handle the drag end event to allow the drop.
+     * @param {DragEvent} event The drag event.
+     * @private
+     */
+    _onDragEnd(event) {
+        event.preventDefault();
+        Array.from(this.root.children).forEach(child => {
+            child.classList.remove('dragged', 'drop-target', 'over');
+        });
+    }
+
+    /**
      * Handle the drop event to reorder the grid items.
-     * @param {DragEvent} event - The drop event.
+     * @param {DragEvent} event The drop event.
      * @private
      */
     _onDrop(event) {
@@ -429,6 +481,10 @@ class DragDropGridController {
         else {
             this.root.insertBefore(source, target);
         }
+
+        Array.from(this.root.children).forEach(child => {
+            child.classList.remove('dragged', 'drop-target', 'over');
+        });
     }
 }
 

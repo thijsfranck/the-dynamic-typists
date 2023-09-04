@@ -58,7 +58,24 @@ body {
 #image-body .grid-item {
     border: 2px solid var(--accent);
     position: relative;
-  }
+}
+
+#image-body .grid-item:hover {
+    cursor: grab;
+    border: 2px solid var(--primary);
+}
+
+#image-body .grid-item.dragged {
+    border: 2px solid var(--focus);
+}
+
+#image-body .grid-item.drop-target {
+    border: 2px dashed var(--primary);
+}
+
+#image-body .grid-item.drop-target.over {
+    border: 2px solid var(--primary);
+}
 
 #image-body.rotating-images {
     display: flex;
