@@ -489,6 +489,10 @@ class DragDropGridController {
     _onDrop(event) {
         event.preventDefault();
 
+        Array.from(this.root.children).forEach(child => {
+            child.classList.remove('dragged', 'drop-target', 'over');
+        });
+
         const sourceIndex = event.dataTransfer.getData('sourceIndex');
         const source = this.root.children.item(sourceIndex);
 
@@ -536,10 +540,6 @@ class DragDropGridController {
 
         // Use .call() to set the context (`this`)
         dropBehaviors[this.dropBehavior].call(this);
-
-        Array.from(this.root.children).forEach(child => {
-            child.classList.remove('dragged', 'drop-target', 'over');
-        });
     }
 }
 
