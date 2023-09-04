@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Dynamic Typists</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+  <main id="captcha">
+    <div id="prompt">
+      <h1 id="heading">Restore the original image</h1>
+      <div id="image-body">
+      </div>
+    </div>
+    <div id="footer">
+      <div id="controls">
+        <button id="refresh-button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path
+              d="M13.5 2c-5.621 0-10.211 4.443-10.475 10h-3.025l5 6.625 5-6.625h-2.975c.257-3.351 3.06-6 6.475-6 3.584 0 6.5 2.916 6.5 6.5s-2.916 6.5-6.5 6.5c-1.863 0-3.542-.793-4.728-2.053l-2.427 3.216c1.877 1.754 4.389 2.837 7.155 2.837 5.79 0 10.5-4.71 10.5-10.5s-4.71-10.5-10.5-10.5z"
+              fill="currentColor" />
+          </svg>
+        </button>
+      </div>
+      <button id="confirm-button">CONFIRM</button>
+    </div>
+    <div id="dev-controls">
+      <select id="controller-select">
+        <option value="grid" default>Rotating Grid Controller</option>
+        <option value="rows">Drag and Drop Controller</option>
+        <option value="circles">Rotating Circles Controller</option>
+      </select>
+    </div>
+  </main>
+
+  <!-- Include the scripts.js file -->
+  <script src="./scripts.js"></script>
+
+  <script>
+    async function fetchImages() {
+      return [
+        'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII',
+        'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII',
+        'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII',
+        'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII'
+      ];
+    }
+
+    const controllerFactories = {
+      "grid": (root) => new ImageGridController(root),
+      "rows": (root) => new DragDropGridController(root),
+      "circles": (root) => new RotatingImagesController(root)
+    };
+
+    const imageBody = document.getElementById('image-body');
+    let activeController = null;
+
+    function setController(controllerName) {
+      if (activeController) {
+        activeController.destroy();
+      }
+
+      const controllerFactory = controllerFactories[controllerName];
+      activeController = controllerFactory(imageBody);
+
+      fetchImages().then(images => activeController.render(images)).catch(console.error);
+    }
+
+    const confirmButton = document.getElementById('confirm-button');
+    const controllerSelect = document.getElementById('controller-select');
+    const refreshButton = document.getElementById('refresh-button');
+
+    controllerSelect.addEventListener('change', (event) => setController(event.target.value));
+    confirmButton.addEventListener('click', () => console.log(activeController.solution));
+    refreshButton.addEventListener('click', () => activeController.reset())
+
+    setController(controllerSelect.value);
+  </script>
+
+</body>
+
+</html>
