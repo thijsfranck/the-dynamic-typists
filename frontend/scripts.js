@@ -302,8 +302,9 @@ class DragDropGridController {
      * @param {HTMLElement} root The root HTML element for the grid.
      * @param {Object} [options] The options for the controller.
      * @param {number} [options.columns=1] The number of columns in the grid.
+     * @param {"insert" | "swap"} [options.dropBehavior="insert"] The behavior to be used when an item is dropped.
      */
-    constructor(root, { columns = 1 } = {}) {
+    constructor(root, { columns = 1, dropBehavior = 'insert' } = {}) {
         /**
          * The root HTML element for the grid.
          * @type {HTMLElement}
@@ -317,16 +318,30 @@ class DragDropGridController {
         this.columns = columns;
 
         /**
+         * The behavior to be used when an item is dropped.
+         * @type {"insert" | "swap"}
+         */
+        this.dropBehavior = dropBehavior;
+
+        /**
          * The images to be rendered in the grid. Determines the default order of the images.
          * @type {string[]}
          * @private
          */
         this._images = [];
+
+        // Bind event listeners to the current instance for future reference
+        this._boundOnDragStart = this._onDragStart.bind(this);
+        this._boundOnDragEnter = this._onDragEnter.bind(this);
+        this._boundOnDragOver = this._onDragOver.bind(this);
+        this._boundOnDragLeave = this._onDragLeave.bind(this);
+        this._boundOnDragEnd = this._onDragEnd.bind(this);
+        this._boundOnDrop = this._onDrop.bind(this);
     }
 
     /**
      * Render the grid with the provided images.
-     * @param {string[]} images - The images to be rendered.
+     * @param {string[]} images - The base64 encoded images to be rendered.
      */
     render(images) {
         this._images = images;
@@ -346,26 +361,35 @@ class DragDropGridController {
             imgElement.src = "data:image/png;base64," + image;
             gridItemElement.appendChild(imgElement)
 
-            gridItemElement.addEventListener('dragstart', this._onDragStart.bind(this));
-            gridItemElement.addEventListener('dragenter', this._onDragEnter.bind(this));
-            gridItemElement.addEventListener('dragover', this._onDragOver.bind(this));
-            gridItemElement.addEventListener('dragleave', this._onDragLeave.bind(this));
-            gridItemElement.addEventListener('dragend', this._onDragEnd.bind(this))
-            gridItemElement.addEventListener('drop', this._onDrop.bind(this));
+            gridItemElement.addEventListener('dragstart', this._boundOnDragStart);
+            gridItemElement.addEventListener('dragenter', this._boundOnDragEnter);
+            gridItemElement.addEventListener('dragover', this._boundOnDragOver);
+            gridItemElement.addEventListener('dragleave', this._boundOnDragLeave);
+            gridItemElement.addEventListener('dragend', this._boundOnDragEnd)
+            gridItemElement.addEventListener('drop', this._boundOnDrop);
 
             this.root.appendChild(gridItemElement);
         });
     }
 
     /**
-     * Remove all the grid items and reset the root styles.
+     * Remove all the grid items, unbind event listeners, and reset the root styles.
      */
     destroy() {
         this.root.classList.remove('grid-container');
         this.root.style.removeProperty('--columns');
 
         while (this.root.firstChild) {
-            this.root.removeChild(this.root.firstChild);
+            const element = this.root.firstChild;
+
+            element.removeEventListener('dragstart', this._boundOnDragStart);
+            element.removeEventListener('dragenter', this._boundOnDragEnter);
+            element.removeEventListener('dragover', this._boundOnDragOver);
+            element.removeEventListener('dragleave', this._boundOnDragLeave);
+            element.removeEventListener('dragend', this._boundOnDragEnd)
+            element.removeEventListener('drop', this._boundOnDrop);
+
+            this.root.removeChild(element);
         }
     }
 
@@ -378,7 +402,7 @@ class DragDropGridController {
     }
 
     /**
-     * The current order of images in the grid as their indices.
+     * Get the current order of images in the grid.
      * @returns {number[]} The order of images as an array of indices.
      */
     get solution() {
@@ -386,7 +410,7 @@ class DragDropGridController {
     }
 
     /**
-     * Handle the drag start event.
+     * Handle the drag start event. Initialize the drag and set up the source index and appearance.
      * @param {DragEvent} event The drag event.
      * @private
      */
@@ -409,7 +433,7 @@ class DragDropGridController {
     }
 
     /**
-     * Handle the drag enter event to highlight the drop target.
+     * Handle the drag enter event. Highlights the potential drop target.
      * @param {DragEvent} event The drag event.
      * @private
      */
@@ -424,7 +448,7 @@ class DragDropGridController {
     }
 
     /**
-     * Handle the drag over event to allow the drop event.
+     * Handle the drag over event. Allows the drop event to happen by preventing the default action.
      * @param {DragEvent} event The drag event.
      * @private
      */
@@ -433,8 +457,9 @@ class DragDropGridController {
     }
 
     /**
-     * Handle the drag leave event to stop highlighting the drop target
-     * @param {DragEvent} event The drag event
+     * Handle the drag leave event. Removes the highlight from a potential drop target.
+     * @param {DragEvent} event The drag event.
+     * @private
      */
     _onDragLeave(event) {
         // Remove the .over class from the current target
@@ -445,7 +470,7 @@ class DragDropGridController {
     }
 
     /**
-     * Handle the drag end event to allow the drop.
+     * Handle the drag end event. Cleans up any classes added during the drag operation.
      * @param {DragEvent} event The drag event.
      * @private
      */
@@ -457,7 +482,7 @@ class DragDropGridController {
     }
 
     /**
-     * Handle the drop event to reorder the grid items.
+     * Handle the drop event. Reorders the grid items based on where an item is dropped.
      * @param {DragEvent} event The drop event.
      * @private
      */
@@ -472,18 +497,45 @@ class DragDropGridController {
 
         if (sourceIndex === targetIndex) return;
 
-        // If dragging from left to right
-        if (sourceIndex < targetIndex) {
-            if (target.nextSibling) {
-                this.root.insertBefore(source, target.nextSibling);
-            } else {
-                this.root.appendChild(source);
+        function handleInsert() {
+            // If dragging from left to right
+            if (sourceIndex < targetIndex) {
+                if (target.nextSibling) {
+                    this.root.insertBefore(source, target.nextSibling);
+                } else {
+                    this.root.appendChild(source);
+                }
+            }
+            // If dragging from right to left
+            else {
+                this.root.insertBefore(source, target);
             }
         }
-        // If dragging from right to left
-        else {
-            this.root.insertBefore(source, target);
+
+        function handleSwap() {
+            const sourceNextSibling = source.nextSibling;
+            const targetNextSibling = target.nextSibling;
+
+            // If source is right before target
+            if (sourceNextSibling === target) {
+                this.root.insertBefore(target, source);
+            }
+            // If target is right before source
+            else if (targetNextSibling === source) {
+                this.root.insertBefore(source, target);
+            } else {
+                this.root.insertBefore(source, targetNextSibling);
+                this.root.insertBefore(target, sourceNextSibling);
+            }
         }
+
+        const dropBehaviors = {
+            "insert": handleInsert,
+            "swap": handleSwap
+        }
+
+        // Use .call() to set the context (`this`)
+        dropBehaviors[this.dropBehavior].call(this);
 
         Array.from(this.root.children).forEach(child => {
             child.classList.remove('dragged', 'drop-target', 'over');
@@ -505,7 +557,7 @@ class ImageGridController extends DragDropGridController {
      */
     constructor(root, { columns = 2, rotationSteps = 4 } = {}) {
 
-        super(root, { columns });
+        super(root, { columns, dropBehavior: 'swap' });
 
         /**
          * Number of rotation steps for each image.
