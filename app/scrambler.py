@@ -1,5 +1,7 @@
 """Scramble has functions for scrambling images in different ways."""
-from random import choice, shuffle
+from random import choice, randint, shuffle
+
+from PIL import Image, ImageDraw
 
 from .picture import Picture
 from .tile import Tile
@@ -66,8 +68,44 @@ def scramble_grid(picture: Picture, num_of_tiles: int = 4) -> None:
         )
 
 
-def scramble_circle(picture: Picture) -> Picture:
+def scramble_circle(picture: Picture) -> None:
     """Split an Image up into rows an rearranges them."""
-    # Added line for linter escape
-    _ = picture
-    raise NotImplementedError
+    num_tiles = 6
+    image = picture.image
+    width, height = picture.image.size
+    center = (width // 2, height // 2)
+    radiusvar = min(width, height) / (2 * num_tiles)
+
+    for i in range(num_tiles):
+        ring = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+
+        inner_radius = radiusvar * i
+        outer_radius = radiusvar * (i + 1)
+
+        mask = Image.new("L", (width, height), 0)
+        draw = ImageDraw.Draw(mask)
+        draw.ellipse(
+            [
+                (center[0] - outer_radius, center[1] - outer_radius),
+                (center[0] + outer_radius, center[1] + outer_radius),
+            ],
+            fill=255,
+        )
+        draw.ellipse(
+            [
+                (center[0] - inner_radius, center[1] - inner_radius),
+                (center[0] + inner_radius, center[1] + inner_radius),
+            ],
+            fill=0,
+        )
+
+        angle = randint(0, num_tiles) * (360 // num_tiles)
+        rotated_image = image.rotate(angle, resample=Image.BILINEAR, center=center)
+
+        ring.paste(rotated_image.convert("RGBA"), (0, 0), mask.convert("L"))
+
+        tile = Tile(ring, (0, 0), angle)
+
+        picture.tiles[i] = tile
+
+    picture.tile_order = list(picture.tiles.keys())
