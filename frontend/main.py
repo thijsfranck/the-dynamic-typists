@@ -1,11 +1,12 @@
 from controllers import App
 from js import document
+from pyodide.ffi import JsDomElement
 from pyodide.ffi.wrappers import add_event_listener
 
-image_body: object = document.getElementById("image-body")
-confirm_button: object = document.getElementById("confirm-button")
-controller_select: object = document.getElementById("controller-select")
-refresh_button: object = document.getElementById("refresh-button")
+image_body: JsDomElement = document.getElementById("image-body")
+confirm_button: JsDomElement = document.getElementById("confirm-button")
+controller_select: JsDomElement = document.getElementById("controller-select")
+refresh_button: JsDomElement = document.getElementById("refresh-button")
 
 app = App(image_body)
 app.set_controller(controller_select.value)
