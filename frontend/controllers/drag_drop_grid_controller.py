@@ -108,7 +108,7 @@ class DragDropGridController:
         event : DragEvent
             The event object associated with the drag start action.
         """
-        source = event.target.closest(".grid-item")
+        source: object = event.target.closest(".grid-item")
         source_index = list(self.root.children).index(source)
 
         event.dataTransfer.setData("sourceIndex", str(source_index))
@@ -135,7 +135,7 @@ class DragDropGridController:
             The event object associated with the drag enter action.
         """
         event.preventDefault()
-        target = event.target.closest(".grid-item")
+        target: object = event.target.closest(".grid-item")
         if target and not target.classList.contains("dragged"):
             target.classList.add("over")
 
@@ -163,7 +163,7 @@ class DragDropGridController:
         event : DragEvent
             The event object associated with the drag leave action.
         """
-        target = event.target.closest(".grid-item")
+        target: object = event.target.closest(".grid-item")
         if target and not target.contains(event.relatedTarget):
             target.classList.remove("over")
 
@@ -199,8 +199,8 @@ class DragDropGridController:
             child.classList.remove("dragged", "drop-target", "over")
 
         source_index = int(event.dataTransfer.getData("sourceIndex"))
-        source = self.root.children[source_index]
-        target = event.target.closest(".grid-item")
+        source: object = self.root.children[source_index]
+        target: object = event.target.closest(".grid-item")
         target_index = list(self.root.children).index(target)
 
         if source_index == target_index:
@@ -218,8 +218,8 @@ class DragDropGridController:
                 self.root.insertBefore(source, target)
 
         def handle_swap() -> None:
-            source_next_sibling = source.nextSibling
-            target_next_sibling = target.nextSibling
+            source_next_sibling: object = source.nextSibling
+            target_next_sibling: object = target.nextSibling
 
             # If source is right before target
             if source_next_sibling == target:
