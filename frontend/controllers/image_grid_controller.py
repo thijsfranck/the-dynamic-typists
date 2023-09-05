@@ -42,6 +42,7 @@ class ImageGridController:
         self.root: object = root
         self.columns: int = columns
         self.rotation_steps: int = rotation_steps
+        self._images: list[str] = []
         self._grid_controller = DragDropGridController(root, columns=columns, drop_behavior="swap")
         self._rotation_controllers: list[ClickRotationController] = []
 
@@ -54,6 +55,7 @@ class ImageGridController:
         images : List[str]
             List of base64 encoded strings to be displayed in the grid.
         """
+        self._images = images
         self._grid_controller.render(images)
 
         children = list(self.root.children)
@@ -70,9 +72,8 @@ class ImageGridController:
 
     def reset(self) -> None:
         """Reset the grid to its initial state and reset rotations to default."""
-        self._grid_controller.reset()
-        for controller in self._rotation_controllers:
-            controller.reset()
+        self.destroy()
+        self.render(self._images)
 
     @property
     def solution(self) -> list[tuple[int, float]]:
