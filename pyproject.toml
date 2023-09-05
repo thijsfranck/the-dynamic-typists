@@ -33,6 +33,16 @@ typeCheckingMode = "strict"
 pythonVersion = "3.11"
 reportUnnecessaryTypeIgnoreComment = true
 
+# Weakened type checking rules to avoid unnecessary type errors when accessing browser APIs
+# Unfortunately Pyright doesn't support a separate config for the frontend folder
+reportGeneralTypeIssues = "warning"
+reportMissingImports = "warning"
+reportUnknownArgumentType = "none"
+reportUnknownMemberType = "none"
+reportUnknownLambdaType = "none"
+reportUnknownParameterType = "none"
+reportUnknownVariableType = "none"
+
 [tool.ruff]
 select = ["ALL"]
 ignore = [
