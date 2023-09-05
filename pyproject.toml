@@ -56,6 +56,7 @@ line-length = 100
 # Ignore unused imports in init, caused by star imports.
 # More convenient to provide `__all__` in files instead of duplicating in package __init__.
 "__init__.py" = ["F401", "F403", "F405"]
+"frontend/main.py" = ["INP001"]
 
 [tool.ruff.pydocstyle]
 convention = "numpy"
