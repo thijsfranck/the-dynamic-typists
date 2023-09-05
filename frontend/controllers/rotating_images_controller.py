@@ -68,13 +68,13 @@ class RotatingImagesController:
             controller.reset()
 
     @property
-    def solution(self) -> list[int]:
+    def solution(self) -> list[float]:
         """
         Get the current solution as a list of the degrees by which each element is rotated.
 
         Returns
         -------
-        List[int] :
+        List[float] :
             List of rotation values in degrees.
         """
         return [controller.current_rotation for controller in self._controllers]
