@@ -81,7 +81,7 @@ class ImageGridController:
 
         Returns
         -------
-        List[Tuple[int, int]]
+        List[Tuple[int, float]]
             List of tuples where each tuple contains the position and rotation of each image.
             Each tuple is in the format (position, rotation).
         """
