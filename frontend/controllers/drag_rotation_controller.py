@@ -1,11 +1,15 @@
 from __future__ import annotations
 
 import math
+from typing import TYPE_CHECKING
 
 from js import document
 from pyodide.ffi.wrappers import add_event_listener
 
 from .rotation_controller import RotationController
+
+if TYPE_CHECKING:
+    from pyodide.ffi import JsDomElement
 
 
 class DragRotationController(RotationController):
@@ -26,7 +30,7 @@ class DragRotationController(RotationController):
         A flag indicating if the user is actively dragging/rotating the element.
     """
 
-    def __init__(self, element: object, rotation_steps: int = 360) -> None:
+    def __init__(self, element: JsDomElement, rotation_steps: int = 360) -> None:
         """
         Create a new `DragRotationController` for the given `element`.
 
@@ -40,7 +44,7 @@ class DragRotationController(RotationController):
         """
         super().__init__(element, rotation_steps)
 
-        self.element: object = element
+        self.element: JsDomElement = element
         self._center: dict[str, int] = {"x": 0, "y": 0}
         self._is_rotating: bool = False
 

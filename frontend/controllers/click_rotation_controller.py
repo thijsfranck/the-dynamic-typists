@@ -1,3 +1,4 @@
+from pyodide.ffi import JsDomElement
 from pyodide.ffi.wrappers import add_event_listener
 
 from .rotation_controller import RotationController
@@ -18,7 +19,7 @@ class ClickRotationController(RotationController):
         The number of discrete rotation angles the element can snap to.
     """
 
-    def __init__(self, element: object, rotation_steps: int = 360) -> None:
+    def __init__(self, element: JsDomElement, rotation_steps: int = 360) -> None:
         """
         Create a new `ClickRotationController` for the given `element`.
 
@@ -40,7 +41,7 @@ class ClickRotationController(RotationController):
         Parameters
         ----------
         event : MouseEvent
-            The mouse event object associated with the click action.
+            The mouse event associated with the click action.
         """
         event.preventDefault()
         self.step_clockwise()

@@ -1,3 +1,6 @@
+from pyodide.ffi import JsDomElement
+
+
 class RotationController:
     """
     `RotationController` provides basic functionality to handle the rotation of DOM elements.
@@ -16,7 +19,7 @@ class RotationController:
         The current rotation of the element in degrees.
     """
 
-    def __init__(self, element: object, rotation_steps: int = 360) -> None:
+    def __init__(self, element: JsDomElement, rotation_steps: int = 360) -> None:
         """
         Create a new `RotationController` for the given `element`.
 
@@ -28,12 +31,12 @@ class RotationController:
             The number of positions to which the element can snap during rotation,
             evenly divided around the circle. Defaults to 360.
         """
-        self.element: object = element
+        self.element: JsDomElement = element
         self.rotation_steps: int = rotation_steps
         self._current_rotation: float = 0
 
     def destroy(self) -> None:
-        """Remove object applied transformation from the target element."""
+        """Remove applied transformation from the target element."""
         self.element.style.removeProperty("transform")
 
     def reset(self) -> None:

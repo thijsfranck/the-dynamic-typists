@@ -1,7 +1,12 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from .click_rotation_controller import ClickRotationController
 from .drag_drop_grid_controller import DragDropGridController
+
+if TYPE_CHECKING:
+    from pyodide.ffi import JsDomElement
 
 
 class ImageGridController:
@@ -26,7 +31,7 @@ class ImageGridController:
         List of controllers managing the rotation for each individual image in the grid.
     """
 
-    def __init__(self, root: object, columns: int = 2, rotation_steps: int = 4) -> None:
+    def __init__(self, root: JsDomElement, columns: int = 2, rotation_steps: int = 4) -> None:
         """
         Initialize the `ImageGridController`.
 
@@ -39,7 +44,7 @@ class ImageGridController:
         rotation_steps : int, optional
             Discrete rotation positions that an image can snap to. Defaults to 4.
         """
-        self.root: object = root
+        self.root: JsDomElement = root
         self.columns: int = columns
         self.rotation_steps: int = rotation_steps
         self._images: list[str] = []
