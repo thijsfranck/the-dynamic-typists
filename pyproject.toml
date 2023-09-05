@@ -35,9 +35,9 @@ reportUnnecessaryTypeIgnoreComment = true
 
 # Weakened type checking rules to avoid unnecessary type errors when accessing browser APIs
 # Unfortunately Pyright doesn't support a separate config for the frontend folder
-reportGeneralTypeIssues = "info"
-reportMissingImports = "info"
-reportMissingTypeStubs = "info"
+reportGeneralTypeIssues = "warning"
+reportMissingImports = "warning"
+reportMissingTypeStubs = "warning"
 reportUnknownArgumentType = "none"
 reportUnknownMemberType = "none"
 reportUnknownLambdaType = "none"
