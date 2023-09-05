@@ -4,64 +4,74 @@ from .click_rotation_controller import ClickRotationController
 from .drag_drop_grid_controller import DragDropGridController
 
 
-class ImageGridController(DragDropGridController):
+class ImageGridController:
     """
-    Controller for an image grid that can be manipulated via drag and drop and can be rotated.
+    Controller managing a grid of images that supports drag-and-drop and image rotation.
+
+    The class integrates both the `DragDropGridController` for drag-and-drop capabilities and
+    `ClickRotationController` for  click-to-rotate functionality. Each image in the grid can be
+    rotated and repositioned within the grid.
 
     Attributes
     ----------
+    root : JsDomElement
+        The root DOM element wherein the grid will be rendered.
+    columns : int
+        Specifies the number of columns in the grid.
     rotation_steps : int
-        Number of rotation steps for each image.
-    _controllers : List[RotationController]
-        List of rotation controllers attached to each image in the grid.
+        Defines the number of distinct rotation positions an image can snap to.
+    _grid_controller : DragDropGridController
+        Controller responsible for handling drag and drop actions on the grid.
+    _rotation_controllers : List[ClickRotationController]
+        List of controllers managing the rotation for each individual image in the grid.
     """
 
     def __init__(self, root: object, columns: int = 2, rotation_steps: int = 4) -> None:
         """
-        Create a new `ImageGridController` instance.
+        Initialize the `ImageGridController`.
 
         Parameters
         ----------
         root : JsDomElement
-            The root element in which to render the images.
+            The root element where the grid will be rendered.
         columns : int, optional
-            The number of columns in the grid. Defaults to 2.
+            Number of columns for the grid layout. Defaults to 2.
         rotation_steps : int, optional
-            The number of rotation steps for each image. Defaults to 4.
+            Discrete rotation positions that an image can snap to. Defaults to 4.
         """
-        super().__init__(root, columns=columns, drop_behavior="swap")
-
+        self.root: object = root
+        self.columns: int = columns
         self.rotation_steps: int = rotation_steps
-        self._controllers: list[ClickRotationController] = []
+        self._grid_controller = DragDropGridController(root, columns=columns, drop_behavior="swap")
+        self._rotation_controllers: list[ClickRotationController] = []
 
     def render(self, images: list[str]) -> None:
         """
-        Render the grid with the provided images and attach rotation controllers to each element.
+        Render the images in the grid and assign rotation controllers to each image.
 
         Parameters
         ----------
         images : List[str]
-            List of images to be rendered in the grid.
+            List of base64 encoded strings to be displayed in the grid.
         """
-        super().render(images)
+        self._grid_controller.render(images)
 
         children = list(self.root.children)
 
         for child in children:
             controller = ClickRotationController(child, rotation_steps=self.rotation_steps)
-            self._controllers.append(controller)
+            self._rotation_controllers.append(controller)
 
     def destroy(self) -> None:
         """Remove all grid items, destroy all controllers, and reset the root styles."""
-        super().destroy()
-
-        while len(self._controllers):
-            self._controllers.pop().destroy()
+        self._grid_controller.destroy()
+        while len(self._rotation_controllers):
+            self._rotation_controllers.pop().destroy()
 
     def reset(self) -> None:
         """Reset the grid to its initial state and reset rotations to default."""
-        super().reset()
-        for controller in self._controllers:
+        self._grid_controller.reset()
+        for controller in self._rotation_controllers:
             controller.reset()
 
     @property
@@ -78,5 +88,5 @@ class ImageGridController(DragDropGridController):
         children = list(self.root.children)
         return [
             (children.index(controller.element), controller.current_rotation)
-            for controller in self._controllers
+            for controller in self._rotation_controllers
         ]
