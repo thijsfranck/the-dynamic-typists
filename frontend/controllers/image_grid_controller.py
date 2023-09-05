@@ -75,7 +75,7 @@ class ImageGridController:
             controller.reset()
 
     @property
-    def solution(self) -> list[tuple[int, int]]:
+    def solution(self) -> list[tuple[int, float]]:
         """
         Provide the current solution as positions and rotations of images.
 
