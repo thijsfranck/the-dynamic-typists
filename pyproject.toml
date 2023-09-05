@@ -37,6 +37,7 @@ reportUnnecessaryTypeIgnoreComment = true
 # Unfortunately Pyright doesn't support a separate config for the frontend folder
 reportGeneralTypeIssues = "warning"
 reportMissingImports = "warning"
+reportMissingTypeStubs = "warning"
 reportUnknownArgumentType = "none"
 reportUnknownMemberType = "none"
 reportUnknownLambdaType = "none"
