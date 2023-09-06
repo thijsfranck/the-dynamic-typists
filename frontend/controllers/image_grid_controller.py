@@ -61,6 +61,7 @@ class ImageGridController:
         children = list(self.root.children)
 
         for child in children:
+            child.classList.add("square")
             controller = ClickRotationController(child, rotation_steps=self.rotation_steps)
             self._rotation_controllers.append(controller)
 

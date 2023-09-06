@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import math
+
 from js import document
 from pyodide.ffi.wrappers import add_event_listener
 
@@ -56,7 +58,6 @@ class DragDropGridController:
             grid_item_element.classList.add("grid-item")
             grid_item_element.setAttribute("draggable", "true")
             grid_item_element.setAttribute("data-index", str(index))
-            grid_item_element.innerText = str(index)
 
             img_element: object = document.createElement("img")
             img_element.src = "data:image/png;base64," + image
@@ -112,8 +113,26 @@ class DragDropGridController:
         source_index = list(self.root.children).index(source)
 
         event.dataTransfer.setData("sourceIndex", str(source_index))
-        event.dataTransfer.setDragImage(source.getElementsByTagName("img")[0], 0, 0)
         event.dataTransfer.dropEffect = "move"
+
+        # Set up drag image on a canvas to ensure it's the right size
+        image_element = source.getElementsByTagName("img")[0]
+
+        ctx = document.createElement("canvas").getContext("2d")
+        ctx.canvas.width = image_element.width
+        ctx.canvas.height = image_element.height
+
+        # Rotate the preview image if the parent element is rotated
+        if source.hasAttribute("data-angle"):
+            angle = float(source.getAttribute("data-angle"))
+
+            # Rotate the image around its center
+            ctx.translate(image_element.width / 2, image_element.height / 2)
+            ctx.rotate(angle * math.pi / 180)
+            ctx.translate(-image_element.width / 2, -image_element.height / 2)
+
+        ctx.drawImage(image_element, 0, 0, image_element.width, image_element.height)
+        event.dataTransfer.setDragImage(ctx.canvas, 0, 0)
 
         # Highlight the current dragged element
         source.classList.add("dragged")

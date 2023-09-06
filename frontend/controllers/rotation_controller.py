@@ -50,7 +50,9 @@ class RotationController:
             The number of degrees by which the image should be rotated.
         """
         self._current_rotation = degrees % 360
-        self.element.style.transform = f"rotate({self._current_rotation}deg)"
+
+        self.element.setAttribute("data-angle", str(self.current_rotation))
+        self.element.style.transform = f"rotate({self.current_rotation}deg)"
 
     def step_clockwise(self) -> None:
         """

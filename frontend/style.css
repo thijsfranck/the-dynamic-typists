@@ -19,8 +19,8 @@ body {
     box-shadow: 0 4px 8px var(--accent);
 
     /* Captcha dimensions must be fixed */
-    height: 580px;
-    width: 300px;
+    height: 630px;
+    width: 333px;
 
     display: grid;
     /* 7/8 and 1/8 for the prompt and footer respectively */
@@ -52,12 +52,11 @@ body {
 #image-body.grid-container {
     display: grid;
     grid-template-columns: repeat(var(--columns), 1fr);
-    gap: 2px;
+    row-gap: 0px;
+    gap: 0px;
 }
 
-#image-body .grid-item {
-    border: 2px solid var(--accent);
-
+#image-body.grid-container .grid-item {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -76,17 +75,27 @@ body {
     }
 }
 
-#image-body .grid-item:hover {
+#image-body.grid-container .grid-item:hover {
     cursor: grab;
     border: 2px solid var(--primary);
 }
 
-#image-body .grid-item.dragged {
+#image-body.grid-container .grid-item.dragged {
     border: 2px solid var(--focus);
 }
 
-#image-body .grid-item.drop-target.over {
+#image-body.grid-container .grid-item.drop-target.over {
     border: 2px dashed var(--primary);
+}
+
+#image-body.grid-container .grid-item.square {
+    aspect-ratio: 1;
+}
+
+#image-body.grid-container .grid-item img {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
 }
 
 #image-body.rotating-images {
