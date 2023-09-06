@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import Union
-
 from pyodide.http import pyfetch
 
 from .drag_drop_grid_controller import DragDropGridController
@@ -21,7 +19,7 @@ async def fetch_images(scrambler: str) -> list[str]:
     """Return a list of mock images for testing."""
     response = await pyfetch(f"/api/tiles?scrambler={scrambler}")
     if not response.ok:
-        # TODO: properly handle errors
+        # Need to properly handle errors
         msg = f"Failed to fetch images: {response.status} {await response.string()}"
         raise RuntimeError(msg)
 
