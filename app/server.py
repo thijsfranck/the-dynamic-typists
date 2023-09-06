@@ -7,8 +7,9 @@ import random
 from io import BytesIO
 from os import getenv
 from pathlib import Path
+from uuid import UUID
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 from picture import Picture
 from PIL import Image
 from scrambler import scramble_circle, scramble_grid, scramble_rows
@@ -17,6 +18,9 @@ APP = FastAPI(debug=not bool(getenv("PRODUCTION")))
 RESOURCES = Path("./resources")
 GLOBS = {"*.png", "*.jpg", "*.jpeg", "*.gif", "*.avif", "*.webp"}
 
+# Initial version, in-memory dictionary for storing the tiles.
+SOLUTIONS: dict[UUID, Picture] = {}
+
 
 def random_image() -> Path:
     """Choose a random image from the resource directory."""
@@ -24,15 +28,20 @@ def random_image() -> Path:
     return random.choice(images)
 
 
-def convert_image(image: Image.Image) -> str:
-    """Convert an image to a data:image URI."""
+def image_base64(image: Image.Image) -> str:
+    """Convert an image to base64."""
     buffered = BytesIO()
     image.save(buffered, format="PNG")
-    return f"data:image/png;base64,{base64.b64encode(buffered.getvalue()).decode()}"
+    return base64.b64encode(buffered.getvalue()).decode()
 
 
-@APP.get("/images")
-async def get_images(scrambler: str):
+def image_uri(base64: str) -> str:
+    """Convert a base64 string of a PNG to a data URI."""
+    return f"data:image/png;base64,{base64}"
+
+
+@APP.get("/api/tiles")
+async def get_tiles(response: Response, scrambler: str):
     """Return a list of images."""
     image_path = random_image()
     picture = Picture(str(object=image_path))
@@ -48,5 +57,14 @@ async def get_images(scrambler: str):
             msg = "Scramble format is not implemented."
             raise RuntimeError(msg)
 
-    tiles = [picture.tiles[index] for index in picture.tile_order]
-    return {"tiles": [convert_image(tile.image) for tile in tiles]}
+    # Get the images in order of scrambled tiles.
+    image_uris = [
+        image_uri(image_base64(picture.tiles[index].image)) for index in picture.tile_order
+    ]
+
+    # Create a session and store it.
+    session_id = UUID(int=random.getrandbits(128))
+    SOLUTIONS[session_id] = picture
+    response.set_cookie(key="session_id", value=str(session_id))
+
+    return image_uris
