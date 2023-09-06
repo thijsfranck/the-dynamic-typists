@@ -1,3 +1,4 @@
+# Testing code, probably should be removed later?
 from pathlib import Path
 
 from picture import Picture
