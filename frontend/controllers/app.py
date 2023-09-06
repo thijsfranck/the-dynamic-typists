@@ -1,10 +1,15 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from pyodide.http import pyfetch
 
 from .drag_drop_grid_controller import DragDropGridController
 from .image_grid_controller import ImageGridController
 from .rotating_images_controller import RotatingImagesController
+
+if TYPE_CHECKING:
+    from pyodide.ffi import JsDomElement
 
 Controller = ImageGridController | DragDropGridController | RotatingImagesController
 
@@ -35,11 +40,11 @@ class App:
     active_controller : Controller | None
         The currently active controller handling UI interactions.
         Can be None if no controller is set.
-    root : object
+    root : JsDomElement
         The main DOM element that the app and its controllers interact with.
     """
 
-    def __init__(self, root: object) -> None:
+    def __init__(self, root: JsDomElement) -> None:
         """
         Initialize a new instance of App.
 
@@ -49,7 +54,7 @@ class App:
             The DOM element where the app will render the content.
         """
         self.active_controller: Controller | None = None
-        self.root: object = root
+        self.root: JsDomElement = root
 
     async def set_controller(self, controller_name: str) -> None:
         """
