@@ -10,12 +10,14 @@ from pathlib import Path
 from uuid import UUID
 
 from fastapi import FastAPI, Response
-from picture import Picture
+from fastapi.staticfiles import StaticFiles
 from PIL import Image
-from scrambler import scramble_circle, scramble_grid, scramble_rows
+
+from .picture import Picture
+from .scrambler import scramble_circle, scramble_grid, scramble_rows
 
 APP = FastAPI(debug=not bool(getenv("PRODUCTION")))
-RESOURCES = Path("./resources")
+RESOURCES = Path("./app/resources")
 GLOBS = {"*.png", "*.jpg", "*.jpeg", "*.gif", "*.avif", "*.webp"}
 
 # Initial version, in-memory dictionary for storing the tiles.
@@ -33,11 +35,6 @@ def image_base64(image: Image.Image) -> str:
     buffered = BytesIO()
     image.save(buffered, format="PNG")
     return base64.b64encode(buffered.getvalue()).decode()
-
-
-def image_uri(base64: str) -> str:
-    """Convert a base64 string of a PNG to a data URI."""
-    return f"data:image/png;base64,{base64}"
 
 
 @APP.get("/api/tiles")
@@ -58,9 +55,7 @@ async def get_tiles(response: Response, scrambler: str):
             raise RuntimeError(msg)
 
     # Get the images in order of scrambled tiles.
-    image_uris = [
-        image_uri(image_base64(picture.tiles[index].image)) for index in picture.tile_order
-    ]
+    image_uris = [image_base64(picture.tiles[index].image) for index in picture.tile_order]
 
     # Create a session and store it.
     session_id = UUID(int=random.getrandbits(128))
@@ -68,3 +63,6 @@ async def get_tiles(response: Response, scrambler: str):
     response.set_cookie(key="session_id", value=str(session_id))
 
     return image_uris
+
+
+APP.mount("/", StaticFiles(directory="./frontend", html=True))

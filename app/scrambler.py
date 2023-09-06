@@ -1,8 +1,8 @@
 """Scramble has functions for scrambling images in different ways."""
 from random import choice, shuffle
 
-from picture import Picture
-from tile import Tile
+from .picture import Picture
+from .tile import Tile
 
 
 def scramble_rows(picture: Picture) -> None:

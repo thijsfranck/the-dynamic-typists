@@ -2,11 +2,13 @@ from __future__ import annotations
 
 from typing import Union
 
+from pyodide.http import pyfetch
+
 from .drag_drop_grid_controller import DragDropGridController
 from .image_grid_controller import ImageGridController
 from .rotating_images_controller import RotatingImagesController
 
-Controller = Union[ImageGridController, DragDropGridController, RotatingImagesController]
+Controller = ImageGridController | DragDropGridController | RotatingImagesController
 
 CONTROLLER_FACTORIES: dict[str, type[Controller]] = {
     "grid": ImageGridController,
@@ -15,14 +17,15 @@ CONTROLLER_FACTORIES: dict[str, type[Controller]] = {
 }
 
 
-def fetch_images() -> list[str]:
+async def fetch_images(scrambler: str) -> list[str]:
     """Return a list of mock images for testing."""
-    return [
-        "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
-        "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
-        "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
-        "iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII",
-    ]
+    response = await pyfetch(f"/api/tiles?scrambler={scrambler}")
+    if not response.ok:
+        # TODO: properly handle errors
+        msg = f"Failed to fetch images: {response.status} {await response.string()}"
+        raise RuntimeError(msg)
+
+    return await response.json()
 
 
 class App:
@@ -50,7 +53,7 @@ class App:
         self.active_controller: Controller | None = None
         self.root: object = root
 
-    def set_controller(self, controller_name: str) -> None:
+    async def set_controller(self, controller_name: str) -> None:
         """
         Transition to the active controller identified by the provided name.
 
@@ -72,7 +75,7 @@ class App:
         controller_factory = CONTROLLER_FACTORIES[controller_name]
         self.active_controller = controller_factory(self.root)
 
-        images = fetch_images()
+        images = await fetch_images(scrambler=controller_name)
         self.active_controller.render(images)
 
     def print_solution(self) -> None:
