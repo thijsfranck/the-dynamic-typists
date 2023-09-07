@@ -1,6 +1,6 @@
-from typing import TypedDict
+from typing_extensions import TypedDict
 
-Solution = list[int] | list[float] | list[tuple[int, float]]
+Solution = list[int] | list[float] | list[list[int | float]]
 
 
 class SolutionRequest(TypedDict):

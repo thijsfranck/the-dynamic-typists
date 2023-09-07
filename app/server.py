@@ -7,20 +7,19 @@ import random
 from io import BytesIO
 from os import getenv
 from pathlib import Path
-from typing import TYPE_CHECKING, Annotated, Literal
+from typing import Annotated, Literal
 from uuid import uuid4
 
-from fastapi import Cookie, FastAPI, Response
+from fastapi import Cookie, FastAPI, HTTPException, Response
 from fastapi.staticfiles import StaticFiles
 from PIL import Image
 from pydantic import BaseModel, ConfigDict
 
+from protocol import SolutionRequest, SolutionResponse, TilesResponse
+
 from .picture import Picture
 from .scrambler import scramble_circle, scramble_grid, scramble_rows
-
-if TYPE_CHECKING:
-    from protocol import TilesResponse
-
+from .solver import solve_rows, solve_tiles
 
 APP = FastAPI(debug=not bool(getenv("PRODUCTION")))
 RESOURCES = Path("./app/resources")
@@ -144,6 +143,42 @@ async def get_tiles(response: Response, session_id: Annotated[str | None, Cookie
     result: TilesResponse = {"type": scrambler, "tiles": tiles_b64}
 
     return result
+
+
+@APP.post("/api/solution")
+async def post_solution(
+    request: SolutionRequest,
+    session_id: Annotated[str | None, Cookie()] = None,
+):
+    # Check if session_id was provided
+    if session_id is None:
+        raise HTTPException(status_code=400, detail="Session ID missing in the request.")
+
+    # Check if session exists for the given session_id
+    if session_id not in SESSIONS:
+        raise HTTPException(status_code=404, detail="Session not found.")
+
+    session_data = SESSIONS[session_id]
+
+    solvers = {"rows": solve_rows, "grid": solve_tiles}
+
+    # Check if the scrambler exists in solvers
+    if session_data.scrambler not in solvers:
+        raise HTTPException(status_code=500, detail=f"Invalid scrambler: {session_data.scrambler}")
+
+    solver = solvers[session_data.scrambler]
+    solution = solver(session_data.picture)
+
+    print(solution)
+    print(request["solution"])
+
+    solved = request["solution"] == solution
+
+    response: SolutionResponse = {
+        "solved": solved,
+    }
+
+    return response
 
 
 APP.mount("/", StaticFiles(directory="./frontend", html=True))

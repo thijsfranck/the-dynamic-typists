@@ -62,6 +62,7 @@ def scramble_grid(picture: Picture, num_of_tiles: int = 4) -> None:
         picture.tiles[tile] = Tile(
             tile_img,
             (co_ordinates[tile][0], co_ordinates[tile][1]),
+            tile_rotations[tile],
         )
 
 
