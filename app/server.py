@@ -7,7 +7,7 @@ import random
 from io import BytesIO
 from os import getenv
 from pathlib import Path
-from typing import Annotated, Literal
+from typing import TYPE_CHECKING, Annotated, Literal
 from uuid import uuid4
 
 from fastapi import Cookie, FastAPI, Response
@@ -17,6 +17,10 @@ from pydantic import BaseModel, ConfigDict
 
 from .picture import Picture
 from .scrambler import scramble_circle, scramble_grid, scramble_rows
+
+if TYPE_CHECKING:
+    from protocol import TilesResponse
+
 
 APP = FastAPI(debug=not bool(getenv("PRODUCTION")))
 RESOURCES = Path("./app/resources")
@@ -100,7 +104,7 @@ async def get_tiles(response: Response, session_id: Annotated[str | None, Cookie
 
     Returns
     -------
-    dict
+    TilesResponse
         A dictionary containing the CAPTCHA type and its associated image tiles.
     """
     if session_id is not None and session_id in SESSIONS:
@@ -137,7 +141,9 @@ async def get_tiles(response: Response, session_id: Annotated[str | None, Cookie
 
     response.set_cookie(key="session_id", value=str(session_id))
 
-    return {"type": scrambler, "tiles": tiles_b64}
+    result: TilesResponse = {"type": scrambler, "tiles": tiles_b64}
+
+    return result
 
 
 APP.mount("/", StaticFiles(directory="./frontend", html=True))

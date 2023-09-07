@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, TypedDict
+from typing import TYPE_CHECKING
 
 from pyodide.http import pyfetch
 
@@ -11,6 +11,8 @@ from .rotating_images_controller import RotatingImagesController
 if TYPE_CHECKING:
     from pyodide.ffi import JsDomElement
 
+    from protocol import TilesResponse
+
 Controller = ImageGridController | DragDropGridController | RotatingImagesController
 
 CONTROLLER_FACTORIES: dict[str, type[Controller]] = {
@@ -18,37 +20,6 @@ CONTROLLER_FACTORIES: dict[str, type[Controller]] = {
     "rows": DragDropGridController,
     "circles": RotatingImagesController,
 }
-
-
-class TilesResponse(TypedDict):
-    """
-    A structured representation of the CAPTCHA challenge response.
-
-    Represents the server's response to a request for a CAPTCHA challenge. The response
-    contains the type of the CAPTCHA (determining the layout or nature of the challenge)
-    and a list of image URIs that constitute the tiles for that challenge.
-
-    Attributes
-    ----------
-    type : str
-        The type of CAPTCHA challenge. This determines how the tiles should be
-        arranged or manipulated. Examples include 'grid', 'rows', and 'circles'.
-
-    tiles : list[str]
-        A list of Base64-encoded image URIs that represent the individual tiles for
-        the CAPTCHA challenge. These tiles are meant to be displayed or manipulated
-        as per the challenge type.
-
-    Example
-    -------
-    {
-        "type": "grid",
-        "tiles": ["...", "..."]
-    }
-    """
-
-    type: str
-    tiles: list[str]
 
 
 async def fetch_tiles() -> TilesResponse:
