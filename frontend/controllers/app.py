@@ -139,8 +139,15 @@ class App:
         if self.active_controller is not None:
             self.active_controller.render(tiles)
 
-    async def post_solution(self) -> None:
-        """Post the current solution and return whether or not it's correct."""
+    async def post_solution(self) -> bool:
+        """
+        Post the current solution and return whether or not it's correct.
+
+        Returns
+        -------
+        bool
+            `True` if the current solution is correct, `False` if otherwise.
+        """
         result = False
 
         if self.active_controller is not None:
