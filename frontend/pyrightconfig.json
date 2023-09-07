@@ -1,4 +1,5 @@
 {
+    "extraPaths": ["../"],
     "pythonVersion": "3.10",
     "reportGeneralTypeIssues": "warning",
     "reportMissingImports": "warning",
