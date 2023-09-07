@@ -141,7 +141,12 @@ class App:
 
     async def post_solution(self) -> None:
         """Post the current solution and return whether or not it's correct."""
-        return await post_solution(self.active_controller.solution)
+        result = False
+
+        if self.active_controller is not None:
+            result = await post_solution(self.active_controller.solution)
+
+        return result
 
     def reset(self) -> None:
         """Restore the active controller to its original state."""

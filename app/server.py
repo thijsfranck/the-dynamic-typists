@@ -179,7 +179,6 @@ async def post_solution(
         - 400: If no session ID is provided.
         - 404: If the provided session ID does not match any existing session.
         - 500: If an invalid scrambler type is encountered in the session data.
-
     """
     # Check if session_id was provided
     if session_id is None:
