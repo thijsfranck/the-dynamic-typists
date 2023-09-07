@@ -16,17 +16,11 @@ async def main() -> None:
     """
     image_body: JsDomElement = document.getElementById("image-body")
     confirm_button: JsDomElement = document.getElementById("confirm-button")
-    controller_select: JsDomElement = document.getElementById("controller-select")
     refresh_button: JsDomElement = document.getElementById("refresh-button")
 
     app = App(image_body)
-    await app.set_controller(controller_select.value)
+    await app.load_captcha()
 
-    add_event_listener(
-        controller_select,
-        "change",
-        lambda event: app.set_controller(event.target.value),
-    )
     add_event_listener(confirm_button, "click", lambda _: app.print_solution())
     add_event_listener(refresh_button, "click", lambda _: app.reset())
 

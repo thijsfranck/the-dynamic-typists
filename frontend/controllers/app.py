@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypedDict
 
 from pyodide.http import pyfetch
 
@@ -20,9 +20,57 @@ CONTROLLER_FACTORIES: dict[str, type[Controller]] = {
 }
 
 
-async def fetch_images(scrambler: str) -> list[str]:
-    """Return a list of mock images for testing."""
-    response = await pyfetch(f"/api/tiles?scrambler={scrambler}")
+class TilesResponse(TypedDict):
+    """
+    A structured representation of the CAPTCHA challenge response.
+
+    Represents the server's response to a request for a CAPTCHA challenge. The response
+    contains the type of the CAPTCHA (determining the layout or nature of the challenge)
+    and a list of image URIs that constitute the tiles for that challenge.
+
+    Attributes
+    ----------
+    type : str
+        The type of CAPTCHA challenge. This determines how the tiles should be
+        arranged or manipulated. Examples include 'grid', 'rows', and 'circles'.
+
+    tiles : list[str]
+        A list of Base64-encoded image URIs that represent the individual tiles for
+        the CAPTCHA challenge. These tiles are meant to be displayed or manipulated
+        as per the challenge type.
+
+    Example
+    -------
+    {
+        "type": "grid",
+        "tiles": ["...", "..."]
+    }
+    """
+
+    type: str
+    tiles: list[str]
+
+
+async def fetch_tiles() -> TilesResponse:
+    """
+    Fetch tile images and their associated type for CAPTCHA challenges.
+
+    This function makes an asynchronous request to the `/api/tiles` endpoint
+    and retrieves a collection of tile images and their associated type. The response
+    is structured to contain the tile type (e.g., 'grid', 'rows', 'circles') and the
+    corresponding tile image URIs.
+
+    Returns
+    -------
+    TilesResponse
+        A dictionary containing the type of CAPTCHA and a list of image URIs.
+
+    Raises
+    ------
+    RuntimeError
+        If the request to the `/api/tiles` endpoint fails.
+    """
+    response = await pyfetch("/api/tiles")
     if not response.ok:
         # Need to properly handle errors
         msg = f"Failed to fetch images: {response.status} {await response.string()}"
@@ -56,7 +104,26 @@ class App:
         self.active_controller: Controller | None = None
         self.root: JsDomElement = root
 
-    async def set_controller(self, controller_name: str) -> None:
+    async def load_captcha(self) -> None:
+        """
+        Load and display a CAPTCHA challenge using the appropriate controller.
+
+        This method fetches a new CAPTCHA challenge from the server, which comprises a type
+        (e.g., 'grid', 'rows', 'circles') and a set of associated tile images. Depending on
+        the CAPTCHA type, it transitions to the corresponding controller and instructs it
+        to render the fetched tiles.
+        """
+        captcha = await fetch_tiles()
+
+        controller_name = captcha["type"]
+        tiles = captcha["tiles"]
+
+        self.set_controller(controller_name)
+
+        if self.active_controller is not None:
+            self.active_controller.render(tiles)
+
+    def set_controller(self, controller_name: str) -> None:
         """
         Transition to the active controller identified by the provided name.
 
@@ -77,9 +144,6 @@ class App:
 
         controller_factory = CONTROLLER_FACTORIES[controller_name]
         self.active_controller = controller_factory(self.root)
-
-        images = await fetch_images(scrambler=controller_name)
-        self.active_controller.render(images)
 
     def print_solution(self) -> None:
         """Display the solution of the currently active controller."""
