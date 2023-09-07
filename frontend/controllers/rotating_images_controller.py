@@ -1,8 +1,13 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from js import document
 
 from .drag_rotation_controller import DragRotationController
+
+if TYPE_CHECKING:
+    from pyodide.ffi import JsDomElement
 
 
 class RotatingImagesController:
@@ -20,7 +25,7 @@ class RotatingImagesController:
         List of rotation controllers associated with each image.
     """
 
-    def __init__(self, root: object) -> None:
+    def __init__(self, root: JsDomElement) -> None:
         """
         Create a new `RotatingImagesController` instance.
 
@@ -29,7 +34,7 @@ class RotatingImagesController:
         root : JsDomElement
             The root element in which to render the images.
         """
-        self.root: object = root
+        self.root: JsDomElement = root
         self._controllers: list[DragRotationController] = []
 
     def render(self, images: list[str]) -> None:
@@ -43,7 +48,7 @@ class RotatingImagesController:
         """
         self.root.classList.add("rotating-images")
         for image in images:
-            img_element: object = document.createElement("img")
+            img_element = document.createElement("img")
             img_element.src = f"data:image/png;base64,{image}"
             img_element.classList.add("rotatable-image")
 
