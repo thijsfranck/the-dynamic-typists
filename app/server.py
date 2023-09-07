@@ -169,7 +169,7 @@ async def post_solution(
 
     Returns
     -------
-    dict
+    SolutionResponse
         A dictionary containing a single key "solved", which is True if the provided solution
         matches the expected solution and False otherwise.
 
