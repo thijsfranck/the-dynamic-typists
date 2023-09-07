@@ -21,7 +21,7 @@ async def main() -> None:
     app = App(image_body)
     await app.load_captcha()
 
-    add_event_listener(confirm_button, "click", lambda _: app.print_solution())
+    add_event_listener(confirm_button, "click", lambda _: app.post_solution())
     add_event_listener(refresh_button, "click", lambda _: app.reset())
 
 
