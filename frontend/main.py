@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 
 from controllers import App
 from js import document
-from pyodide.ffi.wrappers import add_event_listener
+from pyodide.ffi.wrappers import add_event_listener, remove_event_listener
 
 if TYPE_CHECKING:
     from pyodide.ffi import JsDomElement
@@ -16,12 +16,63 @@ async def main() -> None:
     """
     image_body: JsDomElement = document.getElementById("image-body")
     confirm_button: JsDomElement = document.getElementById("confirm-button")
+    confirm_button_text: JsDomElement = document.getElementById("confirm-button-text")
     refresh_button: JsDomElement = document.getElementById("refresh-button")
 
     app = App(image_body)
     await app.load_captcha()
 
-    add_event_listener(confirm_button, "click", lambda _: app.post_solution())
+    is_posting_solution = False
+
+    async def handle_post_solution(_: object) -> None:
+        """
+        Handle the solution post event for the confirm button.
+
+        When the user clicks the confirm button, this function is triggered. It sends the current
+        solution to the server for validation. While waiting for a response, a loading spinner is
+        shown on the button. Once the response is received, the button is updated to show whether
+        the solution was correct or not.
+
+        Parameters
+        ----------
+        _ : object
+            The event object, which is not used in this function but is typically passed by
+            event handlers.
+
+        Notes
+        -----
+        The function utilizes a nonlocal variable `is_posting_solution` to prevent multiple
+        concurrent requests when the user repeatedly clicks the button. This ensures that the
+        application does not send another request until the previous one has completed.
+
+        If the solution is correct, the function updates the button's text to "SOLVED" and removes
+        the event listener to prevent further submissions. If incorrect, the button's text is
+        changed to "RETRY".
+        """
+        nonlocal is_posting_solution
+
+        if is_posting_solution:
+            return
+
+        is_posting_solution = True
+        confirm_button.classList.add("loading")
+
+        solved = False
+
+        try:
+            solved = await app.post_solution()
+        finally:
+            is_posting_solution = False
+            confirm_button.classList.remove("loading")
+
+        if solved:
+            confirm_button.classList.add("solved")
+            confirm_button_text.innerText = "SOLVED"
+            remove_event_listener(confirm_button, "click", handle_post_solution)
+        else:
+            confirm_button_text.innerText = "RETRY"
+
+    add_event_listener(confirm_button, "click", handle_post_solution)
     add_event_listener(refresh_button, "click", lambda _: app.reset())
 
 
