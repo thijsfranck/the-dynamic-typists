@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 from PIL import Image
 
 if TYPE_CHECKING:
-    from tile import Tile
+    from .tile import Tile
 
 
 class Picture:

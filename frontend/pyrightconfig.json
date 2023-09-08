@@ -1,0 +1,10 @@
+{
+    "extraPaths": ["../"],
+    "pythonVersion": "3.10",
+    "reportGeneralTypeIssues": "warning",
+    "reportMissingImports": "warning",
+    "reportUnknownArgumentType": "none",
+    "reportUnknownMemberType": "none",
+    "reportUnknownParameterType": "none",
+    "reportUnknownVariableType": "none"
+}

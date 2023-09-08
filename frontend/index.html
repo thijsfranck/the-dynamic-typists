@@ -8,6 +8,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css">
   <link rel="icon" href="./favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+  <script defer src="https://pyscript.net/latest/pyscript.js"></script>
 </head>
 
 <body>
@@ -27,61 +29,12 @@
           </svg>
         </button>
       </div>
-      <button id="confirm-button">CONFIRM</button>
-    </div>
-    <div id="dev-controls">
-      <select id="controller-select">
-        <option value="grid" default>Rotating Grid Controller</option>
-        <option value="rows">Drag and Drop Controller</option>
-        <option value="circles">Rotating Circles Controller</option>
-      </select>
+      <button id="confirm-button"><span id="confirm-button-text">CONFIRM</span></button>
     </div>
   </main>
 
-  <!-- Include the scripts.js file -->
-  <script src="./scripts.js"></script>
-
-  <script>
-    async function fetchImages() {
-      return [
-        'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII',
-        'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII',
-        'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII',
-        'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII'
-      ];
-    }
-
-    const controllerFactories = {
-      "grid": (root) => new ImageGridController(root),
-      "rows": (root) => new DragDropGridController(root),
-      "circles": (root) => new RotatingImagesController(root)
-    };
-
-    const imageBody = document.getElementById('image-body');
-    let activeController = null;
-
-    function setController(controllerName) {
-      if (activeController) {
-        activeController.destroy();
-      }
-
-      const controllerFactory = controllerFactories[controllerName];
-      activeController = controllerFactory(imageBody);
-
-      fetchImages().then(images => activeController.render(images)).catch(console.error);
-    }
-
-    const confirmButton = document.getElementById('confirm-button');
-    const controllerSelect = document.getElementById('controller-select');
-    const refreshButton = document.getElementById('refresh-button');
-
-    controllerSelect.addEventListener('change', (event) => setController(event.target.value));
-    confirmButton.addEventListener('click', () => console.log(activeController.solution));
-    refreshButton.addEventListener('click', () => activeController.reset())
-
-    setController(controllerSelect.value);
-  </script>
-
+  <py-config src="./config.toml"></py-config>
+  <py-script src="./main.py"></py-script>
 </body>
 
 </html>

@@ -1,8 +1,8 @@
 """Scramble has functions for scrambling images in different ways."""
 from random import choice, shuffle
 
-from picture import Picture
-from tile import Tile
+from .picture import Picture
+from .tile import Tile
 
 
 def scramble_rows(picture: Picture) -> None:
@@ -62,6 +62,7 @@ def scramble_grid(picture: Picture, num_of_tiles: int = 4) -> None:
         picture.tiles[tile] = Tile(
             tile_img,
             (co_ordinates[tile][0], co_ordinates[tile][1]),
+            tile_rotations[tile],
         )
 
 

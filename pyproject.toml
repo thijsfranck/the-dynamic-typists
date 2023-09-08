@@ -8,14 +8,18 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "~3.11"
-pillow = "~10.0.0"
+pillow = "~10.0"
+fastapi = "~0.103.1"
+uvicorn = "~0.23.2"
 
 [tool.poetry.group.dev.dependencies]
-pre-commit = "~2.17.0"
-black = "~23.7.0"
+pre-commit = "~2.17"
+black = "~23.7"
 ruff = "0.0.286"
 # Pyright has regressions and fixes every version.
 pyright = "1.1.324"
+pyodide-py = "~0.23"
+pyscript = "~0.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -26,16 +30,12 @@ build-backend = "poetry.core.masonry.api"
 line-length = 100
 target-version = ["py311"]
 
-[tool.pyright]
-typeCheckingMode = "strict"
-pythonVersion = "3.11"
-reportUnnecessaryTypeIgnoreComment = true
-
 [tool.ruff]
 select = ["ALL"]
 ignore = [
     # Self and cls do not require annotations.
-    "ANN101", "ANN102",
+    "ANN101",
+    "ANN102",
     # Pyright error codes are obnoxiously long. Ignore lint telling you to use them.
     "PGH003",
     # Documenting every file is a bit redundant for us.
@@ -46,14 +46,15 @@ ignore = [
     "D107",
     # We do not need cryptographically secure random functions.
     "S311",
-
 ]
 line-length = 100
+target-version = "py311"
 
 [tool.ruff.per-file-ignores]
 # Ignore unused imports in init, caused by star imports.
 # More convenient to provide `__all__` in files instead of duplicating in package __init__.
 "__init__.py" = ["F401", "F403", "F405"]
+"frontend/main.py" = ["INP001"]
 
 [tool.ruff.pydocstyle]
 convention = "numpy"
