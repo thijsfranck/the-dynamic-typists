@@ -7,7 +7,7 @@ from js import document
 from pyodide.ffi.wrappers import add_event_listener
 
 if TYPE_CHECKING:
-    from pyodide.ffi import JsDomElement
+    from js import JsDomElement
 
 
 class DragDropGridController:
