@@ -56,6 +56,7 @@ target-version = "py311"
 # More convenient to provide `__all__` in files instead of duplicating in package __init__.
 "__init__.py" = ["F401", "F403", "F405"]
 "frontend/main.py" = ["INP001"]
+"frontend/*" = ["ANN401"]
 
 [tool.ruff.pydocstyle]
 convention = "numpy"

@@ -1,3 +1,5 @@
+from typing import Any
+
 from pyodide.ffi.wrappers import add_event_listener
 
 from .rotation_controller import RotationController
@@ -34,7 +36,7 @@ class ClickRotationController(RotationController):
         super().__init__(transform, rotation_steps)
         add_event_listener(self.transform.element, "click", self._on_left_click)
 
-    def _on_left_click(self, event: object) -> None:
+    def _on_left_click(self, event: Any) -> None:
         """
         Handle the left-click event to rotate the element.
 
