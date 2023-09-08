@@ -8,7 +8,7 @@ from .tile import Tile
 
 
 def scramble_rows(picture: Picture) -> None:
-    """Split an Image up into rows an rearranges them."""
+    """Split an Image up into rows and rearranges them."""
     num_tiles = 8
     image_size = picture.image.size
     tile_size = (image_size[0], int(image_size[1] / num_tiles))
@@ -22,7 +22,7 @@ def scramble_rows(picture: Picture) -> None:
 
 
 def scramble_grid(picture: Picture, num_of_tiles: int = 4) -> None:
-    """Split an Image up into tiles an rearranges them and rotates each tile randomly."""
+    """Split an Image up into tiles and rearranges them and rotates each tile randomly."""
     co_ordinates = [
         (0, 0, 512, 512),
         (512, 0, 1024, 512),
@@ -69,14 +69,17 @@ def scramble_grid(picture: Picture, num_of_tiles: int = 4) -> None:
 
 
 def scramble_circle(picture: Picture) -> None:
-    """Split an Image up into rows an rearranges them."""
+    """Split an Image up into circles and rearranges them."""
     num_tiles = 6
     image = picture.image
     width, height = picture.image.size
     center = (width // 2, height // 2)
     radiusvar = min(width, height) / (2 * num_tiles)
 
-    for i in range(num_tiles):
+    background = Tile(image, (0, 0), 0)
+
+    picture.tiles[0] = background
+    for i in range(1, num_tiles):
         ring = Image.new("RGBA", (width, height), (0, 0, 0, 0))
 
         inner_radius = radiusvar * i
