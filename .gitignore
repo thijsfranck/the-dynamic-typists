@@ -29,7 +29,3 @@ build/
 .vscode/
 # MacOS
 .DS_Store
-
-# Project files
-/app/resources/*_scrambled.jpg
-/app/resources/*_scrambled.png
