@@ -37,7 +37,7 @@ class RotatingImagesController:
         self.root: JsDomElement = root
         self._controllers: list[DragRotationController] = []
 
-    def render(self, images: list[str]) -> None:
+    def render(self, rotatable: list[str]) -> None:
         """
         Render the given images and attach RotationController instances to each image.
 
@@ -47,7 +47,14 @@ class RotatingImagesController:
             List of base64 encoded images.
         """
         self.root.classList.add("rotating-images")
-        for image in images:
+        background, *rotatable = rotatable
+
+        background_element = document.createElement("img")
+        background_element.src = f"data:image/png;base64,{background}"
+        background_element.classList.add("background-image")
+        self.root.appendChild(background_element)
+
+        for image in reversed(rotatable):
             img_element = document.createElement("img")
             img_element.src = f"data:image/png;base64,{image}"
             img_element.classList.add("rotatable-image")
@@ -82,4 +89,4 @@ class RotatingImagesController:
         List[float] :
             List of rotation values in degrees.
         """
-        return [controller.current_rotation for controller in self._controllers]
+        return reversed(controller.current_rotation for controller in self._controllers)

@@ -113,10 +113,10 @@ body {
     max-width: 100%;
     height: auto;
     transform-origin: center;
-    position: absolute;
 }
 
 .rotatable-image {
+    position: absolute;
     cursor: grab;
     transition: border 0.2s, box-shadow 0.2s;
 }
