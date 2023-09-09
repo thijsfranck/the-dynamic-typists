@@ -1,9 +1,10 @@
 """Scramble has functions for scrambling images in different ways."""
 from random import choice, randint, shuffle
 
-from picture import Picture
 from PIL import Image, ImageDraw, ImageOps
-from tile import Tile
+
+from .picture import Picture
+from .tile import Tile
 
 
 def scramble_rows(picture: Picture) -> None:
@@ -71,12 +72,14 @@ def scramble_circle(picture: Picture) -> None:
     """Split an Image up into circles and rearranges them."""
     num_tiles = 6
     image = picture.image
+    background_img = picture.image
     width, height = picture.image.size
     center = (width // 2, height // 2)
     radiusvar = min(width, height) // (2 * num_tiles)
 
     # Creating background image
     outer_radius = radiusvar * (num_tiles - 1 + 1)
+    inner_radius = radiusvar
     mask = Image.new("L", (width, height), 0)
     draw = ImageDraw.Draw(mask)
     draw.ellipse(
@@ -86,12 +89,19 @@ def scramble_circle(picture: Picture) -> None:
         ],
         fill=255,
     )
+    draw.ellipse(
+        [
+            (center[0] - inner_radius, center[1] - inner_radius),
+            (center[0] + inner_radius, center[1] + inner_radius),
+        ],
+        fill=0,
+    )
     inv_mask = ImageOps.invert(mask)
     inv_mask = inv_mask.convert("L")
 
-    image = image.copy().convert("RGB")
-    image.putalpha(inv_mask)
-    background = Tile(image, (0, 0), 0)
+    background_img = background_img.convert("RGB")
+    background_img.putalpha(inv_mask)
+    background = Tile(background_img, (0, 0), 0)
 
     picture.tiles[0] = background
     for i in range(1, num_tiles):
@@ -109,6 +119,7 @@ def scramble_circle(picture: Picture) -> None:
             ],
             fill=255,
         )
+
         draw.ellipse(
             [
                 (center[0] - inner_radius, center[1] - inner_radius),
@@ -121,7 +132,6 @@ def scramble_circle(picture: Picture) -> None:
         rotated_image = image.rotate(angle, resample=Image.BILINEAR, center=center)
 
         cropped_ring.paste(rotated_image.convert("RGBA"), (0, 0), mask.convert("L"))
-
         crop_coordinates = (
             center[0] - outer_radius,  # X left
             center[1] - outer_radius,  # Y left
