@@ -74,16 +74,18 @@ def scramble_circle(picture: Picture) -> None:
     image = picture.image
     width, height = picture.image.size
     center = (width // 2, height // 2)
-    radiusvar = min(width, height) / (2 * num_tiles)
+    radiusvar = min(width, height) // (2 * num_tiles)
 
     background = Tile(image, (0, 0), 0)
 
     picture.tiles[0] = background
     for i in range(1, num_tiles):
-        ring = Image.new("RGBA", (width, height), (0, 0, 0, 0))
-
         inner_radius = radiusvar * i
         outer_radius = radiusvar * (i + 1)
+
+        outer_radius * 2
+
+        cropped_ring = Image.new("RGBA", (width, height), (0, 0, 0, 0))
 
         mask = Image.new("L", (width, height), 0)
         draw = ImageDraw.Draw(mask)
@@ -105,9 +107,18 @@ def scramble_circle(picture: Picture) -> None:
         angle = randint(0, num_tiles) * (360 // num_tiles)
         rotated_image = image.rotate(angle, resample=Image.BILINEAR, center=center)
 
-        ring.paste(rotated_image.convert("RGBA"), (0, 0), mask.convert("L"))
+        cropped_ring.paste(rotated_image.convert("RGBA"), (0, 0), mask.convert("L"))
 
-        tile = Tile(ring, (0, 0), angle)
+        crop_coordinates = (
+            center[0] - outer_radius,  # X left
+            center[1] - outer_radius,  # Y left
+            center[0] + outer_radius,  # X right
+            center[1] + outer_radius,  # Y right
+        )
+
+        cropped_ring = cropped_ring.crop(crop_coordinates)
+
+        tile = Tile(cropped_ring, (0, 0), angle)
 
         picture.tiles[i] = tile
 

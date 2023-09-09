@@ -113,7 +113,7 @@ async def get_tiles(response: Response, session_id: Annotated[str | None, Cookie
     image_path = random_image()
     picture = Picture(str(object=image_path))
 
-    scrambler = random.choice(SCRAMBLERS)
+    scrambler = "circle"
 
     match scrambler:
         case "rows":
