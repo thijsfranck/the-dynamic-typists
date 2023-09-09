@@ -123,13 +123,21 @@ body {
     border-radius: 50%;
 }
 
+.rotatable-image:hover {
+    outline: 2px dashed var(--accent);
+}
+
+.rotatable-image:hover + .rotatable-image {
+    outline: 2px dotted var(--accent);
+}
+
 .rotatable-image.active {
     cursor: grabbing;
     outline: 2px solid var(--accent);
     box-shadow: 0 0 10px var(--accent);
 }
 
-.rotatable-image.active + .rotatable-image{
+.rotatable-image.active + .rotatable-image {
     outline: 2px solid var(--accent);
     box-shadow: 0 0 -10px var(--accent);
 }

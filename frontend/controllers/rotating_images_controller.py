@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+from functools import partial
 from typing import TYPE_CHECKING
 
 from js import document
 from pyodide.ffi.wrappers import add_event_listener
 
 from .drag_rotation_controller import DragRotationController
+from .transform_controller import TransformController
 
 if TYPE_CHECKING:
     from pyodide.ffi import JsDomElement
@@ -60,13 +62,15 @@ class RotatingImagesController:
             img_element.src = f"data:image/png;base64,{image}"
             img_element.classList.add("rotatable-image")
 
-            def on_img_load(event: object) -> None:
+            transform = TransformController(img_element)
+
+            def on_img_load(event: object, transform: TransformController) -> None:
                 scale = event.target.naturalWidth / background_element.naturalWidth
-                event.target.style.transform = f"scale({scale})"
+                transform.scale(scale)
 
-            add_event_listener(img_element, "load", on_img_load)
+            add_event_listener(img_element, "load", partial(on_img_load, transform=transform))
 
-            self._controllers.append(DragRotationController(img_element, rotation_steps=360))
+            self._controllers.append(DragRotationController(transform, rotation_steps=360))
             self.root.appendChild(img_element)
 
     def destroy(self) -> None:
@@ -75,7 +79,9 @@ class RotatingImagesController:
 
         # Destroy each active controller
         while len(self._controllers):
-            self._controllers.pop().destroy()
+            controller = self._controllers.pop()
+            controller.transform.destroy()
+            controller.destroy()
 
         # Remove all child elements from the root element
         while element := self.root.firstChild:
@@ -96,4 +102,4 @@ class RotatingImagesController:
         List[float] :
             List of rotation values in degrees.
         """
-        return reversed(controller.current_rotation for controller in self._controllers)
+        return [controller.current_rotation for controller in reversed(self._controllers)]
