@@ -1,10 +1,9 @@
 """Scramble has functions for scrambling images in different ways."""
 from random import choice, randint, shuffle
 
-from PIL import Image, ImageDraw
-
-from .picture import Picture
-from .tile import Tile
+from picture import Picture
+from PIL import Image, ImageDraw, ImageOps
+from tile import Tile
 
 
 def scramble_rows(picture: Picture) -> None:
@@ -76,14 +75,28 @@ def scramble_circle(picture: Picture) -> None:
     center = (width // 2, height // 2)
     radiusvar = min(width, height) // (2 * num_tiles)
 
+    # Creating background image
+    outer_radius = radiusvar * (num_tiles - 1 + 1)
+    mask = Image.new("L", (width, height), 0)
+    draw = ImageDraw.Draw(mask)
+    draw.ellipse(
+        [
+            (center[0] - outer_radius, center[1] - outer_radius),
+            (center[0] + outer_radius, center[1] + outer_radius),
+        ],
+        fill=255,
+    )
+    inv_mask = ImageOps.invert(mask)
+    inv_mask = inv_mask.convert("L")
+
+    image = image.copy().convert("RGB")
+    image.putalpha(inv_mask)
     background = Tile(image, (0, 0), 0)
 
     picture.tiles[0] = background
     for i in range(1, num_tiles):
         inner_radius = radiusvar * i
         outer_radius = radiusvar * (i + 1)
-
-        outer_radius * 2
 
         cropped_ring = Image.new("RGBA", (width, height), (0, 0, 0, 0))
 
