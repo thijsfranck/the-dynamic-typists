@@ -24,11 +24,13 @@ class RotatingImagesController:
     ----------
     root : JsDomElement
         The HTML DOM element where the images are rendered.
+    rotation_steps : int
+        Number of positions to which the element can snap during rotation.
     _controllers : List[DragRotationController]
         List of rotation controllers associated with each image.
     """
 
-    def __init__(self, root: JsDomElement) -> None:
+    def __init__(self, root: JsDomElement, rotation_steps: int = 360) -> None:
         """
         Create a new `RotatingImagesController` instance.
 
@@ -38,6 +40,7 @@ class RotatingImagesController:
             The root element in which to render the images.
         """
         self.root: JsDomElement = root
+        self.rotation_steps: int = rotation_steps
         self._controllers: list[DragRotationController] = []
 
     def render(self, rotatable: list[str]) -> None:
@@ -70,7 +73,13 @@ class RotatingImagesController:
 
             add_event_listener(img_element, "load", partial(on_img_load, transform=transform))
 
-            self._controllers.append(DragRotationController(transform, rotation_steps=360))
+            self._controllers.append(
+                DragRotationController(
+                    transform,
+                    rotation_steps=self.rotation_steps,
+                ),
+            )
+
             self.root.appendChild(img_element)
 
     def destroy(self) -> None:

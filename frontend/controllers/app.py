@@ -19,7 +19,7 @@ Controller = ImageGridController | DragDropGridController | RotatingImagesContro
 CONTROLLER_FACTORIES: dict[str, type[Controller]] = {
     "grid": ImageGridController,
     "rows": DragDropGridController,
-    "circle": RotatingImagesController,
+    "circle": lambda element: RotatingImagesController(element, rotation_steps=60),
 }
 
 
