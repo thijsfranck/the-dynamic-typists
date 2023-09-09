@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import json
-from typing import TYPE_CHECKING
+from functools import partial
+from typing import TYPE_CHECKING, Protocol
 
 from pyodide.http import pyfetch
 
@@ -10,16 +11,55 @@ from .image_grid_controller import ImageGridController
 from .rotating_images_controller import RotatingImagesController
 
 if TYPE_CHECKING:
-    from pyodide.ffi import JsDomElement
+    from collections.abc import Callable
+
+    from js import JsDomElement
 
     from protocol import Solution, SolutionRequest, SolutionResponse, TilesResponse
 
-Controller = ImageGridController | DragDropGridController | RotatingImagesController
 
-CONTROLLER_FACTORIES: dict[str, type[Controller]] = {
+class Controller(Protocol):
+    """A generic controller that manages a set of images inside a captcha."""
+
+    @property
+    def solution(self) -> Solution:
+        """Provide the current solution in a suitable format.
+
+        Returns
+        -------
+        list[tuple[int, float]] | list[int] | list[float]
+            Any one of:
+              - List of tuples where each tuple contains the position and rotation of each image.
+                Each tuple is in the format (position, rotation).
+              - List of indices representing the current order of images in the grid.
+              - List of rotation values in degrees.
+        """
+        ...
+
+    def render(self, images: list[str], /) -> None:
+        """
+        Render the images in the captcha.
+
+        Parameters
+        ----------
+        images : List[str]
+            List of base64 encoded strings to be displayed in the grid.
+        """
+        ...
+
+    def reset(self) -> None:
+        """Reset the captcha to its initial state."""
+        ...
+
+    def destroy(self) -> None:
+        """Remove the captcha and all child elements from the root, resetting its styles."""
+        ...
+
+
+CONTROLLER_FACTORIES: dict[str, Callable[[JsDomElement], Controller]] = {
     "grid": ImageGridController,
     "rows": DragDropGridController,
-    "circle": lambda element: RotatingImagesController(element, rotation_steps=60),
+    "circle": partial(RotatingImagesController, rotation_steps=60),
 }
 
 
