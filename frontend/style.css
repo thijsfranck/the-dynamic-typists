@@ -112,13 +112,14 @@ body {
 #image-body.rotating-images img {
     max-width: 100%;
     height: auto;
-    transform-origin: center;
 }
 
 .rotatable-image {
     position: absolute;
     cursor: grab;
     transition: border 0.2s, box-shadow 0.2s;
+    transform-origin: center;
+    border-radius: 50%;
 }
 
 .rotatable-image.active {
