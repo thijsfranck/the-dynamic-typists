@@ -33,6 +33,7 @@ class RotationController:
         """
         self.transform: TransformController = transform
         self.rotation_steps: int = rotation_steps
+        self._current_rotation: float = 0.0
 
     def destroy(self) -> None:
         """Remove applied transformation from the target element."""
@@ -51,8 +52,9 @@ class RotationController:
         degrees : int
             The number of degrees by which the image should be rotated.
         """
-        self.transform.rotate(degrees)
-        self.transform.element.setAttribute("data-angle", str(degrees))
+        self._current_rotation = degrees % 360
+        self.transform.rotate(self.current_rotation)
+        self.transform.element.setAttribute("data-angle", str(self.current_rotation))
 
     def step_clockwise(self) -> None:
         """
@@ -80,4 +82,4 @@ class RotationController:
         float
             The number of degrees by which the element is currently rotated, ranging from 0 to 360.
         """
-        return self.transform.transforms["rotate"]
+        return self._current_rotation
