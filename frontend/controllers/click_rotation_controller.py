@@ -1,7 +1,7 @@
-from pyodide.ffi import JsDomElement
 from pyodide.ffi.wrappers import add_event_listener
 
 from .rotation_controller import RotationController
+from .transform_controller import TransformController
 
 
 class ClickRotationController(RotationController):
@@ -13,26 +13,26 @@ class ClickRotationController(RotationController):
 
     Attributes
     ----------
-    element : JsDomElement
-        The HTML DOM element that this controller manages.
     rotation_steps : int
         The number of discrete rotation angles the element can snap to.
+    transform : TransformController
+        The transform controller associated with the element that this controller manages.
     """
 
-    def __init__(self, element: JsDomElement, rotation_steps: int = 360) -> None:
+    def __init__(self, transform: TransformController, rotation_steps: int = 360) -> None:
         """
-        Create a new `ClickRotationController` for the given `element`.
+        Create a new `ClickRotationController` for the given `transform`.
 
         Parameters
         ----------
-        element : JsDomElement
-            The element rotated by this instance.
+        transform : TransformController
+            The transform controller associated with the element rotated by this instance.
         rotation_steps : int, optional
             The number of positions to which the element can snap during rotation, evenly
             divided around the circle. Defaults to 360.
         """
-        super().__init__(element, rotation_steps)
-        add_event_listener(self.element, "click", self._on_left_click)
+        super().__init__(transform, rotation_steps)
+        add_event_listener(self.transform.element, "click", self._on_left_click)
 
     def _on_left_click(self, event: object) -> None:
         """

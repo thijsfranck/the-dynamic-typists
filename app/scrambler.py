@@ -1,12 +1,14 @@
 """Scramble has functions for scrambling images in different ways."""
-from random import choice, shuffle
+from random import choice, randint, shuffle
+
+from PIL import Image, ImageDraw, ImageOps
 
 from .picture import Picture
 from .tile import Tile
 
 
 def scramble_rows(picture: Picture) -> None:
-    """Split an Image up into rows an rearranges them."""
+    """Split an Image up into rows and rearranges them."""
     num_tiles = 8
     image_size = picture.image.size
     tile_size = (image_size[0], int(image_size[1] / num_tiles))
@@ -20,7 +22,7 @@ def scramble_rows(picture: Picture) -> None:
 
 
 def scramble_grid(picture: Picture, num_of_tiles: int = 4) -> None:
-    """Split an Image up into tiles an rearranges them and rotates each tile randomly."""
+    """Split an Image up into tiles and rearranges them and rotates each tile randomly."""
     co_ordinates = [
         (0, 0, 512, 512),
         (512, 0, 1024, 512),
@@ -66,8 +68,81 @@ def scramble_grid(picture: Picture, num_of_tiles: int = 4) -> None:
         )
 
 
-def scramble_circle(picture: Picture) -> Picture:
-    """Split an Image up into rows an rearranges them."""
-    # Added line for linter escape
-    _ = picture
-    raise NotImplementedError
+def scramble_circle(picture: Picture) -> None:
+    """Split an Image up into circles and rearranges them."""
+    num_tiles = 6
+    image = picture.image
+    background_img = picture.image
+    width, height = picture.image.size
+    center = (width // 2, height // 2)
+    radiusvar = min(width, height) // (2 * num_tiles)
+
+    # Creating background image
+    outer_radius = radiusvar * (num_tiles - 1 + 1)
+    inner_radius = radiusvar
+    mask = Image.new("L", (width, height), 0)
+    draw = ImageDraw.Draw(mask)
+    draw.ellipse(
+        [
+            (center[0] - outer_radius, center[1] - outer_radius),
+            (center[0] + outer_radius, center[1] + outer_radius),
+        ],
+        fill=255,
+    )
+    draw.ellipse(
+        [
+            (center[0] - inner_radius, center[1] - inner_radius),
+            (center[0] + inner_radius, center[1] + inner_radius),
+        ],
+        fill=0,
+    )
+    inv_mask = ImageOps.invert(mask)
+    inv_mask = inv_mask.convert("L")
+
+    background_img = background_img.convert("RGB")
+    background_img.putalpha(inv_mask)
+    background = Tile(background_img, (0, 0), 0)
+
+    picture.tiles[0] = background
+    for i in range(1, num_tiles):
+        inner_radius = radiusvar * i
+        outer_radius = radiusvar * (i + 1)
+
+        cropped_ring = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+
+        mask = Image.new("L", (width, height), 0)
+        draw = ImageDraw.Draw(mask)
+        draw.ellipse(
+            [
+                (center[0] - outer_radius, center[1] - outer_radius),
+                (center[0] + outer_radius, center[1] + outer_radius),
+            ],
+            fill=255,
+        )
+
+        draw.ellipse(
+            [
+                (center[0] - inner_radius, center[1] - inner_radius),
+                (center[0] + inner_radius, center[1] + inner_radius),
+            ],
+            fill=0,
+        )
+
+        angle = randint(0, num_tiles) * (360 // num_tiles)
+        rotated_image = image.rotate(angle, resample=Image.BILINEAR, center=center)
+
+        cropped_ring.paste(rotated_image.convert("RGBA"), (0, 0), mask.convert("L"))
+        crop_coordinates = (
+            center[0] - outer_radius,  # X left
+            center[1] - outer_radius,  # Y left
+            center[0] + outer_radius,  # X right
+            center[1] + outer_radius,  # Y right
+        )
+
+        cropped_ring = cropped_ring.crop(crop_coordinates)
+
+        tile = Tile(cropped_ring, (0, 0), angle)
+
+        picture.tiles[i] = tile
+
+    picture.tile_order = list(picture.tiles.keys())

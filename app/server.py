@@ -24,6 +24,7 @@ from .solver import solve_rows, solve_tiles
 APP = FastAPI(debug=not bool(getenv("PRODUCTION")))
 RESOURCES = Path("./app/resources")
 GLOBS = {"*.png", "*.jpg", "*.jpeg", "*.gif", "*.avif", "*.webp"}
+SCRAMBLERS = ("rows", "grid", "circle")
 
 
 class SessionData(BaseModel):
@@ -112,7 +113,7 @@ async def get_tiles(response: Response, session_id: Annotated[str | None, Cookie
     image_path = random_image()
     picture = Picture(str(object=image_path))
 
-    scrambler = random.choice(["rows", "grid"])
+    scrambler = random.choice(SCRAMBLERS)
 
     match scrambler:
         case "rows":
@@ -121,9 +122,6 @@ async def get_tiles(response: Response, session_id: Annotated[str | None, Cookie
             scramble_grid(picture)
         case "circle":
             scramble_circle(picture)
-        case _:
-            msg = "Scramble format is not implemented."
-            raise RuntimeError(msg)
 
     # Get the images in order of scrambled tiles.
     tiles_b64 = [image_base64(picture.tiles[index].image) for index in picture.tile_order]

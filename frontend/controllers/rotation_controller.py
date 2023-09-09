@@ -1,43 +1,45 @@
 from pyodide.ffi import JsDomElement
 
+from .transform_controller import TransformController
+
 
 class RotationController:
     """
-    `RotationController` provides basic functionality to handle the rotation of DOM elements.
+        `RotationController` provides basic functionality to handle the rotation of DOM elements.
 
-    This controller allows rotation of an element through direct methods or via
-    stepping mechanisms. The rotation can be set to snap at specific intervals,
-    defined by the number of rotation steps.
+        This controller allows rotation of an element through direct methods or via
+        stepping mechanisms. The rotation can be set to snap at specific intervals,
+        defined by the number of rotation steps.
 
     Attributes
     ----------
-    element : JsDomElement
-        The HTML DOM element being rotated.
-    rotation_steps : int
-        Number of positions to which the element can snap during rotation.
-    _current_rotation : float
-        The current rotation of the element in degrees.
+        rotation_steps : int
+            Number of positions to which the element can snap during rotation.
+        transform : TransformController
+            The transform controller associated with the element that this controller manages.
+        current_rotation : float
+            The current rotation of the element in degrees.
     """
 
-    def __init__(self, element: JsDomElement, rotation_steps: int = 360) -> None:
+    def __init__(self, transform: TransformController, rotation_steps: int = 360) -> None:
         """
         Create a new `RotationController` for the given `element`.
 
         Parameters
         ----------
-        element : JsDomElement
-            The element rotated by this instance.
+        transform : TransformController
+            The transform controller associated with the element rotated by this instance.
         rotation_steps : int, optional
             The number of positions to which the element can snap during rotation,
             evenly divided around the circle. Defaults to 360.
         """
-        self.element: JsDomElement = element
+        self.transform: TransformController = transform
         self.rotation_steps: int = rotation_steps
-        self._current_rotation: float = 0
+        self._current_rotation: float = 0.0
 
     def destroy(self) -> None:
         """Remove applied transformation from the target element."""
-        self.element.style.removeProperty("transform")
+        self.transform.element.removeAttribute("data-angle")
 
     def reset(self) -> None:
         """Rotate the element back to its original orientation (0 degrees)."""
@@ -53,9 +55,8 @@ class RotationController:
             The number of degrees by which the image should be rotated.
         """
         self._current_rotation = degrees % 360
-
-        self.element.setAttribute("data-angle", str(self.current_rotation))
-        self.element.style.transform = f"rotate({self.current_rotation}deg)"
+        self.transform.rotate(self.current_rotation)
+        self.transform.element.setAttribute("data-angle", str(self.current_rotation))
 
     def step_clockwise(self) -> None:
         """
@@ -63,7 +64,7 @@ class RotationController:
 
         The size of the step is determined by dividing 360 by the number of rotation steps.
         """
-        self.rotate(self._current_rotation + 360 / self.rotation_steps)
+        self.rotate(self.current_rotation + 360 / self.rotation_steps)
 
     def step_counter_clockwise(self) -> None:
         """
@@ -71,7 +72,7 @@ class RotationController:
 
         The size of the step is determined by dividing 360 by the number of rotation steps.
         """
-        self.rotate(self._current_rotation - 360 / self.rotation_steps)
+        self.rotate(self.current_rotation - 360 / self.rotation_steps)
 
     @property
     def current_rotation(self) -> float:
@@ -84,3 +85,15 @@ class RotationController:
             The number of degrees by which the element is currently rotated, ranging from 0 to 360.
         """
         return self._current_rotation
+
+    @property
+    def element(self) -> JsDomElement:
+        """
+        Get the element managed by this controller.
+
+        Returns
+        -------
+        JsDomElement
+            The element managed by this controller.
+        """
+        return self.transform.element

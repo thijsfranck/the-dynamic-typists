@@ -9,7 +9,7 @@ from pyodide.ffi.wrappers import add_event_listener
 from .rotation_controller import RotationController
 
 if TYPE_CHECKING:
-    from pyodide.ffi import JsDomElement
+    from .transform_controller import TransformController
 
 
 class DragRotationController(RotationController):
@@ -22,33 +22,32 @@ class DragRotationController(RotationController):
 
     Attributes
     ----------
-    element : JsDomElement
-        The HTML DOM element being rotated.
+    transform : TransformController
+        The transform controller associated with the element that this controller manages.
     _center : dict[str, int]
         The central point of the element being rotated.
     _is_rotating : bool
         A flag indicating if the user is actively dragging/rotating the element.
     """
 
-    def __init__(self, element: JsDomElement, rotation_steps: int = 360) -> None:
+    def __init__(self, transform: TransformController, rotation_steps: int = 360) -> None:
         """
         Create a new `DragRotationController` for the given `element`.
 
         Parameters
         ----------
-        element : JsDomElement
-            The element rotated by this instance.
+         transform : TransformController
+            The transform controller associated with the element rotated by this instance.
         rotation_steps : int, optional
             The number of positions to which the element can snap during rotation,
             evenly divided around the circle. Defaults to 360.
         """
-        super().__init__(element, rotation_steps)
+        super().__init__(transform, rotation_steps)
 
-        self.element: JsDomElement = element
         self._center: dict[str, int] = {"x": 0, "y": 0}
         self._is_rotating: bool = False
 
-        add_event_listener(self.element, "mousedown", self._on_mouse_down)
+        add_event_listener(self.transform.element, "mousedown", self._on_mouse_down)
         add_event_listener(document, "mousemove", self._on_mouse_move)
         add_event_listener(document, "mouseup", self._on_mouse_up)
 
@@ -63,13 +62,13 @@ class DragRotationController(RotationController):
         """
         event.preventDefault()
 
-        bounding_rect = self.element.getBoundingClientRect()
+        bounding_rect = self.transform.element.getBoundingClientRect()
 
         self._center["x"] = bounding_rect.left + bounding_rect.width / 2
         self._center["y"] = bounding_rect.top + bounding_rect.height / 2
 
         self._is_rotating = True
-        self.element.classList.add("active")
+        self.transform.element.classList.add("active")
 
     def _on_mouse_move(self, event: object) -> None:
         """
@@ -107,4 +106,4 @@ class DragRotationController(RotationController):
             return
 
         self._is_rotating = False
-        self.element.classList.remove("active")
+        self.transform.element.classList.remove("active")
