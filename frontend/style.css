@@ -155,10 +155,10 @@ body {
 
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 1rem;
 }
 
-#refresh-button {
+#controls button {
     background: none;
     border: none;
     cursor: pointer;
@@ -166,11 +166,11 @@ body {
     outline: none;
 }
 
-#refresh-button:hover svg {
+#controls button:hover svg {
     opacity: 0.7;
 }
 
-#refresh-button svg {
+#controls button svg {
     transition: opacity 0.2s ease-in-out;
 }
 
