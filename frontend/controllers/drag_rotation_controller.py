@@ -22,8 +22,8 @@ class DragRotationController(RotationController):
 
     Attributes
     ----------
-    element : JsDomElement
-        The HTML DOM element being rotated.
+    transform : TransformController
+        The transform controller associated with the element that this controller manages.
     _center : dict[str, int]
         The central point of the element being rotated.
     _is_rotating : bool
@@ -36,8 +36,8 @@ class DragRotationController(RotationController):
 
         Parameters
         ----------
-        element : JsDomElement
-            The element rotated by this instance.
+         transform : TransformController
+            The transform controller associated with the element rotated by this instance.
         rotation_steps : int, optional
             The number of positions to which the element can snap during rotation,
             evenly divided around the circle. Defaults to 360.

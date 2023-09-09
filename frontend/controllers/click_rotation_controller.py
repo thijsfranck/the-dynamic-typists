@@ -13,20 +13,20 @@ class ClickRotationController(RotationController):
 
     Attributes
     ----------
-    element : JsDomElement
-        The HTML DOM element that this controller manages.
     rotation_steps : int
         The number of discrete rotation angles the element can snap to.
+    transform : TransformController
+        The transform controller associated with the element that this controller manages.
     """
 
     def __init__(self, transform: TransformController, rotation_steps: int = 360) -> None:
         """
-        Create a new `ClickRotationController` for the given `element`.
+        Create a new `ClickRotationController` for the given `transform`.
 
         Parameters
         ----------
-        element : JsDomElement
-            The element rotated by this instance.
+        transform : TransformController
+            The transform controller associated with the element rotated by this instance.
         rotation_steps : int, optional
             The number of positions to which the element can snap during rotation, evenly
             divided around the circle. Defaults to 360.

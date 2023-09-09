@@ -3,20 +3,20 @@ from .transform_controller import TransformController
 
 class RotationController:
     """
-    `RotationController` provides basic functionality to handle the rotation of DOM elements.
+        `RotationController` provides basic functionality to handle the rotation of DOM elements.
 
-    This controller allows rotation of an element through direct methods or via
-    stepping mechanisms. The rotation can be set to snap at specific intervals,
-    defined by the number of rotation steps.
+        This controller allows rotation of an element through direct methods or via
+        stepping mechanisms. The rotation can be set to snap at specific intervals,
+        defined by the number of rotation steps.
 
     Attributes
     ----------
-    element : TransformController
-        The HTML DOM element being rotated.
-    rotation_steps : int
-        Number of positions to which the element can snap during rotation.
-    _current_rotation : float
-        The current rotation of the element in degrees.
+        rotation_steps : int
+            Number of positions to which the element can snap during rotation.
+        transform : TransformController
+            The transform controller associated with the element that this controller manages.
+    _   current_rotation : float
+            The current rotation of the element in degrees.
     """
 
     def __init__(self, transform: TransformController, rotation_steps: int = 360) -> None:
@@ -25,8 +25,8 @@ class RotationController:
 
         Parameters
         ----------
-        element : JsDomElement
-            The element rotated by this instance.
+        transform : TransformController
+            The transform controller associated with the element rotated by this instance.
         rotation_steps : int, optional
             The number of positions to which the element can snap during rotation,
             evenly divided around the circle. Defaults to 360.
