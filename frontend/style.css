@@ -127,7 +127,7 @@ body {
     outline: 2px dashed var(--accent);
 }
 
-.rotatable-image:hover + .rotatable-image {
+.rotatable-image:hover+.rotatable-image {
     outline: 2px dotted var(--accent);
 }
 
@@ -137,7 +137,7 @@ body {
     box-shadow: 0 0 10px var(--accent);
 }
 
-.rotatable-image.active + .rotatable-image {
+.rotatable-image.active+.rotatable-image {
     outline: 2px solid var(--accent);
     box-shadow: 0 0 -10px var(--accent);
 }
@@ -166,12 +166,21 @@ body {
     outline: none;
 }
 
-#controls button:hover svg {
+#controls button:not(.loading) svg {
     opacity: 0.7;
+}
+
+#controls button.loading {
+    cursor: not-allowed;
 }
 
 #controls button svg {
     transition: opacity 0.2s ease-in-out;
+}
+
+#refresh-button.loading svg {
+    animation: loading-spinner 1s ease infinite;
+    transform-origin: center;
 }
 
 #confirm-button {
