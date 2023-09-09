@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Annotated, Literal
 from uuid import uuid4
 
-from fastapi import Cookie, FastAPI, HTTPException, Response
+from fastapi import Cookie, FastAPI, HTTPException, Response, UploadFile
 from fastapi.staticfiles import StaticFiles
 from PIL import Image
 from pydantic import BaseModel, ConfigDict
@@ -206,6 +206,48 @@ async def post_solution(
     }
 
     return response
+
+
+@APP.post("/api/config/upload")
+async def user_upload_image(
+    file: UploadFile,
+    session_id: Annotated[str | None, Cookie()] = None,
+):
+    """
+    Let the user upload a picture to use for the CAPTCHA.
+
+    Parameters
+    ----------
+    file : UploadFile
+        The file the user chose
+    session_id : str, optional
+        The session ID associated with the CAPTCHA challenge. This ID is used to retrieve the
+        original state and type of the CAPTCHA. If not provided, an error is raised.
+
+    Returns
+    -------
+    dict
+        Dictionary with the key 'message'
+
+    """
+    # Check if session_id was provided
+    if session_id is None:
+        raise HTTPException(status_code=400, detail="Session ID missing in the request.")
+
+    # Check if session exists for the given session_id
+    if session_id not in SESSIONS:
+        raise HTTPException(status_code=404, detail="Session not found.")
+
+    try:
+        with Path(file.filename).open("wb") as f:
+            while contents := file.file.read(1024 * 1024):
+                f.write(contents)
+    except (ValueError, OSError):
+        return {"message": "There was an error uploading the file"}
+    finally:
+        file.file.close()
+
+    return {"message": f"Successfully uploaded {file.filename}"}
 
 
 APP.mount("/", StaticFiles(directory="./frontend", html=True))

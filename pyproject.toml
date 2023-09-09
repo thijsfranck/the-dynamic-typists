@@ -11,6 +11,7 @@ python = "~3.11"
 pillow = "~10.0"
 fastapi = "~0.103.1"
 uvicorn = "~0.23.2"
+python-multipart = "~0.0"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "~2.17"
@@ -34,8 +35,7 @@ target-version = ["py311"]
 select = ["ALL"]
 ignore = [
     # Self and cls do not require annotations.
-    "ANN101",
-    "ANN102",
+    "ANN101", "ANN102",
     # Pyright error codes are obnoxiously long. Ignore lint telling you to use them.
     "PGH003",
     # Documenting every file is a bit redundant for us.
