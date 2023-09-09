@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 from .click_rotation_controller import ClickRotationController
 from .drag_drop_grid_controller import DragDropGridController
+from .transform_controller import TransformController
 
 if TYPE_CHECKING:
     from pyodide.ffi import JsDomElement
@@ -67,14 +68,17 @@ class ImageGridController:
 
         for child in children:
             child.classList.add("square")
-            controller = ClickRotationController(child, rotation_steps=self.rotation_steps)
+            transform = TransformController(child)
+            controller = ClickRotationController(transform, rotation_steps=self.rotation_steps)
             self._rotation_controllers.append(controller)
 
     def destroy(self) -> None:
         """Remove all grid items, destroy all controllers, and reset the root styles."""
         self._grid_controller.destroy()
         while len(self._rotation_controllers):
-            self._rotation_controllers.pop().destroy()
+            controller = self._rotation_controllers.pop()
+            controller.transform.destroy()
+            controller.destroy()
 
     def reset(self) -> None:
         """Reset the grid to its initial state and reset rotations to default."""

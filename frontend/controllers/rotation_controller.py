@@ -1,6 +1,4 @@
-import re
-
-from pyodide.ffi import JsDomElement
+from .transform_controller import TransformController
 
 
 class RotationController:
@@ -13,7 +11,7 @@ class RotationController:
 
     Attributes
     ----------
-    element : JsDomElement
+    element : TransformController
         The HTML DOM element being rotated.
     rotation_steps : int
         Number of positions to which the element can snap during rotation.
@@ -21,7 +19,7 @@ class RotationController:
         The current rotation of the element in degrees.
     """
 
-    def __init__(self, element: JsDomElement, rotation_steps: int = 360) -> None:
+    def __init__(self, transform: TransformController, rotation_steps: int = 360) -> None:
         """
         Create a new `RotationController` for the given `element`.
 
@@ -33,13 +31,12 @@ class RotationController:
             The number of positions to which the element can snap during rotation,
             evenly divided around the circle. Defaults to 360.
         """
-        self.element: JsDomElement = element
+        self.transform: TransformController = transform
         self.rotation_steps: int = rotation_steps
-        self._current_rotation: float = 0
 
     def destroy(self) -> None:
         """Remove applied transformation from the target element."""
-        self.element.style.removeProperty("transform")
+        self.transform.element.removeAttribute("data-angle")
 
     def reset(self) -> None:
         """Rotate the element back to its original orientation (0 degrees)."""
@@ -54,27 +51,8 @@ class RotationController:
         degrees : int
             The number of degrees by which the image should be rotated.
         """
-        self._current_rotation = degrees % 360
-
-        self.element.setAttribute("data-angle", str(self.current_rotation))
-
-        # Get the current transform value
-        current_transform = self.element.style.transform
-
-        # Check if rotate is already in the transform string
-        if "rotate(" in current_transform:
-            # Replace the current rotation value
-            current_transform = re.sub(
-                r"rotate\([^\)]+\)",
-                f"rotate({self._current_rotation}deg)",
-                current_transform,
-            )
-        else:
-            # Append the rotation to the current transform
-            current_transform += f" rotate({self._current_rotation}deg)"
-
-        # Apply the updated transform
-        self.element.style.transform = current_transform.strip()
+        self.transform.rotate(degrees)
+        self.transform.element.setAttribute("data-angle", str(degrees))
 
     def step_clockwise(self) -> None:
         """
@@ -82,7 +60,7 @@ class RotationController:
 
         The size of the step is determined by dividing 360 by the number of rotation steps.
         """
-        self.rotate(self._current_rotation + 360 / self.rotation_steps)
+        self.rotate(self.current_rotation + 360 / self.rotation_steps)
 
     def step_counter_clockwise(self) -> None:
         """
@@ -90,7 +68,7 @@ class RotationController:
 
         The size of the step is determined by dividing 360 by the number of rotation steps.
         """
-        self.rotate(self._current_rotation - 360 / self.rotation_steps)
+        self.rotate(self.current_rotation - 360 / self.rotation_steps)
 
     @property
     def current_rotation(self) -> float:
@@ -102,4 +80,4 @@ class RotationController:
         float
             The number of degrees by which the element is currently rotated, ranging from 0 to 360.
         """
-        return self._current_rotation
+        return self.transform.transforms["rotate"]
