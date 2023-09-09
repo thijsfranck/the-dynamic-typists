@@ -3,8 +3,8 @@ from random import choice, randint, shuffle
 
 from PIL import Image, ImageDraw, ImageOps
 
-from .picture import Picture
-from .tile import Tile
+from picture import Picture
+from tile import Tile
 
 
 def scramble_rows(picture: Picture) -> None:
