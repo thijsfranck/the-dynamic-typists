@@ -1,3 +1,5 @@
+from pyodide.ffi import JsDomElement
+
 from .transform_controller import TransformController
 
 
@@ -83,3 +85,15 @@ class RotationController:
             The number of degrees by which the element is currently rotated, ranging from 0 to 360.
         """
         return self._current_rotation
+
+    @property
+    def element(self) -> JsDomElement:
+        """
+        Get the element managed by this controller.
+
+        Returns
+        -------
+        JsDomElement
+            The element managed by this controller.
+        """
+        return self.transform.element

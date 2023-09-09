@@ -102,4 +102,4 @@ class RotatingImagesController:
         List[float] :
             List of rotation values in degrees.
         """
-        return reversed(controller.current_rotation for controller in self._controllers)
+        return [controller.current_rotation for controller in reversed(self._controllers)]
