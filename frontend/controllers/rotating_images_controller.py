@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from js import document
+from pyodide.ffi.wrappers import add_event_listener
 
 from .drag_rotation_controller import DragRotationController
 
@@ -58,6 +59,12 @@ class RotatingImagesController:
             img_element = document.createElement("img")
             img_element.src = f"data:image/png;base64,{image}"
             img_element.classList.add("rotatable-image")
+
+            def on_img_load(event: object) -> None:
+                scale = event.target.naturalWidth / background_element.naturalWidth
+                event.target.style.transform = f"scale({scale})"
+
+            add_event_listener(img_element, "load", on_img_load)
 
             self._controllers.append(DragRotationController(img_element, rotation_steps=360))
             self.root.appendChild(img_element)

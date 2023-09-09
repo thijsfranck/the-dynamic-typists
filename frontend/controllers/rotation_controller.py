@@ -1,3 +1,5 @@
+import re
+
 from pyodide.ffi import JsDomElement
 
 
@@ -55,7 +57,24 @@ class RotationController:
         self._current_rotation = degrees % 360
 
         self.element.setAttribute("data-angle", str(self.current_rotation))
-        self.element.style.transform = f"rotate({self.current_rotation}deg)"
+
+        # Get the current transform value
+        current_transform = self.element.style.transform
+
+        # Check if rotate is already in the transform string
+        if "rotate(" in current_transform:
+            # Replace the current rotation value
+            current_transform = re.sub(
+                r"rotate\([^\)]+\)",
+                f"rotate({self._current_rotation}deg)",
+                current_transform,
+            )
+        else:
+            # Append the rotation to the current transform
+            current_transform += f" rotate({self._current_rotation}deg)"
+
+        # Apply the updated transform
+        self.element.style.transform = current_transform.strip()
 
     def step_clockwise(self) -> None:
         """

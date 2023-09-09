@@ -112,6 +112,7 @@ body {
 #image-body.rotating-images img {
     max-width: 100%;
     height: auto;
+    object-fit: scale-down;
 }
 
 .rotatable-image {
@@ -126,6 +127,11 @@ body {
     cursor: grabbing;
     outline: 2px solid var(--accent);
     box-shadow: 0 0 10px var(--accent);
+}
+
+.rotatable-image.active + .rotatable-image{
+    outline: 2px solid var(--accent);
+    box-shadow: 0 0 -10px var(--accent);
 }
 
 #footer {
