@@ -24,26 +24,6 @@ class Picture:
         self.tile_order: list[int] = []
         self.scramble_type = None
 
-    def save(self, img_path: str) -> None:
-        """Save current tile arrangement as file."""
-        new_image = Image.new(mode=self.image.mode, size=self.image.size)
-
-        for original_pos, new_pos in enumerate(self.tile_order):
-            if self.scramble_type == "tiles":
-                self.tiles[new_pos].image = self.tiles[new_pos].image.rotate(
-                    self.tiles[new_pos].rotation,
-                )
-            elif self.scramble_type == "circle":
-                scrambled_tile = self.tiles[new_pos]
-                original_tile_position = self.tiles[original_pos].position
-                transparent_tile = Image.new("RGBA", new_image.size, (0, 0, 0, 0))
-                transparent_tile.paste(scrambled_tile.image.convert("RGBA"), original_tile_position)
-                new_image = Image.alpha_composite(new_image.convert("RGBA"), transparent_tile)
-            new_image.paste(self.tiles[new_pos].image, self.tiles[original_pos].position)
-
-        new_image = new_image.convert(self.image.mode)
-        new_image.save(img_path)
-
     def add_watermark(self) -> None:
         """Create a five digit code and add is as watermark into the picture."""
         text = ""
@@ -83,12 +63,8 @@ class Picture:
         watermark = Image.new(mode="RGB", size=self.image.size)
         watermark_draw = ImageDraw.Draw(watermark)
         watermark_draw.text((x, y), text, fill=(192, 192, 192), font=font)
-        watermark = watermark.rotate(90)
+        watermark = watermark.rotate(45)
 
         # put watermark in the middle of the picture
-        mask = Image.new(mode="L", size=self.image.size, color=50)
+        mask = Image.new(mode="L", size=self.image.size, color=75)
         self.image = Image.composite(watermark, self.image, mask=mask)
-
-    def is_image_fixed(self) -> None:
-        """Check if the scrambled tiles are put back to the original."""
-        raise NotImplementedError

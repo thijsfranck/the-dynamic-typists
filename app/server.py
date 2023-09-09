@@ -112,6 +112,7 @@ async def get_tiles(response: Response, session_id: Annotated[str | None, Cookie
 
     image_path = random_image()
     picture = Picture(str(object=image_path))
+    picture.add_watermark()
 
     scrambler = random.choice(SCRAMBLERS)
 
