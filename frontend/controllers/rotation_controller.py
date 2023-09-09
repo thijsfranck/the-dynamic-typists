@@ -15,7 +15,7 @@ class RotationController:
             Number of positions to which the element can snap during rotation.
         transform : TransformController
             The transform controller associated with the element that this controller manages.
-    _   current_rotation : float
+        current_rotation : float
             The current rotation of the element in degrees.
     """
 
