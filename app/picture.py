@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 from PIL import Image, ImageDraw, ImageFont
 
 if TYPE_CHECKING:
-    from tile import Tile
+    from app.tile import Tile
 
 
 class Picture:
