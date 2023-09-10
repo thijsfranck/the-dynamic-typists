@@ -15,13 +15,7 @@ from fastapi.staticfiles import StaticFiles
 from PIL import Image
 from pydantic import BaseModel, ConfigDict
 
-from protocol import (
-    SolutionCodeRequest,
-    SolutionCodeResponse,
-    SolutionRequest,
-    SolutionResponse,
-    TilesResponse,
-)
+from protocol import SolutionRequest, SolutionResponse, TilesResponse
 
 from .picture import Picture
 from .scrambler import scramble_circle, scramble_grid, scramble_rows
@@ -208,63 +202,10 @@ async def post_solution(
     solver = solvers[session_data.scrambler]
     solution = solver(session_data.picture)
 
-    solved = request["solution"] == solution
+    solved = request["solution"] == solution and request["code"] == session_data.picture.code
 
     response: SolutionResponse = {
         "solved": solved,
-    }
-
-    return response
-
-
-@APP.post("/api/solution_code")
-async def post_solution_code(
-    request: SolutionCodeRequest,
-    session_id: Annotated[str | None, Cookie()] = None,
-):
-    """
-    Evaluate the provided solution for a CAPTCHA challenge.
-
-    This endpoint accepts a proposed solution for a CAPTCHA challenge associated with a
-    given session. It then validates the solution against the expected result. If the solution
-    is correct, it returns that the challenge was successfully solved; otherwise, it indicates
-    a failed attempt.
-
-    Parameters
-    ----------
-    request : SolutionCodeRequest
-        The CAPTCHA code after the picture has been fixed.
-    session_id : str, optional
-        The session ID associated with the CAPTCHA challenge. This ID is used to retrieve the
-        original state and type of the CAPTCHA. If not provided, an error is raised.
-
-    Returns
-    -------
-    SolutionResponse
-        A dictionary containing a single key "solved", which is True if the provided solution
-        matches the expected solution and False otherwise.
-
-    Raises
-    ------
-    HTTPException
-        - 400: If no session ID is provided.
-        - 404: If the provided session ID does not match any existing session.
-        - 500: If an invalid scrambler type is encountered in the session data.
-    """
-    # Check if session_id was provided
-    if session_id is None:
-        raise HTTPException(status_code=400, detail="Session ID missing in the request.")
-
-    # Check if session exists for the given session_id
-    if session_id not in SESSIONS:
-        raise HTTPException(status_code=404, detail="Session not found.")
-
-    session_data = SESSIONS[session_id]
-
-    solved = request["solution_code"] == session_data.picture.code
-
-    response: SolutionCodeResponse = {
-        "accepted": solved,
     }
 
     return response
