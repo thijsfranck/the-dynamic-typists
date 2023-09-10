@@ -1,6 +1,11 @@
-from pyodide.ffi import JsDomElement
+from __future__ import annotations
 
-from .transform_controller import TransformController
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from js import JsDomElement
+
+    from .transform_controller import TransformController
 
 
 class RotationController:
