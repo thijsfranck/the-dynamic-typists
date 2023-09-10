@@ -20,6 +20,22 @@ class SolutionRequest(TypedDict):
     solution: Solution
 
 
+class SolutionCodeRequest(TypedDict):
+    """
+    Request structure for submitting a CAPTCHA solution to the server.
+
+    Defines the expected request body for the `/api/solution_code` endpoint when a user
+    submits a CAPTCHA solution. The solution code is a string.
+
+    Attributes
+    ----------
+    solution_code : str
+        The code the user provides after solving the CAPTCHA.
+    """
+
+    solution_code: str
+
+
 class SolutionResponse(TypedDict):
     """
     Response structure when submitting a CAPTCHA solution to the server.
@@ -35,3 +51,20 @@ class SolutionResponse(TypedDict):
     """
 
     solved: bool
+
+
+class SolutionCodeResponse(TypedDict):
+    """
+    Response structure when submitting a CAPTCHA solution to the server.
+
+    Defines the expected response body from the `/api/solution_code` endpoint after a
+    user submits the CAPTCHA code. The server responds with a boolean indicating
+    whether the proposed code is accepted or not.
+
+    Attributes
+    ----------
+    accepted : bool
+        Indicates whether the provided code was accepted.
+    """
+
+    accepted: bool
