@@ -65,3 +65,5 @@ convention = "numpy"
 typeCheckingMode = "basic"
 pythonVersion = "3.11"
 reportUnnecessaryTypeIgnoreComment = "error"
+# Pyodide "js" module is dynamic.
+reportMissingModuleSource = "none"
