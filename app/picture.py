@@ -1,4 +1,3 @@
-"""Picture class contains template for picture based on Image from Pillow."""
 from __future__ import annotations
 
 import string
@@ -12,9 +11,12 @@ if TYPE_CHECKING:
 
 
 class Picture:
-    """Picture class has methods for saving PIL image formed from tiles.
+    """A picture holds information about an image and handles scrambling into tiles.
 
-    :param img_path: Used to provide image path to open image.
+    Parameters
+    ----------
+    img_path:
+        The path to the image.
     """
 
     def __init__(self, img_path: str) -> None:
@@ -26,7 +28,13 @@ class Picture:
         self._generate_code()
 
     def add_watermark(self, text: str) -> None:
-        """Create a five digit code and add is as watermark into the picture."""
+        """Create a five digit code and add it as a watermark into the picture.
+
+        Parameters
+        ----------
+        text:
+            The text to watermark.
+        """
         img_width, img_height = self.image.size
         fontsize = 175
         diff = 1
@@ -70,13 +78,13 @@ class Picture:
         self.image = Image.composite(watermark, self.image, mask=mask)
 
     def _get_brightness(self) -> int:
-        """Return the average pixel brightness."""
+        """Get the average pixel brightness."""
         return int(ImageStat.Stat(self.image.convert("L")).mean[0])
 
     def _generate_code(self) -> None:
         """Generate a five digit code containing number and lower-case letters.
 
-        The code is used as solution for the CAPTCHA.
+        The code is used as a solution for the CAPTCHA.
         """
         for _ in range(5):
             self.code += choice(string.digits + string.ascii_lowercase)

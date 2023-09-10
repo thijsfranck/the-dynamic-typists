@@ -1,6 +1,3 @@
-# FastAPI functions are better off without explicit return types.
-# ruff: noqa: ANN201
-
 import base64
 import itertools
 import random
@@ -28,8 +25,7 @@ SCRAMBLERS = ("rows", "grid", "circle")
 
 
 class SessionData(BaseModel):
-    """
-    Represents session-specific data for each user's CAPTCHA challenge.
+    """Represents session-specific data for each user's CAPTCHA challenge.
 
     Attributes
     ----------
@@ -56,8 +52,7 @@ SESSIONS: dict[str, SessionData] = {}
 
 
 def random_image() -> Path:
-    """
-    Choose and return a random image path from the resource directory.
+    """Choose and return a random image path from the resource directory.
 
     Returns
     -------
@@ -69,12 +64,11 @@ def random_image() -> Path:
 
 
 def image_base64(image: Image.Image) -> str:
-    """
-    Convert an Image object to its base64 representation.
+    """Convert an Image object to its base64 representation.
 
     Parameters
     ----------
-    image : Image.Image
+    image:
         The PIL Image object to be encoded.
 
     Returns
@@ -88,18 +82,20 @@ def image_base64(image: Image.Image) -> str:
 
 
 @APP.get("/api/tiles")
-async def get_tiles(response: Response, session_id: Annotated[str | None, Cookie()] = None):
-    """
-    Handle requests for a new set of CAPTCHA tiles.
+async def get_tiles(
+    response: Response,
+    session_id: Annotated[str | None, Cookie()] = None,
+) -> TilesResponse:
+    """Handle requests for a new set of CAPTCHA tiles.
 
     If a previous session ID is provided and exists, the corresponding session data is overwritten.
     Returns a random CAPTCHA type (rows, grid, or circle) and the associated tiles.
 
     Parameters
     ----------
-    response : Response
+    response:
         FastAPI's response object used to set cookies.
-    session_id : str, optional
+    session_id:
         The existing session ID, if any. Defaults to None.
 
     Returns
@@ -148,9 +144,8 @@ async def get_tiles(response: Response, session_id: Annotated[str | None, Cookie
 async def post_solution(
     request: SolutionRequest,
     session_id: Annotated[str | None, Cookie()] = None,
-):
-    """
-    Evaluate the provided solution for a CAPTCHA challenge.
+) -> SolutionResponse:
+    """Evaluate the provided solution for a CAPTCHA challenge.
 
     This endpoint accepts a proposed solution for a CAPTCHA challenge associated with a
     given session. It then validates the solution against the expected result. If the solution
@@ -159,10 +154,10 @@ async def post_solution(
 
     Parameters
     ----------
-    request : SolutionRequest
+    request:
         The user's solution for the CAPTCHA challenge. This will contain the sequence or
         transformations applied on the tiles.
-    session_id : str, optional
+    session_id:
         The session ID associated with the CAPTCHA challenge. This ID is used to retrieve the
         original state and type of the CAPTCHA. If not provided, an error is raised.
 

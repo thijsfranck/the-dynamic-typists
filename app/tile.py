@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 @dataclass
 class Tile:
-    """Represent one tile of a whole picture."""
+    """Represents one tile of a whole picture."""
 
     image: Image.Image
     """Tile as PIL.Image object"""
