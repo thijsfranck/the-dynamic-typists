@@ -11,15 +11,16 @@ if TYPE_CHECKING:
 
 
 class Picture:
-    """A picture holds information about an image and handles scrambling into tiles.
-
-    Parameters
-    ----------
-    img_path:
-        The path to the image.
-    """
+    """A picture holds information about an image and handles scrambling into tiles."""
 
     def __init__(self, img_path: str) -> None:
+        """Create a new `Picture` with the given image.
+
+        Parameters
+        ----------
+        img_path:
+            The path to the image.
+        """
         self.image: Image.Image = Image.open(img_path)
         self.tiles: dict[int, Tile] = {}
         self.tile_order: list[int] = []
