@@ -21,6 +21,7 @@ from pyodide.webloop import PyodideFuture
 class JsDomElement(OldJSDomElement):
     classList: DOMTokenList
     style: CSSStyleDeclaration
+    innerText: str
 
     @property
     def children(self) -> Sequence[JsDomElement]:
