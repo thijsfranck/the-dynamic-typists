@@ -13,7 +13,7 @@ from .rotating_images_controller import RotatingImagesController
 if TYPE_CHECKING:
     from collections.abc import Callable
 
-    from js import JsDomElement
+    from js import JsDomElement, JsInputElement
 
     from protocol import Solution, SolutionRequest, SolutionResponse, TilesResponse
 
@@ -91,7 +91,7 @@ async def fetch_tiles() -> TilesResponse:
     return await response.json()
 
 
-async def post_solution(solution: Solution) -> bool:
+async def post_solution(solution: Solution, code: str) -> bool:
     """
     Post a proposed CAPTCHA solution to the server and retrieve the verification result.
 
@@ -115,6 +115,7 @@ async def post_solution(solution: Solution) -> bool:
         If the request to the `/api/solution` endpoint fails.
     """
     body: SolutionRequest = {
+        "code": code,
         "solution": solution,
     }
 
@@ -144,11 +145,13 @@ class App:
     active_controller : Controller | None
         The currently active controller handling UI interactions.
         Can be None if no controller is set.
+    code_input : JsInputElement
+        The text input element where the user types the code from the image.
     root : JsDomElement
         The main DOM element that the app and its controllers interact with.
     """
 
-    def __init__(self, root: JsDomElement) -> None:
+    def __init__(self, root: JsDomElement, code_input: JsInputElement) -> None:
         """
         Initialize a new instance of App.
 
@@ -156,8 +159,11 @@ class App:
         ----------
         root : JSDomElement
             The DOM element where the app will render the content.
+        code_input : JsInputElement
+            The text input element where the user types the code from the image.
         """
         self.active_controller: Controller | None = None
+        self.code_input: JsInputElement = code_input
         self.root: JsDomElement = root
 
     async def load_captcha(self) -> None:
@@ -174,6 +180,7 @@ class App:
         controller_name = captcha["type"]
         tiles = captcha["tiles"]
 
+        self.code_input.value = ""
         self.set_controller(controller_name)
 
         if self.active_controller is not None:
@@ -191,12 +198,13 @@ class App:
         result = False
 
         if self.active_controller is not None:
-            result = await post_solution(self.active_controller.solution)
+            result = await post_solution(self.active_controller.solution, self.code_input.value)
 
         return result
 
     def reset(self) -> None:
-        """Restore the active controller to its original state."""
+        """Restore the active controller to its original state and clear the input field."""
+        self.code_input.value = ""
         if self.active_controller is not None:
             self.active_controller.reset()
 

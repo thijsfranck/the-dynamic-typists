@@ -6,7 +6,7 @@ from js import Event, document
 from pyodide.ffi.wrappers import add_event_listener, remove_event_listener
 
 if TYPE_CHECKING:
-    from pyodide.ffi import JsDomElement
+    from js import JsDomElement, JsInputElement
 
 
 async def main() -> None:
@@ -15,12 +15,13 @@ async def main() -> None:
     This is a function as top-level await was removed in pyodide.
     """
     image_body: JsDomElement = document.getElementById("image-body")
+    code_input: JsInputElement = document.getElementById("code-input")  # type: ignore
     confirm_button: JsDomElement = document.getElementById("confirm-button")
     confirm_button_text: JsDomElement = document.getElementById("confirm-button-text")
     refresh_button: JsDomElement = document.getElementById("refresh-button")
     restart_button: JsDomElement = document.getElementById("restart-button")
 
-    app = App(image_body)
+    app = App(image_body, code_input)
     await app.load_captcha()
 
     is_loading_captcha = False
