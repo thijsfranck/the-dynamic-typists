@@ -25,6 +25,7 @@ class DragDropGridController:
         The root element where the images are rendered in a grid.
     columns : int
         Number of columns in the grid.
+
     drop_behavior : DropBehavior
         Defines the behavior on drop: "insert" or "swap".
     _images : List[str]

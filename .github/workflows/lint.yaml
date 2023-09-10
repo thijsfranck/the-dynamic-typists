@@ -46,4 +46,12 @@ jobs:
         with:
           version: ${{ env.PYRIGHT_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
+          working-directory: app
           warnings: true
+
+      - name: Type checking for frontend
+        uses: jakebailey/pyright-action@v1.2.0
+        with:
+          version: ${{ env.PYRIGHT_VERSION }}
+          python-version: ${{ env.PYTHON_VERSION }}
+          working-directory: frontend

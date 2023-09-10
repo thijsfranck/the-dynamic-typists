@@ -48,3 +48,28 @@ def solve_tiles(picture: Picture) -> Solution:
         (tile_position, float(picture.tiles[tile_position].rotation))
         for tile_position in picture.tile_order
     ]
+
+
+def solve_circle(picture: Picture) -> Solution:
+    """
+    Compute the solution for the circle/ring CAPTCHA.
+
+    For CAPTCHAs where each ring is potentially rotated, this function computes the
+    solution based on the rotation of the tiles in the provided picture.
+
+    Parameters
+    ----------
+    picture : Picture
+        An instance of the Picture class representing the scrambled CAPTCHA.
+
+    Returns
+    -------
+    Solution
+        A list with the rotation needed to put the ring in the right spot.
+    """
+    solution = []
+    num_tiles = len(picture.tiles)
+    for ring_position in range(1, num_tiles):
+        angle = picture.tiles[ring_position].rotation
+        solution.append(float(angle))
+    return solution
