@@ -70,6 +70,6 @@ def solve_circle(picture: Picture) -> Solution:
     solution = []
     num_tiles = len(picture.tiles)
     for ring_position in range(1, num_tiles):
-        angle = picture.tiles[ring_position].rotation
+        angle = picture.tiles[ring_position].rotation % 360
         solution.append(float(angle))
     return solution
