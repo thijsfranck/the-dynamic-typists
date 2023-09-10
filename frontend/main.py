@@ -66,7 +66,8 @@ async def main() -> None:
 
         if confirm_button.classList.contains("solved"):
             confirm_button.classList.remove("solved")
-            add_event_listener(confirm_button, "click", handle_post_solution)
+            # Pyodide typings do not handle async event handlers, despite them working.
+            add_event_listener(confirm_button, "click", handle_post_solution)  # type: ignore
 
     async def handle_post_solution(_: object) -> None:
         """
@@ -112,12 +113,12 @@ async def main() -> None:
         if solved:
             confirm_button.classList.add("solved")
             confirm_button_text.innerText = "SOLVED"
-            remove_event_listener(confirm_button, "click", handle_post_solution)
+            remove_event_listener(confirm_button, "click", handle_post_solution)  # type: ignore
         else:
             confirm_button_text.innerText = "RETRY"
 
-    add_event_listener(confirm_button, "click", handle_post_solution)
-    add_event_listener(refresh_button, "click", handle_load_captcha)
+    add_event_listener(confirm_button, "click", handle_post_solution)  # type: ignore
+    add_event_listener(refresh_button, "click", handle_load_captcha)  # type: ignore
     add_event_listener(restart_button, "click", lambda _: app.reset())
 
 
