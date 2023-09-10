@@ -20,7 +20,7 @@ class Picture:
         self.is_solved: bool = False
         self.tiles: dict[int, Tile] = {}
         self.tile_order: list[int] = []
-        self.scramble_type = None
+        self.scramble_type: str | None = None
 
     def save(self, img_path: str) -> None:
         """Save current tile arrangement as file."""
