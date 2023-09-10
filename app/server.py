@@ -112,6 +112,7 @@ async def get_tiles(response: Response, session_id: Annotated[str | None, Cookie
 
     image_path = random_image()
     picture = Picture(str(object=image_path))
+    picture.add_watermark(picture.code)
 
     scrambler = random.choice(SCRAMBLERS)
 
@@ -201,7 +202,7 @@ async def post_solution(
     solver = solvers[session_data.scrambler]
     solution = solver(session_data.picture)
 
-    solved = request["solution"] == solution
+    solved = request["solution"] == solution and request["code"] == session_data.picture.code
 
     response: SolutionResponse = {
         "solved": solved,

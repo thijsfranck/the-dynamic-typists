@@ -41,9 +41,14 @@ body {
     flex-direction: column;
     justify-content: center;
 
-    font-weight: 500;
     background-color: var(--primary);
     color: var(--secondary);
+}
+
+#heading h1 {
+    font-weight: 500;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 #image-body.grid-container {
@@ -234,4 +239,39 @@ body {
 #confirm-button.solved {
     cursor: not-allowed;
     background-color: var(--success);
+}
+
+#code-input-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+#code-input-label {
+    flex-shrink: 1;
+}
+
+#code-input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    border: none;
+    outline: 2px solid var(--accent);
+    padding: 5px;
+    margin: 0;
+    box-sizing: border-box;
+    flex-grow: 1;
+}
+
+#code-input:active {
+    outline: 2px solid var(--primary);
+}
+
+#code-input:focus {
+    outline: 2px solid var(--primary);
+}
+
+#code-input:hover {
+    outline: 2px solid var(--primary);
 }

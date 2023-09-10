@@ -52,6 +52,9 @@ class JsImgElement(JsDomElement):
     naturalWidth: int
     naturalHeight: int
 
+class JsInputElement(JsDomElement):
+    value: str
+
 class JsCanvasElement(JsDomElement):
     width: int
     height: int

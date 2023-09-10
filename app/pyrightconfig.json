@@ -1,5 +1,0 @@
-{
-    "extraPaths": ["../"],
-    "pythonVersion": "3.11",
-    "reportUnnecessaryTypeIgnoreComment": "error",
-}
