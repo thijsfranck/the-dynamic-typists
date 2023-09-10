@@ -15,8 +15,7 @@ if TYPE_CHECKING:
 
 
 class DragRotationController(RotationController):
-    """
-    `DragRotationController` allows for rotating an element by dragging with the mouse.
+    """A controller for rotating an element by dragging with the mouse.
 
     It listens to mouse events on the associated element and translates mouse movements
     into rotation angles, with optional snap-to-grid functionality based on the number of
@@ -33,14 +32,13 @@ class DragRotationController(RotationController):
     """
 
     def __init__(self, transform: TransformController, rotation_steps: int = 360) -> None:
-        """
-        Create a new `DragRotationController` for the given `element`.
+        """Create a new `DragRotationController` for the given `element`.
 
         Parameters
         ----------
-         transform : TransformController
+        transform:
             The transform controller associated with the element rotated by this instance.
-        rotation_steps : int, optional
+        rotation_steps:
             The number of positions to which the element can snap during rotation,
             evenly divided around the circle. Defaults to 360.
         """
@@ -55,12 +53,11 @@ class DragRotationController(RotationController):
         add_event_listener(document, "mouseup", self._on_mouse_up)  # type: ignore
 
     def _on_mouse_down(self, event: MouseEvent) -> None:
-        """
-        Enable the rotating state and set the current element center on left-click.
+        """Enable the rotating state and set the current element center on left-click.
 
         Parameters
         ----------
-        event : MouseEvent
+        event:
             The mouse event triggered by the user.
         """
         event.preventDefault()
@@ -74,12 +71,11 @@ class DragRotationController(RotationController):
         self.element.classList.add("active")
 
     def _on_mouse_move(self, event: MouseEvent) -> None:
-        """
-        Calculate the rotation angle based on the user's mouse movement and apply it to the element.
+        """Calculate the rotation angle based on the user's mouse movement and apply it.
 
         Parameters
         ----------
-        event : MouseEvent
+        event:
             The mouse move event triggered by the user.
         """
         # Do nothing if the user is not actively rotating the element

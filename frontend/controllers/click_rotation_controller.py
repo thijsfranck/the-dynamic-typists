@@ -6,8 +6,7 @@ from .transform_controller import TransformController
 
 
 class ClickRotationController(RotationController):
-    """
-    `ClickRotationController` allows for rotating an element by clicking on it.
+    """A controller for rotating an element by clicking on it.
 
     The number of rotation steps defines how many discrete rotation angles the
     element can snap to, distributed evenly around the circle.
@@ -21,14 +20,13 @@ class ClickRotationController(RotationController):
     """
 
     def __init__(self, transform: TransformController, rotation_steps: int = 360) -> None:
-        """
-        Create a new `ClickRotationController` for the given `transform`.
+        """Create a new `ClickRotationController` for the given `transform`.
 
         Parameters
         ----------
-        transform : TransformController
+        transform:
             The transform controller associated with the element rotated by this instance.
-        rotation_steps : int, optional
+        rotation_steps:
             The number of positions to which the element can snap during rotation, evenly
             divided around the circle. Defaults to 360.
         """
@@ -36,12 +34,11 @@ class ClickRotationController(RotationController):
         add_event_listener(self.transform.element, "click", self._on_left_click)
 
     def _on_left_click(self, event: MouseEvent) -> None:
-        """
-        Handle the left-click event to rotate the element.
+        """Handle the left-click event to rotate the element.
 
         Parameters
         ----------
-        event : MouseEvent
+        event:
             The mouse event associated with the click action.
         """
         event.preventDefault()

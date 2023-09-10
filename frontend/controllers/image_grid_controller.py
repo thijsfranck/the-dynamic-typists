@@ -11,8 +11,7 @@ if TYPE_CHECKING:
 
 
 class ImageGridController:
-    """
-    Controller managing a grid of images that supports drag-and-drop and image rotation.
+    """A controller that manages a grid of images that supports drag-and-drop and image rotation.
 
     The class integrates both the `DragDropGridController` for drag-and-drop capabilities and
     `ClickRotationController` for  click-to-rotate functionality. Each image in the grid can be
@@ -33,16 +32,15 @@ class ImageGridController:
     """
 
     def __init__(self, root: JsDomElement, columns: int = 2, rotation_steps: int = 4) -> None:
-        """
-        Initialize the `ImageGridController`.
+        """Create a new `ImageGridController` with the given options.
 
         Parameters
         ----------
-        root : JsDomElement
+        root:
             The root element where the grid will be rendered.
-        columns : int, optional
+        columns:
             Number of columns for the grid layout. Defaults to 2.
-        rotation_steps : int, optional
+        rotation_steps:
             Discrete rotation positions that an image can snap to. Defaults to 4.
         """
         self.root: JsDomElement = root
@@ -53,12 +51,11 @@ class ImageGridController:
         self._rotation_controllers: list[ClickRotationController] = []
 
     def render(self, images: list[str]) -> None:
-        """
-        Render the images in the grid and assign rotation controllers to each image.
+        """Render the images in the grid and assign rotation controllers to each image.
 
         Parameters
         ----------
-        images : List[str]
+        images:
             List of base64 encoded strings to be displayed in the grid.
         """
         self._images = images
@@ -87,8 +84,7 @@ class ImageGridController:
 
     @property
     def solution(self) -> list[tuple[int, float]]:
-        """
-        Provide the current solution as positions and rotations of images.
+        """Provide the current solution as positions and rotations of images.
 
         Returns
         -------
