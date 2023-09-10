@@ -25,7 +25,7 @@ from protocol import (
 
 from .picture import Picture
 from .scrambler import scramble_circle, scramble_grid, scramble_rows
-from .solver import solve_rows, solve_tiles
+from .solver import solve_circle, solve_rows, solve_tiles
 
 APP = FastAPI(debug=not bool(getenv("PRODUCTION")))
 RESOURCES = Path("./app/resources")
@@ -195,7 +195,11 @@ async def post_solution(
 
     session_data = SESSIONS[session_id]
 
-    solvers = {"rows": solve_rows, "grid": solve_tiles}
+    solvers = {
+        "rows": solve_rows,
+        "grid": solve_tiles,
+        "circle": solve_circle,
+    }
 
     # Check if the scrambler exists in solvers
     if session_data.scrambler not in solvers:
