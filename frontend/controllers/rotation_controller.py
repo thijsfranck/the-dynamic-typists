@@ -1,15 +1,20 @@
-from pyodide.ffi import JsDomElement
+from __future__ import annotations
 
-from .transform_controller import TransformController
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from js import JsDomElement
+
+    from .transform_controller import TransformController
 
 
 class RotationController:
     """
-        `RotationController` provides basic functionality to handle the rotation of DOM elements.
+    `RotationController` provides basic functionality to handle the rotation of DOM elements.
 
-        This controller allows rotation of an element through direct methods or via
-        stepping mechanisms. The rotation can be set to snap at specific intervals,
-        defined by the number of rotation steps.
+    This controller allows rotation of an element through direct methods or via
+    stepping mechanisms. The rotation can be set to snap at specific intervals,
+    defined by the number of rotation steps.
 
     Attributes
     ----------
@@ -39,7 +44,7 @@ class RotationController:
 
     def destroy(self) -> None:
         """Remove applied transformation from the target element."""
-        self.transform.element.removeAttribute("data-angle")
+        self.element.removeAttribute("data-angle")
 
     def reset(self) -> None:
         """Rotate the element back to its original orientation (0 degrees)."""
@@ -56,7 +61,7 @@ class RotationController:
         """
         self._current_rotation = degrees % 360
         self.transform.rotate(self.current_rotation)
-        self.transform.element.setAttribute("data-angle", str(self.current_rotation))
+        self.element.setAttribute("data-angle", str(self.current_rotation))
 
     def step_clockwise(self) -> None:
         """

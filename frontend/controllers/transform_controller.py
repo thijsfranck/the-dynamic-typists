@@ -1,22 +1,12 @@
-from typing import TypedDict
+from __future__ import annotations
 
-from pyodide.ffi import JsDomElement
+from typing import TYPE_CHECKING, Literal
+
+if TYPE_CHECKING:
+    from js import JsDomElement
 
 
-class Transforms(TypedDict):
-    """
-    A TypedDict for defining the transform properties to be applied to a DOM element.
-
-    Attributes
-    ----------
-    rotate : str | None
-        A string representing the rotation transformation or None if not set.
-    scale : str | None
-        A string representing the scale transformation or None if not set.
-    """
-
-    rotate: str | None
-    scale: str | None
+Transform = Literal["rotate", "scale"]
 
 
 class TransformController:
@@ -30,7 +20,7 @@ class TransformController:
     ----------
     element : JsDomElement
         The DOM element that the transformations will be applied to.
-    transforms : Transforms
+    transforms : dict[Transform, str]
         A dictionary holding the transform functions and their values.
     """
 
@@ -44,7 +34,7 @@ class TransformController:
             The DOM element to which the transformations will be applied.
         """
         self.element: JsDomElement = element
-        self.transforms: Transforms = {}
+        self.transforms: dict[Transform, str] = {}
 
     def destroy(self) -> None:
         """Remove the transform property from the element styles."""
