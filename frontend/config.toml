@@ -1,0 +1,10 @@
+terminal = false
+docked = false
+
+[[fetch]]
+from = 'controllers'
+files = ['__init__.py', 'app.py', 'click_rotation_controller.py', 'drag_drop_grid_controller.py', 'drag_rotation_controller.py', 'image_grid_controller.py', 'rotating_images_controller.py', 'rotation_controller.py', 'transform_controller.py']
+to_folder = 'controllers'
+
+[[splashscreen]]
+autoclose = true

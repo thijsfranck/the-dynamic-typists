@@ -136,7 +136,7 @@ Good code documentation aids understanding and speeds up the development process
 
 #### Basic Guidelines
 
-Always document the following elements of your code:  
+Always document the following elements of your code:
 
 1. **Classes**: including their **attributes and public methods**
 2. **Module-level functions and constants**

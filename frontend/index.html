@@ -8,6 +8,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style.css">
   <link rel="icon" href="./favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+  <script defer src="https://pyscript.net/latest/pyscript.js"></script>
 </head>
 
 <body>
@@ -22,66 +24,24 @@
         <button id="refresh-button">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
             <path
-              d="M13.5 2c-5.621 0-10.211 4.443-10.475 10h-3.025l5 6.625 5-6.625h-2.975c.257-3.351 3.06-6 6.475-6 3.584 0 6.5 2.916 6.5 6.5s-2.916 6.5-6.5 6.5c-1.863 0-3.542-.793-4.728-2.053l-2.427 3.216c1.877 1.754 4.389 2.837 7.155 2.837 5.79 0 10.5-4.71 10.5-10.5s-4.71-10.5-10.5-10.5z"
+              d="M22.3237 10.8841 21.0463 10.8841C20.5334 6.1377 16.4491 2.3611 11.5815 2.3611 8.7468 2.3611 6.1731 3.648 4.42 5.6715 4.0656 6.0725 4.1216 6.5666 4.4853 6.8278 4.8583 7.0889 5.2965 7.0049 5.6042 6.6599 7.0496 5.0001 9.1943 3.9464 11.5815 3.9464 15.6472 3.9464 18.9574 6.9583 19.4423 10.8841L18.053 10.8841C17.3909 10.8841 17.2138 11.3317 17.5774 11.8445L19.6568 14.8192C19.9553 15.2482 20.4029 15.2575 20.7106 14.8192L22.7993 11.8538C23.1724 11.3317 22.9952 10.8841 22.3237 10.8841ZM.8486 12.8703 2.1261 12.8703C2.6389 17.6167 6.7233 21.3839 11.5815 21.3839 14.4349 21.3839 17.0086 20.0878 18.7617 18.0736 19.0974 17.6726 19.0508 17.1691 18.6964 16.908 18.3234 16.6469 17.8851 16.7401 17.5774 17.0851 16.1414 18.7543 13.9966 19.7987 11.5815 19.7987 7.5252 19.7987 4.2149 16.7961 3.7299 12.8703L5.1194 12.8703C5.7814 12.8703 5.9586 12.4134 5.5949 11.9098L3.5062 8.9352C3.2078 8.5062 2.7695 8.4969 2.4618 8.9352L.373 11.9005C0 12.4134.1772 12.8703.8486 12.8703Z"
+              fill="currentColor" />
+          </svg>
+        </button>
+        <button id="restart-button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path
+              d="M11.5862 22.5113C16.9881 22.5113 21.4785 18.0307 21.4785 12.6191 21.4785 7.8475 17.987 3.8033 13.458 2.9111L13.458 1.5339C13.458.8454 12.9827.6611 12.4493 1.0393L9.3556 3.2021C8.9191 3.5124 8.9095 3.9779 9.3556 4.2979L12.4396 6.4704C12.9827 6.8583 13.458 6.674 13.458 5.9758L13.458 4.5889C17.1239 5.423 19.82 8.6913 19.82 12.6191 19.82 17.1967 16.1541 20.8626 11.5862 20.8626 7.0086 20.8626 3.3329 17.1967 3.3426 12.6191 3.3523 9.8647 4.6907 7.4305 6.7564 5.9563 7.1541 5.6557 7.2801 5.1999 7.028 4.7926 6.7952 4.3949 6.2618 4.2883 5.8351 4.618 3.3329 6.4316 1.6939 9.3605 1.6939 12.6191 1.6939 18.0307 6.1745 22.5113 11.5862 22.5113Z"
               fill="currentColor" />
           </svg>
         </button>
       </div>
-      <button id="confirm-button">CONFIRM</button>
-    </div>
-    <div id="dev-controls">
-      <select id="controller-select">
-        <option value="grid" default>Rotating Grid Controller</option>
-        <option value="rows">Drag and Drop Controller</option>
-        <option value="circles">Rotating Circles Controller</option>
-      </select>
+      <button id="confirm-button"><span id="confirm-button-text">CONFIRM</span></button>
     </div>
   </main>
 
-  <!-- Include the scripts.js file -->
-  <script src="./scripts.js"></script>
-
-  <script>
-    async function fetchImages() {
-      return [
-        'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII',
-        'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII',
-        'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII',
-        'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII'
-      ];
-    }
-
-    const controllerFactories = {
-      "grid": (root) => new ImageGridController(root),
-      "rows": (root) => new DragDropGridController(root),
-      "circles": (root) => new RotatingImagesController(root)
-    };
-
-    const imageBody = document.getElementById('image-body');
-    let activeController = null;
-
-    function setController(controllerName) {
-      if (activeController) {
-        activeController.destroy();
-      }
-
-      const controllerFactory = controllerFactories[controllerName];
-      activeController = controllerFactory(imageBody);
-
-      fetchImages().then(images => activeController.render(images)).catch(console.error);
-    }
-
-    const confirmButton = document.getElementById('confirm-button');
-    const controllerSelect = document.getElementById('controller-select');
-    const refreshButton = document.getElementById('refresh-button');
-
-    controllerSelect.addEventListener('change', (event) => setController(event.target.value));
-    confirmButton.addEventListener('click', () => console.log(activeController.solution));
-    refreshButton.addEventListener('click', () => activeController.reset())
-
-    setController(controllerSelect.value);
-  </script>
-
+  <py-config src="./config.toml"></py-config>
+  <py-script src="./main.py"></py-script>
 </body>
 
 </html>
