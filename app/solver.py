@@ -45,6 +45,6 @@ def solve_tiles(picture: Picture) -> Solution:
         - The rotation value of the tile.
     """
     return [
-        [tile_position, float(picture.tiles[tile_position].rotation)]
+        (tile_position, float(picture.tiles[tile_position].rotation))
         for tile_position in picture.tile_order
     ]

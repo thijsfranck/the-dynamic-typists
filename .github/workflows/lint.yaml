@@ -41,17 +41,9 @@ jobs:
       - name: Run pre-commit hooks
         uses: pre-commit/action@v3.0.0
 
-      - name: Type checking for backend
+      - name: Type checking
         uses: jakebailey/pyright-action@v1.2.0
         with:
           version: ${{ env.PYRIGHT_VERSION }}
           python-version: ${{ env.PYTHON_VERSION }}
-          working-directory: app
           warnings: true
-
-      - name: Type checking for frontend
-        uses: jakebailey/pyright-action@v1.2.0
-        with:
-          version: ${{ env.PYRIGHT_VERSION }}
-          python-version: ${{ env.PYTHON_VERSION }}
-          working-directory: frontend
