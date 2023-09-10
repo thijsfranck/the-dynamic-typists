@@ -10,8 +10,7 @@ Transform = Literal["rotate", "scale"]
 
 
 class TransformController:
-    """
-    A controller for managing and applying transformations to a DOM element.
+    """A controller for managing and applying transformations to a DOM element.
 
     This controller provides an interface to apply transformations like rotation and scaling
     to a DOM element without overwriting each other.
@@ -25,12 +24,11 @@ class TransformController:
     """
 
     def __init__(self, element: JsDomElement) -> None:
-        """
-        Initialize the TransformController with the provided DOM element.
+        """Create a new `TransformController` with the provided DOM element.
 
         Parameters
         ----------
-        element : JsDomElement
+        element:
             The DOM element to which the transformations will be applied.
         """
         self.element: JsDomElement = element
@@ -46,14 +44,13 @@ class TransformController:
         self.element.style.transform = transform_str
 
     def rotate(self, degrees: float) -> None:
-        """
-        Rotate the element by the given number of degrees.
+        """Rotate the element by the given number of degrees.
 
         This method updates the rotation transform and applies it to the element.
 
         Parameters
         ----------
-        degrees : float
+        degrees:
             The number of degrees by which the image should be rotated.
         """
         self._current_rotation = degrees % 360
@@ -62,14 +59,13 @@ class TransformController:
         self.transform()
 
     def scale(self, factor: float) -> None:
-        """
-        Scale the element by the given factor.
+        """Scale the element by the given factor.
 
         This method updates the scale transform and applies it to the element.
 
         Parameters
         ----------
-        factor : float
+        factor:
             The scaling factor.
         """
         self.transforms["scale"] = f"scale({factor})"

@@ -16,8 +16,7 @@ DropBehavior = Literal["insert", "swap"]
 
 
 class DragDropGridController:
-    """
-    Controller for managing a draggable and droppable grid of images.
+    """Controller for managing a draggable and droppable grid of images.
 
     Attributes
     ----------
@@ -25,7 +24,6 @@ class DragDropGridController:
         The root element where the images are rendered in a grid.
     columns : int
         Number of columns in the grid.
-
     drop_behavior : DropBehavior
         Defines the behavior on drop: "insert" or "swap".
     _images : List[str]
@@ -38,16 +36,15 @@ class DragDropGridController:
         columns: int = 1,
         drop_behavior: DropBehavior = "insert",
     ) -> None:
-        """
-        Initialize the `DragDropGridController`.
+        """Create a new `DragDropGridController` with the given options.
 
         Parameters
         ----------
-        root : JsDomElement
+        root:
             The root element in which the images will be rendered.
-        columns : int, optional
+        columns:
             Number of columns in the grid. Defaults to 1.
-        drop_behavior : DropBehavior, optional
+        drop_behavior:
             Behavior on dropping an image. Can be either "insert" or "swap". Defaults to "insert".
         """
         self.root: JsDomElement = root

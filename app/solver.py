@@ -4,15 +4,14 @@ from .picture import Picture
 
 
 def solve_rows(picture: Picture) -> Solution:
-    """
-    Compute the solution for the rows-scrambled CAPTCHA.
+    """Compute the solution for a row-scrambled CAPTCHA.
 
     For CAPTCHAs that are scrambled by rows, this function computes the solution
     based on the order of the tiles in the provided picture.
 
     Parameters
     ----------
-    picture : Picture
+    picture:
         An instance of the Picture class representing the scrambled CAPTCHA.
 
     Returns
@@ -26,15 +25,14 @@ def solve_rows(picture: Picture) -> Solution:
 
 
 def solve_tiles(picture: Picture) -> Solution:
-    """
-    Compute the solution for the tile-rotated CAPTCHA.
+    """Compute the solution for a tile-rotated CAPTCHA.
 
     For CAPTCHAs where each tile is potentially rotated, this function computes the
     solution based on both the order and rotation of the tiles in the provided picture.
 
     Parameters
     ----------
-    picture : Picture
+    picture:
         An instance of the Picture class representing the scrambled CAPTCHA.
 
     Returns
@@ -51,15 +49,14 @@ def solve_tiles(picture: Picture) -> Solution:
 
 
 def solve_circle(picture: Picture) -> Solution:
-    """
-    Compute the solution for the circle/ring CAPTCHA.
+    """Compute the solution for a circle/ring CAPTCHA.
 
     For CAPTCHAs where each ring is potentially rotated, this function computes the
     solution based on the rotation of the tiles in the provided picture.
 
     Parameters
     ----------
-    picture : Picture
+    picture:
         An instance of the Picture class representing the scrambled CAPTCHA.
 
     Returns

@@ -14,8 +14,7 @@ if TYPE_CHECKING:
 
 
 class RotatingImagesController:
-    """
-    `RotatingImagesController` renders a set of images and allows each image to be rotated.
+    """A controller to render a set of images and allow each image to be rotated.
 
     This class provides methods for rendering the images, destroying them, resetting their state,
     and obtaining the current rotation of each image.
@@ -31,12 +30,11 @@ class RotatingImagesController:
     """
 
     def __init__(self, root: JsDomElement, rotation_steps: int = 360) -> None:
-        """
-        Create a new `RotatingImagesController` instance.
+        """Create a new `RotatingImagesController` with the given `rotation_steps`.
 
         Parameters
         ----------
-        root : JsDomElement
+        root:
             The root element in which to render the images.
         """
         self.root: JsDomElement = root
@@ -44,12 +42,11 @@ class RotatingImagesController:
         self._controllers: list[DragRotationController] = []
 
     def render(self, rotatable: list[str]) -> None:
-        """
-        Render the given images and attach RotationController instances to each image.
+        """Render the given images and attach RotationController instances to each image.
 
         Parameters
         ----------
-        images : List[str]
+        images:
             List of base64 encoded images.
         """
         self.root.classList.add("rotating-images")
@@ -103,12 +100,11 @@ class RotatingImagesController:
 
     @property
     def solution(self) -> list[float]:
-        """
-        Get the current solution as a list of the degrees by which each element is rotated.
+        """Get the current solution as a list of the degrees by which each element is rotated.
 
         Returns
         -------
-        List[float] :
+        List[float]
             List of rotation values in degrees.
         """
         return [controller.current_rotation for controller in reversed(self._controllers)]

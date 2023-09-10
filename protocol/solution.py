@@ -4,8 +4,7 @@ Solution = list[tuple[int, float]] | list[int] | list[float]
 
 
 class SolutionRequest(TypedDict):
-    """
-    Request structure for submitting a CAPTCHA solution to the server.
+    """Request structure for submitting a CAPTCHA solution to the server.
 
     Defines the expected request body for the `/api/solution` endpoint when a user
     submits a CAPTCHA solution. The solution can comprise integers, floats, or tuples
@@ -24,8 +23,7 @@ class SolutionRequest(TypedDict):
 
 
 class SolutionResponse(TypedDict):
-    """
-    Response structure when submitting a CAPTCHA solution to the server.
+    """Response structure when submitting a CAPTCHA solution to the server.
 
     Defines the expected response body from the `/api/solution` endpoint after a
     user submits a CAPTCHA solution. The server responds with a boolean indicating

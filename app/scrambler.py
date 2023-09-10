@@ -1,4 +1,4 @@
-"""Scramble has functions for scrambling images in different ways."""
+"""Scramble functions for scrambling images in different ways."""
 from random import choice, randint, shuffle
 
 from PIL import Image, ImageDraw, ImageOps
@@ -22,7 +22,7 @@ def scramble_rows(picture: Picture) -> None:
 
 
 def scramble_grid(picture: Picture) -> None:
-    """Split an Image up into tiles and rearranges them and rotates each tile randomly."""
+    """Split an Image up into tiles, rearrange them and rotate each tile randomly."""
     num_of_tiles = 4
     co_ordinates = [
         (0, 0, 512, 512),
@@ -35,12 +35,8 @@ def scramble_grid(picture: Picture) -> None:
     tile_order = [0, 1, 2, 3]
     swap_list = ["top", "left", "bottom", "right"]
     tile_rotations = [choice([90, 180, 270]) for _ in range(num_of_tiles)]
-    _swap_order = []
 
     shuffle(swap_list)
-
-    # Swap order can be used to keep track of swaps
-    _swap_order = swap_list
 
     for current_choice in swap_list:
         if current_choice == "top":
@@ -70,7 +66,7 @@ def scramble_grid(picture: Picture) -> None:
 
 
 def scramble_circle(picture: Picture) -> None:
-    """Split an Image up into circles and rearranges them."""
+    """Split an Image up into circles and rearrange them."""
     num_tiles = 6
     image = picture.image
     background_img = picture.image
