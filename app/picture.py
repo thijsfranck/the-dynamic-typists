@@ -22,7 +22,7 @@ class Picture:
         self.is_solved: bool = False
         self.tiles: dict[int, Tile] = {}
         self.tile_order: list[int] = []
-        self.scramble_type = None
+        self.scramble_type: str | None = None
         self.code: str = ""
         self._generate_code()
 
