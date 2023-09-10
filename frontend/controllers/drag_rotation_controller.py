@@ -9,6 +9,8 @@ from pyodide.ffi.wrappers import add_event_listener
 from .rotation_controller import RotationController
 
 if TYPE_CHECKING:
+    from js import MouseEvent
+
     from .transform_controller import TransformController
 
 
@@ -44,14 +46,15 @@ class DragRotationController(RotationController):
         """
         super().__init__(transform, rotation_steps)
 
-        self._center: dict[str, int] = {"x": 0, "y": 0}
+        self._center: dict[str, float] = {"x": 0, "y": 0}
         self._is_rotating: bool = False
 
         add_event_listener(self.transform.element, "mousedown", self._on_mouse_down)
-        add_event_listener(document, "mousemove", self._on_mouse_move)
-        add_event_listener(document, "mouseup", self._on_mouse_up)
+        # Pyodide typings do not handle all EventTargets.
+        add_event_listener(document, "mousemove", self._on_mouse_move)  # type: ignore
+        add_event_listener(document, "mouseup", self._on_mouse_up)  # type: ignore
 
-    def _on_mouse_down(self, event: object) -> None:
+    def _on_mouse_down(self, event: MouseEvent) -> None:
         """
         Enable the rotating state and set the current element center on left-click.
 
@@ -70,7 +73,7 @@ class DragRotationController(RotationController):
         self._is_rotating = True
         self.transform.element.classList.add("active")
 
-    def _on_mouse_move(self, event: object) -> None:
+    def _on_mouse_move(self, event: MouseEvent) -> None:
         """
         Calculate the rotation angle based on the user's mouse movement and apply it to the element.
 
@@ -83,8 +86,8 @@ class DragRotationController(RotationController):
         if not self._is_rotating:
             return
 
-        dx: int = event.pageX - self._center["x"]
-        dy: int = event.pageY - self._center["y"]
+        dx = event.pageX - self._center["x"]
+        dy = event.pageY - self._center["y"]
 
         angle_rad = math.atan2(dx, -dy)
         angle_deg = math.degrees(angle_rad)

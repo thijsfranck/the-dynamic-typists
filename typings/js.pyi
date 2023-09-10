@@ -35,6 +35,7 @@ class JsDomElement(OldJSDomElement):
     def getElementsByTagName(self, tagName: str) -> JsArray[JsDomElement]: ...
     def hasAttribute(self, attrName: str) -> bool: ...
     def removeAttribute(self, attrName: str) -> None: ...
+    def getBoundingClientRect(self) -> DOMRect: ...
     # These are on Node, which an Element is.
     # As far as this project is concerned, they are just elements.
     firstChild: JsDomElement | None
@@ -58,6 +59,14 @@ class JsCanvasElement(JsDomElement):
     @overload
     def getContext(self, contextId: str) -> JsProxy: ...
     def getContext(self, contextId: str) -> JsProxy: ...
+
+class DOMRect(JsProxy):
+    top: float
+    left: float
+    bottom: float
+    right: float
+    width: float
+    height: float
 
 class CanvasRenderingContext2D(JsProxy):
     canvas: JsCanvasElement
@@ -96,6 +105,8 @@ class UIEvent(Event): ...
 
 class MouseEvent(Event):
     relatedTarget: JsDomElement
+    pageX: float
+    pageY: float
 
 class DragEvent(MouseEvent):
     dataTransfer: DataTransfer
