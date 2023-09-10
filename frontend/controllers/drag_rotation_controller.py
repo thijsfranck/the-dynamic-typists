@@ -49,7 +49,7 @@ class DragRotationController(RotationController):
         self._center: dict[str, float] = {"x": 0, "y": 0}
         self._is_rotating: bool = False
 
-        add_event_listener(self.transform.element, "mousedown", self._on_mouse_down)
+        add_event_listener(self.element, "mousedown", self._on_mouse_down)
         # Pyodide typings do not handle all EventTargets.
         add_event_listener(document, "mousemove", self._on_mouse_move)  # type: ignore
         add_event_listener(document, "mouseup", self._on_mouse_up)  # type: ignore
@@ -65,13 +65,13 @@ class DragRotationController(RotationController):
         """
         event.preventDefault()
 
-        bounding_rect = self.transform.element.getBoundingClientRect()
+        bounding_rect = self.element.getBoundingClientRect()
 
         self._center["x"] = bounding_rect.left + bounding_rect.width / 2
         self._center["y"] = bounding_rect.top + bounding_rect.height / 2
 
         self._is_rotating = True
-        self.transform.element.classList.add("active")
+        self.element.classList.add("active")
 
     def _on_mouse_move(self, event: MouseEvent) -> None:
         """
@@ -103,10 +103,10 @@ class DragRotationController(RotationController):
 
         self.rotate(angle_deg)
 
-    def _on_mouse_up(self, _: object) -> None:
+    def _on_mouse_up(self, _: MouseEvent) -> None:
         """Disable the rotating state and remove applied styles."""
         if not self._is_rotating:
             return
 
         self._is_rotating = False
-        self.transform.element.classList.remove("active")
+        self.element.classList.remove("active")

@@ -2,7 +2,7 @@ import asyncio
 from typing import TYPE_CHECKING
 
 from controllers import App
-from js import document
+from js import Event, document
 from pyodide.ffi.wrappers import add_event_listener, remove_event_listener
 
 if TYPE_CHECKING:
@@ -26,7 +26,7 @@ async def main() -> None:
     is_loading_captcha = False
     is_posting_solution = False
 
-    async def handle_load_captcha(_: object) -> None:
+    async def handle_load_captcha(_: Event) -> None:
         """
         Handle the load captcha event for the refresh button.
 
@@ -38,7 +38,7 @@ async def main() -> None:
 
         Parameters
         ----------
-        _ : object
+        _ : Event
             The event object, which is not used in this function but is typically passed by
             event handlers.
 
@@ -69,7 +69,7 @@ async def main() -> None:
             # Pyodide typings do not handle async event handlers, despite them working.
             add_event_listener(confirm_button, "click", handle_post_solution)  # type: ignore
 
-    async def handle_post_solution(_: object) -> None:
+    async def handle_post_solution(_: Event) -> None:
         """
         Handle the solution post event for the confirm button.
 
@@ -80,7 +80,7 @@ async def main() -> None:
 
         Parameters
         ----------
-        _ : object
+        _ : Event
             The event object, which is not used in this function but is typically passed by
             event handlers.
 

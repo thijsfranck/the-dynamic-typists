@@ -3,14 +3,14 @@ from __future__ import annotations
 from functools import partial
 from typing import TYPE_CHECKING
 
-from js import JsImgElement, document
+from js import document
 from pyodide.ffi.wrappers import add_event_listener
 
 from .drag_rotation_controller import DragRotationController
 from .transform_controller import TransformController
 
 if TYPE_CHECKING:
-    from js import JsDomElement, LoadEvent
+    from js import JsDomElement, JsImgElement, LoadEvent
 
 
 class RotatingImagesController:

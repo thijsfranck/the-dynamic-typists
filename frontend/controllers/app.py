@@ -59,7 +59,7 @@ class Controller(Protocol):
 CONTROLLER_FACTORIES: dict[str, Callable[[JsDomElement], Controller]] = {
     "grid": ImageGridController,
     "rows": DragDropGridController,
-    "circle": partial(RotatingImagesController, rotation_steps=60),
+    "circle": partial(RotatingImagesController, rotation_steps=6),
 }
 
 
