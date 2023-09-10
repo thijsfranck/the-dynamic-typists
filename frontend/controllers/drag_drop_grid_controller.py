@@ -241,13 +241,17 @@ class DragDropGridController:
         if source_index == target_index:
             return
 
+        # Helper function to insert or append
+        def insert_or_append(element: JsDomElement, reference: JsDomElement | None) -> None:
+            if reference is not None:
+                self.root.insertBefore(element, reference)
+            else:
+                self.root.appendChild(element)
+
         def handle_insert() -> None:
             # If dragging from left to right
             if source_index < target_index:
-                if target.nextSibling:
-                    self.root.insertBefore(source, target.nextSibling)
-                else:
-                    self.root.appendChild(source)
+                insert_or_append(source, target.nextSibling)
             # If dragging from right to left
             else:
                 self.root.insertBefore(source, target)
@@ -256,9 +260,6 @@ class DragDropGridController:
             source_next_sibling = source.nextSibling
             target_next_sibling = target.nextSibling
 
-            if source_next_sibling is None or target_next_sibling is None:
-                return
-
             # If source is right before target
             if source_next_sibling == target:
                 self.root.insertBefore(target, source)
@@ -266,8 +267,8 @@ class DragDropGridController:
             elif target_next_sibling == source:
                 self.root.insertBefore(source, target)
             else:
-                self.root.insertBefore(source, target_next_sibling)
-                self.root.insertBefore(target, source_next_sibling)
+                insert_or_append(source, target_next_sibling)
+                insert_or_append(target, source_next_sibling)
 
         drop_behaviors: dict[DropBehavior, Callable[[], None]] = {
             "insert": handle_insert,
