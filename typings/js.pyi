@@ -5,7 +5,7 @@
 # Use https://developer.mozilla.org/en-US/docs/Web/API as reference.
 
 from collections.abc import Callable, Iterable
-from typing import Any, Literal, Sequence, TypeAlias, overload
+from typing import Any, Generic, Literal, Sequence, TypeAlias, TypeVar, overload
 
 from _pyodide._core_docs import _JsProxyMetaClass
 from pyodide.ffi import (
@@ -47,6 +47,8 @@ class JsImgElement(JsDomElement):
     src: str
     width: int
     height: int
+    naturalWidth: int
+    naturalHeight: int
 
 class JsCanvasElement(JsDomElement):
     width: int
@@ -80,6 +82,11 @@ class CSSStyleDeclaration(JsProxy):
     def removeProperty(self, name: str) -> None: ...
     def setProperty(self, name: str, value: str) -> None: ...
     def __setattr__(self, name: str, value: str) -> None: ...
+
+ElementT = TypeVar("ElementT", bound=JsDomElement)
+
+class LoadEvent(JsProxy, Generic[ElementT]):
+    target: ElementT
 
 class Event(JsProxy):
     target: JsDomElement

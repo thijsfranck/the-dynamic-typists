@@ -3,14 +3,14 @@ from __future__ import annotations
 from functools import partial
 from typing import TYPE_CHECKING
 
-from js import document
+from js import JsImgElement, document
 from pyodide.ffi.wrappers import add_event_listener
 
 from .drag_rotation_controller import DragRotationController
 from .transform_controller import TransformController
 
 if TYPE_CHECKING:
-    from pyodide.ffi import JsDomElement
+    from js import JsDomElement, LoadEvent
 
 
 class RotatingImagesController:
@@ -67,7 +67,7 @@ class RotatingImagesController:
 
             transform = TransformController(img_element)
 
-            def on_img_load(event: object, transform: TransformController) -> None:
+            def on_img_load(event: LoadEvent[JsImgElement], transform: TransformController) -> None:
                 scale = event.target.naturalWidth / background_element.naturalWidth
                 transform.scale(scale)
 
