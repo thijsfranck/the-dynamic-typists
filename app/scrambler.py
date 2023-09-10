@@ -128,7 +128,7 @@ def scramble_circle(picture: Picture) -> None:
             fill=0,
         )
 
-        angle = randint(1, num_tiles - 1) * (360 // num_tiles)
+        angle = randint(0, num_tiles) * (360 // num_tiles)
         rotated_image = image.rotate(angle, resample=Image.BILINEAR, center=center)
 
         cropped_ring.paste(rotated_image.convert("RGBA"), (0, 0), mask.convert("L"))

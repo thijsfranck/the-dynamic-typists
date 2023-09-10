@@ -7,7 +7,7 @@ from .drag_drop_grid_controller import DragDropGridController
 from .transform_controller import TransformController
 
 if TYPE_CHECKING:
-    from pyodide.ffi import JsDomElement
+    from js import JsDomElement
 
 
 class ImageGridController:

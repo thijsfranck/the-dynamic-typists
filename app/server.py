@@ -188,7 +188,11 @@ async def post_solution(
 
     session_data = SESSIONS[session_id]
 
-    solvers = {"rows": solve_rows, "grid": solve_tiles, "circle": solve_circle}
+    solvers = {
+        "rows": solve_rows,
+        "grid": solve_tiles,
+        "circle": solve_circle,
+    }
 
     # Check if the scrambler exists in solvers
     if session_data.scrambler not in solvers:

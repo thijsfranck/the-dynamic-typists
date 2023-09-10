@@ -1,13 +1,18 @@
 from __future__ import annotations
 
 import math
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 from js import document
 from pyodide.ffi.wrappers import add_event_listener
 
 if TYPE_CHECKING:
-    from pyodide.ffi import JsDomElement
+    from collections.abc import Callable
+
+    from js import DragEvent, JsDomElement
+
+
+DropBehavior = Literal["insert", "swap"]
 
 
 class DragDropGridController:
@@ -20,13 +25,19 @@ class DragDropGridController:
         The root element where the images are rendered in a grid.
     columns : int
         Number of columns in the grid.
-    drop_behavior : str
+
+    drop_behavior : DropBehavior
         Defines the behavior on drop: "insert" or "swap".
     _images : List[str]
         A list of base64 encoded image strings.
     """
 
-    def __init__(self, root: JsDomElement, columns: int = 1, drop_behavior: str = "insert") -> None:
+    def __init__(
+        self,
+        root: JsDomElement,
+        columns: int = 1,
+        drop_behavior: DropBehavior = "insert",
+    ) -> None:
         """
         Initialize the `DragDropGridController`.
 
@@ -36,12 +47,12 @@ class DragDropGridController:
             The root element in which the images will be rendered.
         columns : int, optional
             Number of columns in the grid. Defaults to 1.
-        drop_behavior : str, optional
+        drop_behavior : DropBehavior, optional
             Behavior on dropping an image. Can be either "insert" or "swap". Defaults to "insert".
         """
         self.root: JsDomElement = root
         self.columns: int = columns
-        self.drop_behavior: str = drop_behavior
+        self.drop_behavior: DropBehavior = drop_behavior
         self._images: list[str] = []
 
     def render(self, images: list[str]) -> None:
@@ -102,7 +113,7 @@ class DragDropGridController:
         """
         return [int(child.getAttribute("data-index")) for child in list(self.root.children)]
 
-    def _on_drag_start(self, event: object) -> None:
+    def _on_drag_start(self, event: DragEvent) -> None:
         """
         Handle the drag start event.
 
@@ -146,7 +157,7 @@ class DragDropGridController:
             if child != source:
                 child.classList.add("drop-target")
 
-    def _on_drag_enter(self, event: object) -> None:
+    def _on_drag_enter(self, event: DragEvent) -> None:
         """
         Handle the drag enter event.
 
@@ -162,7 +173,7 @@ class DragDropGridController:
         if target and not target.classList.contains("dragged"):
             target.classList.add("over")
 
-    def _on_drag_over(self, event: object) -> None:
+    def _on_drag_over(self, event: DragEvent) -> None:
         """
         Handle the drag over event.
 
@@ -175,7 +186,7 @@ class DragDropGridController:
         """
         event.preventDefault()
 
-    def _on_drag_leave(self, event: object) -> None:
+    def _on_drag_leave(self, event: DragEvent) -> None:
         """
         Handle the drag leave event.
 
@@ -190,7 +201,7 @@ class DragDropGridController:
         if target and not target.contains(event.relatedTarget):
             target.classList.remove("over")
 
-    def _on_drag_end(self, event: object) -> None:
+    def _on_drag_end(self, event: DragEvent) -> None:
         """
         Handle the drag end event.
 
@@ -205,7 +216,7 @@ class DragDropGridController:
         for child in self.root.children:
             child.classList.remove("dragged", "drop-target", "over")
 
-    def _on_drop(self, event: object) -> None:
+    def _on_drop(self, event: DragEvent) -> None:
         """
         Handle the drop event.
 
@@ -218,13 +229,15 @@ class DragDropGridController:
         """
         event.preventDefault()
 
-        for child in self.root.children:
+        children = list(self.root.children)
+
+        for child in children:
             child.classList.remove("dragged", "drop-target", "over")
 
         source_index = int(event.dataTransfer.getData("sourceIndex"))
-        source = self.root.children[source_index]
+        source = children[source_index]
         target = event.target.closest(".grid-item")
-        target_index = list(self.root.children).index(target)
+        target_index = children.index(target)
 
         if source_index == target_index:
             return
@@ -244,6 +257,9 @@ class DragDropGridController:
             source_next_sibling = source.nextSibling
             target_next_sibling = target.nextSibling
 
+            if source_next_sibling is None or target_next_sibling is None:
+                return
+
             # If source is right before target
             if source_next_sibling == target:
                 self.root.insertBefore(target, source)
@@ -254,6 +270,9 @@ class DragDropGridController:
                 self.root.insertBefore(source, target_next_sibling)
                 self.root.insertBefore(target, source_next_sibling)
 
-        drop_behaviors = {"insert": handle_insert, "swap": handle_swap}
+        drop_behaviors: dict[DropBehavior, Callable[[], None]] = {
+            "insert": handle_insert,
+            "swap": handle_swap,
+        }
 
         drop_behaviors[self.drop_behavior]()
