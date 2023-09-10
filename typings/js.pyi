@@ -179,6 +179,8 @@ class JSON(_JsObject):
 class document(_JsObject):
     body: JsDomElement
     children: list[JsDomElement]
+    @staticmethod
+    def getElementById(id: str) -> JsDomElement: ...
     @overload
     @staticmethod
     def createElement(tagName: Literal["img"]) -> JsImgElement: ...
