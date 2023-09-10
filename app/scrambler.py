@@ -21,8 +21,9 @@ def scramble_rows(picture: Picture) -> None:
     shuffle(picture.tile_order)
 
 
-def scramble_grid(picture: Picture, num_of_tiles: int = 4) -> None:
+def scramble_grid(picture: Picture) -> None:
     """Split an Image up into tiles and rearranges them and rotates each tile randomly."""
+    num_of_tiles = 4
     co_ordinates = [
         (0, 0, 512, 512),
         (512, 0, 1024, 512),
