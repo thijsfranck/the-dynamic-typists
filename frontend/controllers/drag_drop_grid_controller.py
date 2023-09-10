@@ -7,7 +7,7 @@ from js import document
 from pyodide.ffi.wrappers import add_event_listener
 
 if TYPE_CHECKING:
-    from js import JsDomElement
+    from js import DragEvent, JsDomElement
 
 
 class DragDropGridController:
@@ -102,7 +102,7 @@ class DragDropGridController:
         """
         return [int(child.getAttribute("data-index")) for child in list(self.root.children)]
 
-    def _on_drag_start(self, event: object) -> None:
+    def _on_drag_start(self, event: DragEvent) -> None:
         """
         Handle the drag start event.
 
@@ -146,7 +146,7 @@ class DragDropGridController:
             if child != source:
                 child.classList.add("drop-target")
 
-    def _on_drag_enter(self, event: object) -> None:
+    def _on_drag_enter(self, event: DragEvent) -> None:
         """
         Handle the drag enter event.
 
@@ -162,7 +162,7 @@ class DragDropGridController:
         if target and not target.classList.contains("dragged"):
             target.classList.add("over")
 
-    def _on_drag_over(self, event: object) -> None:
+    def _on_drag_over(self, event: DragEvent) -> None:
         """
         Handle the drag over event.
 
@@ -175,7 +175,7 @@ class DragDropGridController:
         """
         event.preventDefault()
 
-    def _on_drag_leave(self, event: object) -> None:
+    def _on_drag_leave(self, event: DragEvent) -> None:
         """
         Handle the drag leave event.
 
@@ -190,7 +190,7 @@ class DragDropGridController:
         if target and not target.contains(event.relatedTarget):
             target.classList.remove("over")
 
-    def _on_drag_end(self, event: object) -> None:
+    def _on_drag_end(self, event: DragEvent) -> None:
         """
         Handle the drag end event.
 
@@ -205,7 +205,7 @@ class DragDropGridController:
         for child in self.root.children:
             child.classList.remove("dragged", "drop-target", "over")
 
-    def _on_drop(self, event: object) -> None:
+    def _on_drop(self, event: DragEvent) -> None:
         """
         Handle the drop event.
 
@@ -243,6 +243,9 @@ class DragDropGridController:
         def handle_swap() -> None:
             source_next_sibling = source.nextSibling
             target_next_sibling = target.nextSibling
+
+            if source_next_sibling is None or target_next_sibling is None:
+                return
 
             # If source is right before target
             if source_next_sibling == target:
