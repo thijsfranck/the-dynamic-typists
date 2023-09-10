@@ -1,6 +1,9 @@
-from typing import TypedDict
+from __future__ import annotations
 
-from pyodide.ffi import JsDomElement
+from typing import TYPE_CHECKING, TypedDict
+
+if TYPE_CHECKING:
+    from js import JsDomElement
 
 
 class Transforms(TypedDict):
@@ -44,7 +47,7 @@ class TransformController:
             The DOM element to which the transformations will be applied.
         """
         self.element: JsDomElement = element
-        self.transforms: Transforms = {}
+        self.transforms: dict[str, str] = {}
 
     def destroy(self) -> None:
         """Remove the transform property from the element styles."""
