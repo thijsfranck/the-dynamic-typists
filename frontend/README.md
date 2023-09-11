@@ -46,7 +46,9 @@ The PyScript library provides HTML tags for embedding and executing Python code 
 
 ### Pyodide
 
-At its core, [Pyodide](https://pyodide.org/en/stable/) is a Python interpreter compiled to WebAssembly. This allows Python to run directly in the browser. Pyodide achieves this by leveraging the CPython interpreter and the [Emscripten](https://emscripten.org/) toolchain to generate [WebAssembly](https://webassembly.org/) binaries. Key features include:
+At its core, [Pyodide](https://pyodide.org/en/stable/) is a Python interpreter compiled to [WebAssembly](https://webassembly.org/). This allows Python to run directly in the browser. Pyodide achieves this by leveraging the CPython interpreter and the [Emscripten](https://emscripten.org/) toolchain to generate WebAssembly binaries.
+
+Key features include:
 
 **Standard Library and Packages**: Pyodide includes the full Python standard library and even supports importing some popular Python packages.
 
