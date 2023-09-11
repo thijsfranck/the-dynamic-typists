@@ -5,7 +5,11 @@
 > Amid the shadows, we weave our clandestine codes, desperate to discern man from machine.
 > In this dire hour shines our last beacon of hope: **CAPTCHA**, the unsung sentinel, safeguarding the essence of human uniqueness through the art of image-based puzzle solving.
 
-Welcome to the code repository of `The Dynamic Typists` for the Python Discord Code Jam 2023! We are pleased to share our version of an image-based **CAPTCHA** application. In light of recent advancements in large language models, many conventional CAPTCHA tests have started to fall short in determining the authenticity of a user. This inadequacy poses significant challenges for websites and APIs that aim to deter malicious activities like DDoS attacks. Our CAPTCHA approach introduces **multifaceted challenges** that necessitate the *unscrambling* of an image, coupled with the *identification of a code* that becomes evident only upon successful unscrambling. These combined steps present a more robust barrier against AI-driven attacks on the web.
+Welcome to the code repository of `The Dynamic Typists` for the Python Discord Code Jam 2023!
+
+We are pleased to share our version of an image-based **CAPTCHA** application. In light of recent advancements in large language models, many conventional CAPTCHA tests have started to fall short in determining the authenticity of a user. This inadequacy poses significant challenges for websites and APIs that aim to deter malicious activities like DDoS attacks.
+
+Our CAPTCHA approach introduces **multifaceted challenges** that necessitate the *unscrambling* of an image, coupled with the *identification of a code* that becomes evident only upon successful unscrambling. These combined steps present a more robust barrier against AI-driven attacks on the web.
 
 ![Dynamic Typing Ensues](https://media.giphy.com/media/Hcw7rjsIsHcmk/giphy.gif)
 
