@@ -44,11 +44,15 @@ With the server up and running, you can now explore the CAPTCHA application:
    - **Rows**: Drag and position the rows to uncover the code.
    - **Tiles**: Move and rotate tiles to their correct positions to show the code.
 
-3. **Verification**: Click `VERIFY` once solved. A green `SOLVED` indicates success; red `RETRY` suggests another attempt.
+<img src="./screenshots/rings.png" alt="Captcha challenge with rings" width="30%"></img>
+<img src="./screenshots/rows.png" alt="Captcha challenge with rows" width="30%"></img>
+<img src="./screenshots/tiles.png" alt="Captcha challenge with tiles" width="30%"></img>
 
-4. **New challenge**: Click the leftmost button at the bottom for a random new puzzle.
+1. **Verification**: Click `CONFIRM` once solved. A green `SOLVED` indicates success; red `RETRY` suggests another attempt.
 
-5. **Reset**: If stuck, click the second button to reset the challenge to its initial state.
+2. **New challenge**: Click the leftmost button at the bottom for a random new puzzle.
+
+3. **Reset**: If stuck, click the second button to reset the challenge to its initial state.
 
 ## Contributors
 
