@@ -48,11 +48,11 @@ With the server up and running, you can now explore the CAPTCHA application:
 <img src="./screenshots/rows.png" alt="Captcha challenge with rows" width="30%"></img>
 <img src="./screenshots/tiles.png" alt="Captcha challenge with tiles" width="30%"></img>
 
-1. **Verification**: Click `CONFIRM` once solved. A green `SOLVED` indicates success; red `RETRY` suggests another attempt.
+3. **Verification**: Click `CONFIRM` once solved. A green `SOLVED` indicates success; red `RETRY` suggests another attempt.
 
-2. **New challenge**: Click the leftmost button at the bottom for a random new puzzle.
+4. **New challenge**: Click the leftmost button at the bottom for a random new puzzle.
 
-3. **Reset**: If stuck, click the second button to reset the challenge to its initial state.
+5. **Reset**: If stuck, click the second button to reset the challenge to its initial state.
 
 ## Contributors
 
