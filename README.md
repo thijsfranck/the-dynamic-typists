@@ -44,9 +44,9 @@ With the server up and running, you can now explore the CAPTCHA application:
    - **Rows**: Drag and position the rows to uncover the code.
    - **Tiles**: Move and rotate tiles to their correct positions to show the code.
 
-<img src="./screenshots/rings.png" alt="Captcha challenge with rings" width="20%"></img>
-<img src="./screenshots/rows.png" alt="Captcha challenge with rows" width="20%"></img>
-<img src="./screenshots/tiles.png" alt="Captcha challenge with tiles" width="20%"></img>
+<img src="./screenshots/rings.png" alt="Captcha challenge with rings" width="25%"></img>
+<img src="./screenshots/rows.png" alt="Captcha challenge with rows" width="25%"></img>
+<img src="./screenshots/tiles.png" alt="Captcha challenge with tiles" width="25%"></img>
 
 3. **Verification**: Click `CONFIRM` once solved. A green `SOLVED` indicates success; red `RETRY` suggests another attempt.
 
