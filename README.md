@@ -9,7 +9,7 @@ Welcome to the code repository of `The Dynamic Typists` for the Python Discord C
 
 We are pleased to share our version of an image-based **CAPTCHA** application. In light of recent advancements in large language models, many conventional CAPTCHA challenges have started to fall short in determining the authenticity of a user. This inadequacy poses significant risk for websites and APIs that aim to deter malicious activities like DDoS attacks.
 
-Our CAPTCHA approach introduces **multifaceted challenges** that require the user to the *unscramble* an image and *identify a code* that becomes evident only upon successful unscrambling. These combined steps present a more robust barrier against AI-driven attacks on the web.
+Our CAPTCHA approach introduces **multifaceted challenges** that require the user to *unscramble* an image and *identify a code* that becomes evident only upon successful unscrambling. These combined steps present a more robust barrier against AI-driven attacks on the web.
 
 ## Contents
 
