@@ -7,7 +7,7 @@
 
 Welcome to the code repository of `The Dynamic Typists` for the Python Discord Code Jam 2023!
 
-We are pleased to share our version of an image-based **CAPTCHA** application. In light of recent advancements in large language models, many conventional CAPTCHA tests have started to fall short in determining the authenticity of a user. This inadequacy poses significant challenges for websites and APIs that aim to deter malicious activities like DDoS attacks.
+We are pleased to share our version of an image-based **CAPTCHA** application. In light of recent advancements in large language models, many conventional CAPTCHA challenges have started to fall short in determining the authenticity of a user. This inadequacy poses significant risk for websites and APIs that aim to deter malicious activities like DDoS attacks.
 
 Our CAPTCHA approach introduces **multifaceted challenges** that necessitate the *unscrambling* of an image, coupled with the *identification of a code* that becomes evident only upon successful unscrambling. These combined steps present a more robust barrier against AI-driven attacks on the web.
 
@@ -22,7 +22,7 @@ This README consists of the following sections:
 - [How to Run the Project](#how-to-run-the-project)
 - [Contributors](#contributors)
 
-In addition, each subfolder has another README detailing the design decisions for each part of the app.
+In addition, each subfolder has another README detailing the architecture and design choices for each part of the app.
 
 | Folder                             | Description                                                                                                                     |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
