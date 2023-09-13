@@ -18,4 +18,4 @@ from js import JsDomElement, document, ... # extended type stubs are recognized 
 
 ## Note
 
-Always ensure that, when integrating new features that rely on untyped web APIs, the type stubs in this module are appropriately extended.
+Always ensure that, when integrating new features that rely on untyped web APIs, the type stubs in this folder are appropriately extended.
