@@ -58,7 +58,7 @@ Key features include:
 
 ### Benefits
 
-**Python in the Browser**: The capability of running Python code natively in the browser is a unique trait that distinguishes our project from those of other teams. Having the codebase fully in Python, rather than parly in JavaScript, is in the spirit of the Code Jam and allows for more of our code to be submitted for judging.
+**Python in the Browser**: The capability of running Python code natively in the browser is a unique trait that distinguishes our project from those of other teams. Having the codebase fully in Python, rather than partly in JavaScript, is in the spirit of the Code Jam and allows for more of our code to be submitted for judging.
 
 **Browser API Support**: Pyodide offers direct interaction with browser APIs, mirroring the experience of JavaScript development. This similarity allowed us to swiftly translate our initial JavaScript prototype into Python, accelerating the development process considerably.
 
