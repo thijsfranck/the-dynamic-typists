@@ -39,14 +39,19 @@ With the server up and running, you can now explore the CAPTCHA application:
 
 1. **Accessing the App**: Launch your browser and go to http://127.0.0.1:8000. On your first visit, a splash screen appears while the app initializes. It loads faster on subsequent visits.
 
-2. **Solving the Challenge**: Upon entry, a random CAPTCHA challenge is presented. Unscramble the image and input the revealed code.
-   - **Rings**: Drag the rings to align them and reveal the code.
-   - **Rows**: Drag and position the rows to uncover the code.
-   - **Tiles**: Move and rotate tiles to their correct positions to show the code.
+2. **Solving the Challenge**: Upon entry, a random CAPTCHA challenge is presented. Unscramble the image and input the revealed code. There are three different types of challenges:
 
-<img src="./screenshots/rings.png" alt="CAPTCHA challenge with rings" width="25%"></img>
-<img src="./screenshots/rows.png" alt="CAPTCHA challenge with rows" width="25%"></img>
-<img src="./screenshots/tiles.png" alt="CAPTCHA challenge with tiles" width="25%"></img>
+    **Rings**: The image will be divided into five concentric rings, each rotated randomly. Align these rings by dragging them clockwise or counter-clockwise. Use the outer edges or the centermost circle as your guide.
+
+    <img src="./screenshots/rings.gif" alt="CAPTCHA challenge with rings" width="33%"></img>
+
+    **Rows**: The image will be fragmented into seven horizontal rows placed in random order. Reorder them to reconstruct the image. To rearrange, drag a row and drop it at the desired position, causing the subsequent rows to shift.
+
+    <img src="./screenshots/rows.gif" alt="CAPTCHA challenge with rows" width="33%"></img>
+
+    **Tiles**: The image is split into four square tiles, each rotated arbitrarily. Position the tiles correctly and ensure their proper orientation. Drag and drop a tile to swap its position with another, and click a tile to rotate it 90 degrees clockwise.
+
+    <img src="./screenshots/tiles.gif" alt="CAPTCHA challenge with tiles" width="33%"></img>
 
 3. **Verification**: Once you believe you've solved the challenge, click the `CONFIRM` button. If your answer is correct, the button will turn green and display `SOLVED`. If not, it will stay red and show `RETRY`. Retries are unlimited, so keep trying until you get it right!
 
