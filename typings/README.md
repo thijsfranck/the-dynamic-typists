@@ -1,6 +1,6 @@
 # Typings
 
-The typings module offers supplementary type stubs to enhance the clarity and type safety of our CAPTCHA project's Python codebase. Notably, we expanded upon the default type stubs for the `js` module, provided by Pyodide, to facilitate safer interactions with web APIs and the DOM. Our extensions for the `js` module type stubs are based on [the Mozilla Web API documentation](https://developer.mozilla.org/en-US/docs/Web/API).
+The typings folder offers supplementary type stubs to enhance the clarity and type safety of our codebase. Notably, we expanded upon the default type stubs for the `js` module, provided by Pyodide, to facilitate safer interactions with web APIs and the DOM. Our extensions for the `js` module type stubs are based on [the Mozilla Web API documentation](https://developer.mozilla.org/en-US/docs/Web/API).
 
 ## Features
 
