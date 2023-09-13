@@ -113,25 +113,25 @@ sudo apt install ttf-mscorefonts-installer
 sudo fc-cache -f
 ```
 
-2. Next, navigate to the folder where you want the repository to be stored and run the following command to clone the git repository:
+3. Next, navigate to the folder where you want the repository to be stored and run the following command to clone the git repository:
 
 ```bash
 git clone https://github.com/thijsfranck/the-dynamic-typists
 ```
 
-3. Navigate to the root of the repository and run the following command. Poetry will create a virtual environment and install all the necessary dependencies in it.
+4. Navigate to the root of the repository and run the following command. Poetry will create a virtual environment and install all the necessary dependencies in it.
 
 ```bash
 poetry install
 ```
 
-4. Finally, install the pre-commit hook for your local repository by running the following command:
+5. Optionally, if you want to contribute to this project, install the pre-commit hook for your local repository by running the following command:
 
 ```bash
 poetry run pre-commit install
 ```
 
-5. You're all set! You can now develop, build, and test the project in your local development environment.
+6. You're all set! You can now run, develop, build, and test the project in your local development environment.
 
 ### Dev Container Installation
 
@@ -155,7 +155,7 @@ You can use the dev container locally with either [Visual Studio Code](#visual-s
 
 6. Once connected, you'll see "Dev Container: The Dynamic Typists" in the bottom-left corner of the VS Code window, indicating that you are now working inside the container.
 
-7. You're all set! You can now develop, build, and test the project using the provided development environment.
+7. You're all set! You can now run, develop, build, and test the project using the provided development environment.
 
 #### PyCharm
 
@@ -177,7 +177,7 @@ To connect PyCharm to the Development Container, please [follow these instructio
 
 6. Once connected, you'll see "Dev Container: The Dynamic Typists" in the bottom-left corner of the VS Code window, indicating that you are now working inside the container.
 
-7. You're all set! You can now develop, build, and test the project using the provided development environment.
+7. You're all set! You can now run, develop, build, and test the project using the provided development environment.
 
 ## How to Run the Project
 
