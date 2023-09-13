@@ -4,7 +4,7 @@ The `protocol` module standardizes API request and response types for our CAPTCH
 
 ## Design Choices
 
-The protocol module focuses on detailed and user-friendly types. Each API endpoint has corresponding request and response types. All types are structured as JSON-compatible Python `dicts`. For compatibility with FastAPI, we use `TypedDict` from the `typing_extensions` module.
+The `protocol` module aims to provide detailed and user-friendly types. Each API endpoint has corresponding request and response types. All types are structured as JSON-compatible Python `dicts`. For compatibility with `FastAPI`, we use `TypedDict` from the `typing_extensions` module.
 
 ## Types
 
