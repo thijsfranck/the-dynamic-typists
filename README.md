@@ -29,7 +29,7 @@ In addition, each subfolder has another README detailing the architecture and de
 | [`app`](./app/README.md)           | Contains the backend modules responsible for CAPTCHA generation and API endpoints.                                              |
 | [`frontend`](./frontend/README.md) | Houses the frontend modules that support the web application interface and interactions.                                        |
 | [`protocol`](./protocol/README.md) | Defines types that standardize API requests and responses. These types are utilized both by the backend (app) and the frontend. |
-| [`typings`](./typings/README.md)   | Contains type stubs for Python modules that are injected at runtime for enhanced type safety and clarity.                       |
+| [`typings`](./typings/README.md)   | Contains type stubs for otherwise untyped third-party Python modules.                                                           |
 
 If you're a developer and want to contribute to this project, please refer to the [contribution guide](./CONTRIBUTING.md).
 
