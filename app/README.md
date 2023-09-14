@@ -59,7 +59,7 @@ Maintains the state for a CAPTCHA challenge including the original picture, tile
 
 ### Scrambler
 
-Provides various functions for scrambling an image. Each scrambler function expects a `Picture` instance as input and stores the generated tiles as part of that instance. Each
+Provides various functions for scrambling an image. Each scrambler function expects a `Picture` instance as input and stores the generated tiles as part of that instance.
 
 We implemented the following types of scramblers:
 
