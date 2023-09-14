@@ -33,7 +33,7 @@ In addition, each subfolder has another README detailing the architecture and de
 
 If you're a developer and want to contribute to this project, please refer to the [contribution guide](./CONTRIBUTING.md).
 
-Happy reading!
+Happy coding!
 
 ![Dynamic Typing Ensues](https://media.giphy.com/media/Hcw7rjsIsHcmk/giphy.gif)
 
