@@ -27,7 +27,7 @@ Our `app` module relies on `Pillow` for image scrambling and watermarking, and o
 
 `Pillow` is a fork of the Python Imaging Library (PIL) and stands out for its user-friendly approach to image processing. It supports a wide array of image formats and offers tools for tasks like image resizing, filtering, and drawing.
 
-We chose `Pillow` as our image processing library since all of us had used Pillow as part of the Code Jam qualifier, and therefore all of us had some experience with it. While there are speedier options like opencv, we prioritized quick functionality development over performance optimization at the start of the project. Despite this, our CAPTCHA challenges load quickly, maintaining a smooth user experience.
+We chose `Pillow` as our image processing library since all of us had used Pillow as part of the Code Jam qualifier, and therefore all of us had some experience with it. While there are speedier options like `opencv`, we prioritized quick functionality development over performance optimization at the start of the project. Despite this, our CAPTCHA challenges load quickly, maintaining a smooth user experience.
 
 ### FastAPI
 
