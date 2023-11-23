@@ -11,6 +11,9 @@ We are pleased to share our version of an image-based **CAPTCHA** application. I
 
 Our CAPTCHA approach introduces **multifaceted challenges** that require the user to *unscramble* an image and *identify a code* that becomes evident only upon successful unscrambling. These combined steps present a more robust barrier against AI-driven attacks on the web.
 
+> 🏆 This project was awarded **first place** in the Python Discord Code Jam 2023!
+> The list of winners can be found [here](https://www.pythondiscord.com/events/code-jams/10/), and the judges' in-depth review can be found [here](https://github.com/python-discord/code-jam-10/pull/2).
+
 ## Contents
 
 This README consists of the following sections:
